@@ -32,6 +32,7 @@ const Header = ({ activeHeading }) => {
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
 
+
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -83,8 +84,10 @@ const Header = ({ activeHeading }) => {
               <div className="absolute w-full min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
                 {searchData &&
                   searchData.map((i, index) => {
+                    const d = i.name ;
+                    const product_name = d.replace(/\s+/g, '-');
                     return (
-                      <Link to={`/product/${i._id}`}>
+                      <Link to={`/product/${product_name}`}>
                         <div className="w-full flex items-start-py-3">
                           <img
                             src={`${i.image_Url[0]?.url}`}

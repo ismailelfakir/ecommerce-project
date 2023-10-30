@@ -41,6 +41,8 @@ const App = () => {
         <Route path="/best-selling" element={<BestSellingPage />}></Route>
         <Route path="/events" element={<EventsPage />}></Route>
         <Route path="/faq" element={<FAQPage />}></Route>
+        <Route path="/profile" element={<ProfilePage />}></Route>
+
 
       </Routes>
       <ToastContainer
