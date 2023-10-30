@@ -25,6 +25,8 @@ const ProductDetails = ({ data }) => {
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
 
+  console.log(data?.image_Url[select].url);
+
 
 
   const incrementCount = () => {
