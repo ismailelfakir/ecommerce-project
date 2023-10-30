@@ -13,12 +13,12 @@ import { CgProfile } from "react-icons/cg";
 // import DropDown from "./DropDown";
 import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
-// import Cart from "../cart/Cart";
-// import Wishlist from "../Wishlist/Wishlist";
+import Cart from "../Cart/Cart";
+import Wishlist from "../Wishlist/Wishlist";
 import { RxCross1 } from "react-icons/rx";
+import { backend_url } from "../../server";
 
-
-const Header = ({ activeHeading })  => {
+const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   // const { isSeller } = useSelector((state) => state.seller);
   // const { wishlist } = useSelector((state) => state.wishlist);
@@ -31,6 +31,18 @@ const Header = ({ activeHeading })  => {
   const [openCart, setOpenCart] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+
+    const filteredProducts =
+      productData &&
+      productData.filter((product) =>
+        product.name.toLowerCase().includes(term.toLowerCase())
+      );
+    setSearchData(filteredProducts);
+  };
 
   window.addEventListener("scroll", () => {
     if (window.scrollY > 70) {
@@ -53,12 +65,46 @@ const Header = ({ activeHeading })  => {
               <h1 className="text-4xl font-bold">LOGO</h1>
             </Link>
           </div>
-        
 
-          <div className={`${styles.button}`}>
-            <Link to={`/logout`}>
-              <h1 className="text-[#fff] flex items-center">
-                Logout
+          {/* search box */}
+          <div className="w-[50%] relative">
+            <input
+              type="text"
+              placeholder="Search Product..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="h-[40px] w-full px-2 border-[#333] border-[2px] rounded-md"
+            />
+            <AiOutlineSearch
+              size={30}
+              className="absolute right-2 top-1.5 cursor-pointer"
+            />
+            {searchData && searchData.length !== 0 ? (
+              <div className="absolute w-full min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
+                {searchData &&
+                  searchData.map((i, index) => {
+                    return (
+                      <Link to={`/product/${i._id}`}>
+                        <div className="w-full flex items-start-py-3">
+                          <img
+                            src={`${i.image_Url[0]?.url}`}
+                            alt=""
+                            className="w-[40px] h-[40px] mr-[10px]"
+                          />
+                          <h1>{i.name}</h1>
+                        </div>
+                      </Link>
+                    );
+                  })}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="flex items-center"> 
+            Let's be
+            <Link to={`/become-seller`}>
+              <h1 className="text-[#111] text-amber-600 flex items-center ml-3">
+                Seller
                 <IoIosArrowForward className="ml-1" />
               </h1>
             </Link>
@@ -73,28 +119,6 @@ const Header = ({ activeHeading })  => {
         <div
           className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
         >
-          {/* categories
-          <div onClick={() => setDropDown(!dropDown)}>
-            <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
-              <BiMenuAltLeft size={30} className="absolute top-3 left-2" />
-              <button
-                className={`h-[100%] w-full flex justify-between items-center pl-10 bg-white font-sans text-lg font-[500] select-none rounded-t-md`}
-              >
-                All Categories
-              </button>
-              <IoIosArrowDown
-                size={20}
-                className="absolute right-2 top-4 cursor-pointer"
-                onClick={() => setDropDown(!dropDown)}
-              />
-              {dropDown ? (
-                <DropDown
-                  categoriesData={categoriesData}
-                  setDropDown={setDropDown}
-                />
-              ) : null}
-            </div>
-          </div> */}
           {/* navitems */}
           <div className={`${styles.noramlFlex}`}>
             <Navbar active={activeHeading} />
@@ -109,6 +133,7 @@ const Header = ({ activeHeading })  => {
                 <AiOutlineHeart size={30} color="rgb(255 255 255 / 83%)" />
                 <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                   {/* {wishlist && wishlist.length} */}
+                  1
                 </span>
               </div>
             </div>
@@ -124,6 +149,7 @@ const Header = ({ activeHeading })  => {
                 />
                 <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                   {/* {cart && cart.length} */}
+                  1
                 </span>
               </div>
             </div>
@@ -131,28 +157,42 @@ const Header = ({ activeHeading })  => {
             <div className={`${styles.noramlFlex}`}>
               <div className="relative cursor-pointer mr-[15px]">
                 {isAuthenticated ? (
-                  <Link to="/profile">
-                    <img
-                      src={`${user?.avatar?.url}`}
-                      className="w-[35px] h-[35px] rounded-full"
-                      alt=""
-                    />
-                  </Link>
+                  <div>
+                    <Link to="/profile">
+                      <img
+                        // src={`${user.avatar?.url}`}
+                        src={`${backend_url}/${user.avatar}`}
+                        alt=""
+                        className="w-[45px] h-[45px] rounded-full border-[3px] border-[#0eae88]"
+                      />
+                    </Link>
+                  </div>
                 ) : (
-                  <Link to="/login">
-                    <CgProfile size={30} color="rgb(255 255 255 / 83%)" />
-                  </Link>
+                  <>
+                    <Link
+                      to="/login"
+                      className="text-[18px] pr-[10px] text-[#000000b7]"
+                    >
+                      Login /
+                    </Link>
+                    <Link
+                      to="/sign-up"
+                      className="text-[18px] text-[#000000b7]"
+                    >
+                      Sign up
+                    </Link>
+                  </>
                 )}
               </div>
             </div>
 
             {/* cart popup */}
-            {/* {openCart ? <Cart setOpenCart={setOpenCart} /> : null} */}
+            {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
 
             {/* wishlist popup */}
-            {/* {openWishlist ? (
+            {openWishlist ? (
               <Wishlist setOpenWishlist={setOpenWishlist} />
-            ) : null} */}
+            ) : null}
           </div>
         </div>
       </div>

@@ -290,7 +290,6 @@ export const navItems = [
       rating: 5,
       total_sell: 80,
       stock: 10,
-      category:"clothes"
     },
     {
       id: 3,
@@ -321,12 +320,11 @@ export const navItems = [
       rating: 4,
       total_sell: 75,
       stock: 10,
-      category:"Shoes"
     },
     {
       id: 4,
       category:"Shoes",
-      name: "moroccan belgha original 100%",
+      name: "moroccan belgha original 100",
       description:
         "Product details are a crucial part of any eCommerce website or online marketplace. These details help the potential customers to make an informed decision about the product they are interested in buying. A well-written product description can also be a powerful marketing tool that can help to increase sales.Product details typically include information about the product's features, specifications, dimensions, weight, materials, and other relevant information that can help customers to understand the product better. The product details section should also include high-quality images and videos of the product, as well as customer reviews and ratings.",
       image_Url: [
@@ -352,7 +350,6 @@ export const navItems = [
       rating: 4,
       total_sell: 75,
       stock: 10,
-      category:"Shoes"
     },
     {
       id: 5,
@@ -382,7 +379,6 @@ export const navItems = [
       rating: 5,
       total_sell: 67,
       stock: 10,
-      category:"Accesories"
     },
     {
       id: 6,
@@ -412,7 +408,6 @@ export const navItems = [
       rating: 5,
       total_sell: 77,
       stock: 10,
-      category:"Gifts"
     },
     {
       id: 7,
@@ -442,7 +437,6 @@ export const navItems = [
       rating: 5,
       total_sell: 77,
       stock: 10,
-      category:"Others"
     },
   ];
   
