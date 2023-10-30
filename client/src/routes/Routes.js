@@ -2,7 +2,13 @@ import LoginPage from '../pages/Login';
 import SignupPage from '../pages/SignupPage';
 import ActivationPage from '../pages/ActivationPage';
 import HomePage from '../pages/HomePage';
-import UserAccount from '../pages/UserAccount';
+import ProductsPage from '../pages/ProductsPage';
+import BestSellingPage from '../pages/BestSellingPage';
+import EventsPage from '../pages/EventsPage';
+import FAQPage from '../pages/FAQPage';
+import ProductsDetailsPage from '../pages/ProductsDetailsPage';
+
+
 
 
 export {
@@ -10,5 +16,9 @@ export {
     SignupPage,
     ActivationPage,
     HomePage,
-    UserAccount
+    ProductsPage,
+    BestSellingPage,
+    EventsPage,
+    FAQPage,
+    ProductsDetailsPage,
 };

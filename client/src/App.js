@@ -1,13 +1,28 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { LoginPage, SignupPage , ActivationPage, HomePage, UserAccount } from "./routes/Routes.js";
+import {
+  LoginPage,
+  SignupPage,
+  ActivationPage,
+  HomePage,
+  ProductsPage,
+  BestSellingPage,
+  EventsPage,
+  FAQPage,
+  ProductsDetailsPage,
+  ProfilePage,
+} from "./routes/Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store";
 import { loadUser } from "./redux/actions/user";
 
 const App = () => {
+
+
+
+
   useEffect(() => {
     Store.dispatch(loadUser());
   }, []);
@@ -17,11 +32,16 @@ const App = () => {
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/sign-up" element={<SignupPage />}></Route>
-        <Route path="/user-account" element={<UserAccount />}></Route>
         <Route
           path="/activation/:activation_token"
           element={<ActivationPage />}
         ></Route>
+        <Route path="/products" element={<ProductsPage />}></Route>
+        <Route path="/product/:name" element={<ProductsDetailsPage />}></Route>
+        <Route path="/best-selling" element={<BestSellingPage />}></Route>
+        <Route path="/events" element={<EventsPage />}></Route>
+        <Route path="/faq" element={<FAQPage />}></Route>
+
       </Routes>
       <ToastContainer
         position="top-right"
