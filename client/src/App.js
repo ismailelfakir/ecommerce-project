@@ -12,6 +12,7 @@ import {
   FAQPage,
   ProductsDetailsPage,
   ProfilePage,
+  ResetPasswordPage,
 } from "./routes/Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -42,6 +43,8 @@ const App = () => {
         <Route path="/events" element={<EventsPage />}></Route>
         <Route path="/faq" element={<FAQPage />}></Route>
         <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route path="/resetpassword" element={<ResetPasswordPage />}></Route>
+
 
 
       </Routes>
