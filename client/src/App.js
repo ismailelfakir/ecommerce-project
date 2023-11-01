@@ -13,6 +13,8 @@ import {
   ProductsDetailsPage,
   ProfilePage,
   ResetPasswordPage,
+  SellerCreatePage,
+  SellerActivationPage,
 } from "./routes/Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,10 +39,15 @@ const App = () => {
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/sign-up" element={<SignupPage />}></Route>
+        <Route path="/resetpassword" element={<ResetPasswordPage />}></Route>
         <Route
           path="/activation/:activation_token"
           element={<ActivationPage />}
         ></Route>
+        <Route
+         path="/seller/activation/:activation_token"
+         element={<SellerActivationPage />}
+       />
         <Route path="/products" element={<ProductsPage />}></Route>
         <Route path="/product/:name" element={<ProductsDetailsPage />}></Route>
         <Route path="/best-selling" element={<BestSellingPage />}></Route>
@@ -53,7 +60,7 @@ const App = () => {
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/resetpassword" element={<ResetPasswordPage />}></Route>
+        <Route path="/seller-create" element={<SellerCreatePage />}></Route>
 
 
       </Routes>
