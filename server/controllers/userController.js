@@ -19,7 +19,7 @@ router.use(function (req, res, next) {
   );
   next();
 });
-
+//router ***********************************
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
     const { fname, lname, email, password } = req.body;
@@ -47,7 +47,7 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
       password: password,
       avatar: fileUrl,
     };
-    
+
     const activationToken = createActivationToken(user);
 
     const activationUrl = `http://localhost:3000/activation/${activationToken}`;
@@ -94,7 +94,7 @@ router.post(
       if (!newUser) {
         return next(new ErrorHandler("Invalid token", 400));
       }
-      const { fname , lname , email, password, avatar } = newUser;
+      const { fname, lname, email, password, avatar } = newUser;
 
       let user = await User.findOne({ email });
 
@@ -190,5 +190,7 @@ router.get(
     }
   })
 );
+
+
 
 module.exports = router;
