@@ -15,6 +15,7 @@ import {
   ResetPasswordPage,
   SellerCreatePage,
   SellerActivationPage,
+  SellerLoginPage,
 } from "./routes/Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -61,6 +62,7 @@ const App = () => {
           }
         ></Route>
         <Route path="/seller-create" element={<SellerCreatePage />}></Route>
+        <Route path="/seller-login" element={<SellerLoginPage />}></Route>
 
 
       </Routes>
