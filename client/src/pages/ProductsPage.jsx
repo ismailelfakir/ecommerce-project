@@ -27,7 +27,7 @@ const ProductsPage = () => {
 
   return (
       <div>
-      <Header activeHeading={4} />
+      <Header activeHeading={3} />
       <br />
       <br />
       <div className={`${styles.section}`}>
