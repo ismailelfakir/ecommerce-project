@@ -50,11 +50,7 @@ const App = () => {
         <Route path="/product/:name" element={<ProductsDetailsPage />}></Route>
         <Route path="/best-selling" element={<BestSellingPage />}></Route>
         <Route path="/events" element={<EventsPage />}></Route>
-        <Route path="/faq" element={
-          <ProtectedRoute>
-            <FAQPage />
-          </ProtectedRoute>
-        }></Route>
+        <Route path="/faq" element={<FAQPage /> }></Route>
         <Route
           path="/profile"
           element={
