@@ -29,8 +29,6 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
 
 const App = () => {
-  const { loading, isAuthenticated } = useSelector((state) => state.user);
-  const { isLoading, isSeller } = useSelector((state) => state.seller);
 
   useEffect(() => {
     Store.dispatch(loadUser());
@@ -38,8 +36,6 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      {loading || isLoading ? null : (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />}></Route>
@@ -68,7 +64,7 @@ const App = () => {
             <Route
               path="/profile"
               element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <ProtectedRoute >
                   <ProfilePage />
                 </ProtectedRoute>
               }
@@ -79,7 +75,7 @@ const App = () => {
             <Route
               path="/seller/:id"
               element={
-                <SellerProtectedRoute isSeller={isSeller}>
+                <SellerProtectedRoute >
                   <SellerHomePage />
                 </SellerProtectedRoute>
               }
@@ -98,8 +94,6 @@ const App = () => {
             theme="dark"
           />
         </BrowserRouter>
-      )}
-    </>
   );
 };
 

@@ -5,13 +5,13 @@ import SellerCreate from "../components/Seller/SellerCreate";
 
 const SellerCreatePage = () => {
   const navigate = useNavigate();
-  const { isSeller , seller } = useSelector((state) => state.seller);
+  const { isSeller , isLoading} = useSelector((state) => state.seller);
 
   useEffect(() => {
     if(isSeller === true){
-      navigate(`/seller/${seller._id}`);
+      navigate(`/dashboard`);
     }
-  }, [])
+  }, [isLoading , isSeller])
   return (
     <div>
       <SellerCreate />
