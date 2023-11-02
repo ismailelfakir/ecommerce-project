@@ -10,6 +10,7 @@ const sendToken = require("../utils/jwtToken");
 const sendMail = require("../utils/sendMail");
 const { isAuthenticated } = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
+const randomstring = require('randomstring');
 
 router.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin");
@@ -147,6 +148,40 @@ router.post(
     }
   })
 );
+// rest Password
+
+router.post('/reset-password', async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    // Find the user by their email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return next(new ErrorHandler("This User not found", 404));
+    }
+
+
+    // Update the user's password in the database
+    const newRandomPassword = randomstring.generate(10);
+    user.password = newRandomPassword;
+    await user.save();
+
+    // Send an email to the user with the new random password
+    await sendMail({
+      email: user.email,
+      subject: "Reset Password",
+      message: `Your new password is: ${newRandomPassword}`,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: `A new random password has been sent to your email address. Please check your inbox.`,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
 
 // load user
 router.get(
