@@ -7,10 +7,11 @@ import BestSellingPage from '../pages/BestSellingPage';
 import EventsPage from '../pages/EventsPage';
 import FAQPage from '../pages/FAQPage';
 import ProductsDetailsPage from '../pages/ProductsDetailsPage';
-import ProfilePage from '../pages/ProfilePage'
-import ResetPasswordPage from '../pages/ResetPasswordPage'
-
-
+import ProfilePage from '../pages/ProfilePage';
+import ResetPasswordPage from '../pages/ResetPasswordPage';
+import SellerCreatePage from '../pages/SellerCreatePage';
+import SellerActivationPage from '../pages/SellerActivationPage';
+import SellerLoginPage from '../pages/SellerLoginPage';
 
 
 
@@ -25,6 +26,8 @@ export {
     FAQPage,
     ProductsDetailsPage,
     ProfilePage,
-    ResetPasswordPage
-
+    ResetPasswordPage,
+    SellerCreatePage,
+    SellerActivationPage,
+    SellerLoginPage,
 };

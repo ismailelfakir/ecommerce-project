@@ -13,22 +13,22 @@ import {
   ProductsDetailsPage,
   ProfilePage,
   ResetPasswordPage,
+  SellerCreatePage,
+  SellerActivationPage,
+  SellerLoginPage,
 } from "./routes/Routes.js";
+import { SellerDashboardPage, SellerHomePage } from "./routes/SellerRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store";
-import { loadUser } from "./redux/actions/user";
-import { useSelector } from "react-redux";
+import { loadSeller, loadUser } from "./redux/actions/user";
 import ProtectedRoute from "./routes/ProtectedRoute";
-
+import SellerProtectedRoute from "./routes/SellerProtectedRoute";
 
 const App = () => {
-
-  const { isAuthenticated, user } = useSelector((state) => state.user);
-
-
   useEffect(() => {
     Store.dispatch(loadUser());
+    Store.dispatch(loadSeller());
   }, []);
 
   return (
@@ -37,25 +37,47 @@ const App = () => {
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/sign-up" element={<SignupPage />}></Route>
+        <Route path="/reset-password" element={<ResetPasswordPage />}></Route>
         <Route
           path="/activation/:activation_token"
           element={<ActivationPage />}
         ></Route>
+        <Route
+          path="/seller/activation/:activation_token"
+          element={<SellerActivationPage />}
+        />
         <Route path="/products" element={<ProductsPage />}></Route>
         <Route path="/product/:name" element={<ProductsDetailsPage />}></Route>
         <Route path="/best-selling" element={<BestSellingPage />}></Route>
         <Route path="/events" element={<EventsPage />}></Route>
-        <Route path="/faq" element={<FAQPage />}></Route>
+        <Route path="/faq" element={<FAQPage /> }></Route>
         <Route
-          path="/profile" element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
+          path="/profile"
+          element={
+            <ProtectedRoute>
               <ProfilePage />
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/reset-password" element={<ResetPasswordPage />}></Route>
-
-
+        {/* Seller routes */}
+        <Route path="/seller-create" element={<SellerCreatePage />}></Route>
+        <Route path="/seller-login" element={<SellerLoginPage />}></Route>
+        <Route
+          path="/seller/:id"
+          element={
+            <SellerProtectedRoute>
+              <SellerHomePage />
+            </SellerProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/dashboard"
+          element={
+            <SellerProtectedRoute>
+              <SellerDashboardPage />
+            </SellerProtectedRoute>
+          }
+        ></Route>
       </Routes>
       <ToastContainer
         position="top-right"
