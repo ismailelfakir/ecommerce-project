@@ -18,13 +18,13 @@ import {
   SellerLoginPage,
 } from "./routes/Routes.js";
 import { 
+  SellerDashboardPage,
   SellerHomePage 
 } from "./routes/SellerRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store";
 import { loadSeller, loadUser } from "./redux/actions/user";
-import { useSelector } from "react-redux";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
 
@@ -77,6 +77,14 @@ const App = () => {
               element={
                 <SellerProtectedRoute >
                   <SellerHomePage />
+                </SellerProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/dashboard"
+              element={
+                <SellerProtectedRoute >
+                  <SellerDashboardPage />
                 </SellerProtectedRoute>
               }
             ></Route>
