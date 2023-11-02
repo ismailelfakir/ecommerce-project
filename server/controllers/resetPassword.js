@@ -1,37 +1,35 @@
-// resetPassword.js
-
 const express = require("express");
+const path = require("path");
 const router = express.Router();
-const User = require("../models/User"); // Assurez-vous d'importer correctement votre modèle d'utilisateur
+const User = require("../models/User");
+const mongoose = require('mongoose');
+const randomstring = require('randomstring');
+const sendMail = require('../utils/sendMail'); 
+const app = express();
 
-// Endpoint pour envoyer un e-mail de réinitialisation de mot de passe
-router.post("/reset-password", async (req, res) => {
+// Route pour réinitialiser le mot de passe
+app.post('/reset-password', async (req, res) => {
+  const { email } = req.body;
+
+  // Générez un nouveau mot de passe temporaire
+  const newPassword = randomstring.generate(10);
+
   try {
-    const { email } = req.body;
+    // Enregistrez le nouveau mot de passe temporaire dans la base de données
+    await User.findOneAndUpdate({ email }, { password: newPassword });
 
-    // Vérifiez si l'e-mail existe dans la base de données
-    const user = await User.findOne({ email });
+    // Configurez l'e-mail
+    const mailOptions = {
+      email,
+      subject: 'Réinitialisation de votre mot de passe',
+      message: `Votre nouveau mot de passe temporaire est : ${newPassword}`,
+    };
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Générez un jeton de réinitialisation (par exemple, un jeton JWT)
-    const resetToken = "un-jeton-de-reinitialisation"; // Générez un jeton sécurisé ici
-
-    // Enregistrez le jeton de réinitialisation dans la base de données de l'utilisateur
-    user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000; // Expiration d'une heure
-    await user.save();
-
-    // Envoyez un e-mail au client avec un lien contenant le jeton de réinitialisation
-    // Ici, vous pouvez utiliser un service comme Nodemailer pour envoyer l'e-mail
-
-    res.status(200).json({ message: "Password reset instructions sent" });
+    // Envoyez l'e-mail en utilisant votre fonction sendMail
+    await sendMail(mailOptions);
+    res.json({ message: 'Un e-mail de réinitialisation de mot de passe a été envoyé.' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: 'Une erreur s est produite lors de l envoi de l e-mail.' });
   }
 });
-
-module.exports = router;
