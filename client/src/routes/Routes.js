@@ -11,7 +11,7 @@ import ProfilePage from '../pages/ProfilePage';
 import ResetPasswordPage from '../pages/ResetPasswordPage';
 import SellerCreatePage from '../pages/SellerCreatePage';
 import SellerActivationPage from '../pages/SellerActivationPage';
-import SellerLoginPage from '../pages/SellerLoginPage.jsx';
+import SellerLoginPage from '../pages/SellerLoginPage';
 
 
 
@@ -29,5 +29,5 @@ export {
     ResetPasswordPage,
     SellerCreatePage,
     SellerActivationPage,
-    SellerLoginPage
+    SellerLoginPage,
 };
