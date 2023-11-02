@@ -6,7 +6,7 @@ const SellerProtectedRoute = ({ children }) => {
   const { isLoading, isSeller } = useSelector((state) => state.seller);
   if (isLoading === false) {
     if (!isSeller) {
-      return <Navigate to={`/shop-login`} replace />;
+      return <Navigate to={`/seller-login`} replace />;
     }
     return children;
   }
