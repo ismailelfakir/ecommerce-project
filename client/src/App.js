@@ -16,6 +16,7 @@ import {
   SellerCreatePage,
   SellerActivationPage,
   SellerLoginPage,
+  PasswordChangedConfirmation,
 } from "./routes/Routes.js";
 import { SellerDashboardPage, SellerHomePage } from "./routes/SellerRoutes.js";
 import { ToastContainer } from "react-toastify";
@@ -38,6 +39,8 @@ const App = () => {
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/sign-up" element={<SignupPage />}></Route>
         <Route path="/reset-password" element={<ResetPasswordPage />}></Route>
+        <Route path="/confirmation-reset" element={<PasswordChangedConfirmation />}></Route>
+
         <Route
           path="/activation/:activation_token"
           element={<ActivationPage />}
