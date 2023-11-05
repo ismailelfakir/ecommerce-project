@@ -27,9 +27,13 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 // import routes
 const userController = require("./controllers/userController");
 const sellerController = require("./controllers/sellerController");
+const productController = require("./controllers/productController");
+
 
 app.use("/v2/user", userController);
 app.use("/v2/seller", sellerController);
+app.use("/v2/product", productController);
+
 
 // it's for ErrorHandling
 app.use(ErrorHandler);

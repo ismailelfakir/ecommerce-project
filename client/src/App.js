@@ -18,7 +18,12 @@ import {
   SellerLoginPage,
   PasswordChangedConfirmation,
 } from "./routes/Routes.js";
-import { SellerDashboardPage, SellerHomePage } from "./routes/SellerRoutes.js";
+import {
+  SellerDashboardPage,
+  SellerHomePage,
+  SellerCreateProduct,
+  SellerAllProducts,
+} from "./routes/SellerRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store";
@@ -53,7 +58,7 @@ const App = () => {
         <Route path="/product/:name" element={<ProductsDetailsPage />}></Route>
         <Route path="/best-selling" element={<BestSellingPage />}></Route>
         <Route path="/events" element={<EventsPage />}></Route>
-        <Route path="/faq" element={<FAQPage /> }></Route>
+        <Route path="/faq" element={<FAQPage />}></Route>
         <Route
           path="/profile"
           element={
@@ -78,6 +83,22 @@ const App = () => {
           element={
             <SellerProtectedRoute>
               <SellerDashboardPage />
+            </SellerProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/dashboard-create-product"
+          element={
+            <SellerProtectedRoute>
+              <SellerCreateProduct />
+            </SellerProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/dashboard-products"
+          element={
+            <SellerProtectedRoute>
+              <SellerAllProducts />
             </SellerProtectedRoute>
           }
         ></Route>
