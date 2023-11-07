@@ -17,12 +17,16 @@ import {
   SellerActivationPage,
   SellerLoginPage,
   PasswordChangedConfirmation,
+  
 } from "./routes/Routes.js";
 import {
   SellerDashboardPage,
   SellerHomePage,
   SellerCreateProduct,
   SellerAllProducts,
+  ResetPasswordSellerPage,
+  PasswordChangedConfirmationSeller,
+  SellerAllCoupons,
 } from "./routes/SellerRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,6 +49,10 @@ const App = () => {
         <Route path="/sign-up" element={<SignupPage />}></Route>
         <Route path="/reset-password" element={<ResetPasswordPage />}></Route>
         <Route path="/confirmation-reset" element={<PasswordChangedConfirmation />}></Route>
+        <Route path="/reset-password-seller" element={<ResetPasswordSellerPage />}></Route>
+        <Route path="/confirmation-reset-seller" element={<PasswordChangedConfirmationSeller />}></Route>
+
+
 
         <Route
           path="/activation/:activation_token"
@@ -102,6 +110,14 @@ const App = () => {
             </SellerProtectedRoute>
           }
         ></Route>
+        <Route
+          path="/dashboard-coupouns"
+          element={
+            <SellerProtectedRoute>
+              <SellerAllCoupons />
+            </SellerProtectedRoute>
+          }
+        />
       </Routes>
       <ToastContainer
         position="top-right"

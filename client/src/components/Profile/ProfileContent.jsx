@@ -21,7 +21,7 @@ import { RxCross1 } from "react-icons/rx";
 import { Country, State } from "country-state-city";
 // import { useEffect } from "react";
 import { toast } from "react-toastify";
-// import axios from "axios";
+import axios from "axios";
 // import { getAllOrdersOfUser } from "../../redux/actions/order";
 
 
@@ -467,6 +467,8 @@ const TrackOrder = () => {
 };
 
 const ChangePassword = () => {
+  const { user } = useSelector((state) => state.user);
+  const email = user.email ;
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -474,21 +476,21 @@ const ChangePassword = () => {
   const passwordChangeHandler = async (e) => {
     e.preventDefault();
 
-    // await axios
-    //   .put(
-    //     `${server}/user/update-user-password`,
-    //     { oldPassword, newPassword, confirmPassword },
-    //     { withCredentials: true }
-    //   )
-    //   .then((res) => {
-    //     toast.success(res.data.success);
-    //     setOldPassword("");
-    //     setNewPassword("");
-    //     setConfirmPassword("");
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error.response.data.message);
-    //   });
+    await axios
+      .put(
+        `${server}/user/update-user-password`,
+        { email, oldPassword, newPassword, confirmPassword },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success(res.data.success);
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
   };
   return (
     <div className="w-full px-5">
