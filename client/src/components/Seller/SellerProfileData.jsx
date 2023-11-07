@@ -8,7 +8,7 @@ import ProductCard from "../Route/ProductCard/ProductCard";
 // import { getAllEventsShop } from "../../redux/actions/event";
 import { productData } from "../../static/data";
 
-const ShopProfileData = ({ isOwner }) => {
+const SellerProfileData = ({ isOwner }) => {
     const [searchParams] = useSearchParams();
     const categoryData = searchParams.get("category");
 //   const { products } = useSelector((state) => state.products);
@@ -17,8 +17,8 @@ const ShopProfileData = ({ isOwner }) => {
 //   const dispatch = useDispatch();
 
 //   useEffect(() => {
-//     dispatch(getAllProductsShop(id));
-//     dispatch(getAllEventsShop(id));
+//     dispatch(getAllProductsSeller(id));
+//     dispatch(getAllEventsSeller(id));
 //   }, [dispatch]);
 
 const [data, setData] = useState([]);
@@ -38,7 +38,7 @@ const [data, setData] = useState([]);
                 active === 1 ? "text-[#1900ff]" : "text-[#333]"
               } cursor-pointer pr-[20px]`}
             >
-              Shop Products
+              Seller Products
             </h5>
           </div>
           <div className="flex items-center" onClick={() => setActive(2)}>
@@ -57,7 +57,7 @@ const [data, setData] = useState([]);
                 active === 3 ? "text-[#1900ff]" : "text-[#333]"
               } cursor-pointer pr-[20px]`}
             >
-              Shop Reviews
+              Seller Reviews
             </h5>
           </div>
         </div>
@@ -128,4 +128,4 @@ const [data, setData] = useState([]);
   );
 };
 
-export default ShopProfileData;
+export default SellerProfileData;

@@ -22,6 +22,8 @@ import {
   SellerHomePage,
   SellerCreateProduct,
   SellerAllProducts,
+  SellerCreateEvents,
+  SellerAllEvents,
 } from "./routes/SellerRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -99,6 +101,22 @@ const App = () => {
             </SellerProtectedRoute>
           }
         ></Route>
+        <Route
+          path="/dashboard-create-event"
+          element={
+            <SellerProtectedRoute>
+              <SellerCreateEvents />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-events"
+          element={
+            <SellerProtectedRoute>
+              <SellerAllEvents />
+            </SellerProtectedRoute>
+          }
+        />
       </Routes>
       <ToastContainer
         position="top-right"
