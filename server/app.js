@@ -28,6 +28,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 const userController = require("./controllers/userController");
 const sellerController = require("./controllers/sellerController");
 const productController = require("./controllers/productController");
+const couponCodeController = require("./controllers/couponCodeController");
 const eventController = require("./controllers/eventController");
 
 
@@ -35,6 +36,7 @@ const eventController = require("./controllers/eventController");
 app.use("/v2/user", userController);
 app.use("/v2/seller", sellerController);
 app.use("/v2/product", productController);
+app.use("/v2/couponcode", couponCodeController);
 app.use("/v2/event", eventController);
 
 

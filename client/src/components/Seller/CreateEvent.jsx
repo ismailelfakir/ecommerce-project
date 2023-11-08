@@ -66,20 +66,7 @@ const CreateEvent = () => {
 
     setImages((prevImages)=> [...prevImages , ...files]);
 
-    // const files = Array.from(e.target.files);
-
-    // setImages([]);
-
-    // files.forEach((file) => {
-    //   const reader = new FileReader();
-
-    //   reader.onload = () => {
-    //     if (reader.readyState === 2) {
-    //       setImages((old) => [...old, reader.result]);
-    //     }
-    //   };
-    //   reader.readAsDataURL(file);
-    // });
+   
   };
 
   const handleSubmit = (e) => {

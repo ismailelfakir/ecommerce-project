@@ -47,7 +47,7 @@ export const getAllEventsSeller = (id) => async (dispatch) => {
   }
 };
 
-// delete event of a shop
+// delete event of a seller
 export const deleteEvent = (id) => async (dispatch) => {
   try {
     dispatch({

@@ -11,6 +11,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const sendSellerToken = require("../utils/sellerToken");
 const upload = require("../multer");
 const fs = require("fs");
+const randomstring = require('randomstring');
 
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin");
@@ -200,5 +201,73 @@ router.get(
   })
 );
 
+// update seller info
+router.put(
+  "/update-seller-info",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { fname , lname, description , address, phoneNumber, zipCode } = req.body;
+
+      const seller = await Seller.findOne(req.seller._id);
+
+      if (!seller) {
+        return next(new ErrorHandler("Seller not found", 400));
+      }
+
+      seller.fname = fname;
+      seller.lname = lname;
+      seller.description = description;
+      seller.address = address;
+      seller.phoneNumber = phoneNumber;
+      seller.zipCode = zipCode;
+
+      await seller.save();
+
+      res.status(201).json({
+        success: true,
+        seller,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// Reset password seller
+
+router.post('/reset-password-seller', async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    // Find the user by their email
+    const seller = await Seller.findOne({ email });
+
+    if (!seller) {
+      return next(new ErrorHandler("Seller not found", 404));
+    }
+
+    // Generate a new random password
+    const newRandomPassword = randomstring.generate(10);
+
+    // Update the user's password in the database
+    seller.password = newRandomPassword;
+    await seller.save();
+
+    // Send an email to the user with the new random password
+    await sendMail({
+      email: seller.email,
+      subject: "Reset Password For Seller",
+      message:`Your new password is: ${newRandomPassword}`,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: `A new random password has been sent to your email address. Please check your inbox.`,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
 
 module.exports = router;

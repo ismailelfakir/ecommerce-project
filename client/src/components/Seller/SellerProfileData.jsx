@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams , useSearchParams} from "react-router-dom";
-// import { getAllProductsShop } from "../../redux/actions/product";
+import { getAllProductsSeller } from "../../redux/actions/product";
 import styles from "../../styles/styles";
 import ProductCard from "../Route/ProductCard/ProductCard";
 // import Ratings from "../Products/Ratings";
-// import { getAllEventsShop } from "../../redux/actions/event";
+import { getAllEventsSeller } from "../../redux/actions/event";
 import { productData } from "../../static/data";
 
 const SellerProfileData = ({ isOwner }) => {
-    const [searchParams] = useSearchParams();
-    const categoryData = searchParams.get("category");
-//   const { products } = useSelector((state) => state.products);
-//   const { events } = useSelector((state) => state.events);
+  const { products } = useSelector((state) => state.products);
+  const { events } = useSelector((state) => state.events);
   const { id } = useParams();
-//   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-//   useEffect(() => {
-//     dispatch(getAllProductsSeller(id));
-//     dispatch(getAllEventsSeller(id));
-//   }, [dispatch]);
+  useEffect(() => {
+    dispatch(getAllEventsSeller(id));
+    dispatch(getAllProductsSeller(id));
+  }, [dispatch]);
 
 const [data, setData] = useState([]);
 
@@ -77,17 +75,17 @@ const [data, setData] = useState([]);
       <br />
       {active === 1 && (
         <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
-          {productData &&
-            productData.map((i, index) => (
-              <ProductCard data={i} key={index} isShop={true} />
+          {products &&
+            products.map((i, index) => (
+              <ProductCard data={i} key={index} isSeller={true} />
             ))}
         </div>
       )}
 
-      {/* {active === 2 && (
+      {active === 2 && (
         <div className="w-full">
           <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
-          {productData && productData.map((i, index) => <ProductCard data={i} key={index} />)}
+          {events && events.map((i, index) => <ProductCard data={i} key={index} isEvent={true} />)}
           </div>
           {events && events.length === 0 && (
             <h5 className="w-full text-center py-5 text-[18px]">
@@ -95,7 +93,7 @@ const [data, setData] = useState([]);
             </h5>
           )}
         </div>
-      )} */}
+      )}
 
       {/* {active === 3 && (
         <div className="w-full">
