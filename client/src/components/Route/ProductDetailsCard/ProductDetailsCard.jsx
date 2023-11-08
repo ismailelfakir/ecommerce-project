@@ -8,8 +8,9 @@ import {
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/styles";
-// import { useDispatch, useSelector } from "react-redux";
-// import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { backend_url } from "../../../server";
 // import { addTocart } from "../../../redux/actions/cart";
 // import {
 //   addToWishlist,
@@ -19,7 +20,7 @@ import styles from "../../../styles/styles";
 const ProductDetailsCard = ({ setOpen, data }) => {
   //   const { cart } = useSelector((state) => state.cart);
   //   const { wishlist } = useSelector((state) => state.wishlist);
-  //   const dispatch = useDispatch();
+    const dispatch = useDispatch();
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
   // const [select, setSelect] = useState(false);
@@ -82,20 +83,20 @@ const ProductDetailsCard = ({ setOpen, data }) => {
 
             <div className="block w-full 800px:flex">
               <div className="w-full 800px:w-[50%]">
-                <img src={`${data.image_Url[0] && data.image_Url[0]?.url}`} alt="" />
+                <img src={`${backend_url}${data.images[0]}`} alt="" />
                 <div className="flex">
-                  <Link to={`/shop/preview/${data.shop._id}`} className="flex">
+                  <Link to={`/seller/preview/${data.seller.id}`} className="flex">
                     <img
-                      src={`${data.shop.shop_avatar.url}`}
+                      src={`${backend_url}${data.seller.avatar}`}
                       alt=""
                       className="w-[50px] h-[50px] rounded-full mr-2"
                     />
                     <div>
                       <h3 className={`${styles.shop_name}`}>
-                        {data.shop.name}
+                        {data.seller.fname} {data.seller.lname}
                       </h3>
                       <h5 className="pb-3 text-[15px]">
-                        {data?.shop.ratings} Ratings
+                        {data?.seller.ratings} Ratings
                       </h5>
                     </div>
                   </Link>
@@ -108,7 +109,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                     Send Message <AiOutlineMessage className="ml-1" />
                   </span>
                 </div>
-                <h5 className="text-[16px] text-[red] mt-5">({data?.total_sell}) Sold out</h5>
+                <h5 className="text-[16px] text-[red] mt-5">({data?.sold_out}) Sold out</h5>
               </div>
 
               <div className="w-full 800px:w-[50%] pt-5 pl-[5px] pr-[5px]">
@@ -119,10 +120,10 @@ const ProductDetailsCard = ({ setOpen, data }) => {
 
                 <div className="flex pt-3">
                   <h4 className={`${styles.productDiscountPrice}`}>
-                    {data.discount_price}DH
+                    {data.discountPrice}DH
                   </h4>
                   <h3 className={`${styles.price}`}>
-                    {data.price ? data.price + "DH" : null}
+                    {data.originalPrice ? data.originalPrice + "DH" : null}
                   </h3>
                 </div>
                 <div className="flex items-center mt-12 justify-between pr-3">

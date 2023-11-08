@@ -40,16 +40,6 @@ const sellerSchema = new mongoose.Schema({
       type: String,
       required: true,
   },
-  // avatar: {
-  //   public_id: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   url: {
-  //     type: String,
-  //     required: true,
-  //   },
-  // },
   zipCode: {
     type: Number,
     required: true,

@@ -27,7 +27,7 @@ import axios from "axios";
 
 const ProfileContent = ({ active }) => {
     const { user, error, successMessage } = useSelector((state) => state.user);
-    const [name, setName] = useState(user && user.name);
+    const [fname, setFname] = useState(user && user.fname);
     const [email, setEmail] = useState(user && user.email);
     const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
     const [password, setPassword] = useState("");
@@ -79,8 +79,8 @@ const ProfileContent = ({ active }) => {
                         type="text"
                         className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
                         required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={fname}
+                        onChange={(e) => setFname(e.target.value)}
                       />
                     </div>
                     <div className=" w-[100%] 800px:w-[50%]">

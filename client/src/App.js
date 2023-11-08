@@ -24,6 +24,10 @@ import {
   SellerAllProducts,
   SellerCreateEvents,
   SellerAllEvents,
+  SellerAllCoupons,
+  SellerSettingsPage,
+  ResetPasswordSellerPage,
+  PasswordChangedConfirmationSeller,
 } from "./routes/SellerRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,11 +35,15 @@ import Store from "./redux/store";
 import { loadSeller, loadUser } from "./redux/actions/user";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
+import { getAllProducts } from "./redux/actions/product";
+import { getAllEvents } from "./redux/actions/event";
 
 const App = () => {
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
+    Store.dispatch(getAllProducts());
+    Store.dispatch(getAllEvents());
   }, []);
 
   return (
@@ -54,7 +62,7 @@ const App = () => {
           element={<SellerActivationPage />}
         />
         <Route path="/products" element={<ProductsPage />}></Route>
-        <Route path="/product/:name" element={<ProductsDetailsPage />}></Route>
+        <Route path="/product/:id" element={<ProductsDetailsPage />}></Route>
         <Route path="/best-selling" element={<BestSellingPage />}></Route>
         <Route path="/events" element={<EventsPage />}></Route>
         <Route path="/faq" element={<FAQPage />}></Route>
@@ -67,8 +75,11 @@ const App = () => {
           }
         ></Route>
         {/* Seller routes */}
+
         <Route path="/seller-create" element={<SellerCreatePage />}></Route>
         <Route path="/seller-login" element={<SellerLoginPage />}></Route>
+        <Route path="/reset-password-seller" element={<ResetPasswordSellerPage />}></Route>
+        <Route path="/confirmation-reset-seller" element={<PasswordChangedConfirmationSeller />}></Route>
         <Route
           path="/seller/:id"
           element={
@@ -114,6 +125,22 @@ const App = () => {
           element={
             <SellerProtectedRoute>
               <SellerAllEvents />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-coupouns"
+          element={
+            <SellerProtectedRoute>
+              <SellerAllCoupons />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <SellerProtectedRoute>
+              <SellerSettingsPage />
             </SellerProtectedRoute>
           }
         />

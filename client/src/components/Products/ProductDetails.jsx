@@ -5,9 +5,9 @@ import {
   AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-// import { getAllProductsShop } from "../../redux/actions/product";
+import { getAllProductsSeller } from "../../redux/actions/product";
 // import { server } from "../../server";
 import styles from "../../styles/styles";
 // import {
@@ -15,19 +15,24 @@ import styles from "../../styles/styles";
 //   removeFromWishlist,
 // } from "../../redux/actions/wishlist";
 // import { addTocart } from "../../redux/actions/cart";
-// import { toast } from "react-toastify";
-// import Ratings from "./Ratings";
-// import axios from "axios";
+import { toast } from "react-toastify";
+import Ratings from "./Ratings";
+import axios from "axios";
 
 const ProductDetails = ({ data }) => {
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { products } = useSelector((state) => state.products);
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  console.log(data?.image_Url[select].url);
+  useEffect(() => {
+    dispatch(getAllProductsSeller(data && data.seller.id));
+  }, [data]);
 
-
+  console.log(data);
 
   const incrementCount = () => {
     setCount(count + 1);
@@ -40,25 +45,8 @@ const ProductDetails = ({ data }) => {
   };
 
   const handleMessageSubmit = async () => {
-    // if (isAuthenticated) {
-    //   const groupTitle = data._id + user._id;
-    //   const userId = user._id;
-    //   const sellerId = data.shop._id;
-    //   await axios
-    //     .post(`${server}/conversation/create-new-conversation`, {
-    //       groupTitle,
-    //       userId,
-    //       sellerId,
-    //     })
-    //     .then((res) => {
+    //test
     navigate(`/inbox?$conversation=50ERF`);
-    //     })
-    //     .catch((error) => {
-    //       toast.error(error.response.data.message);
-    //     });
-    // } else {
-    //   toast.error("Please login to create a conversation");
-    // }
   };
 
   return (
@@ -68,42 +56,23 @@ const ProductDetails = ({ data }) => {
           <div className="w-full py-5">
             <div className="block w-full 800px:flex">
               <div className="w-full 800px:w-[50%]">
-                <img
-                  // src={data.image_Url[select].url}
-                  src="./jellabamaroc.png"
-                  alt=""
-                  className="w-[80%]"
-                />
+                <img src={data.images[select]} alt="" className="w-[80%]" />
                 <div className="w-full flex">
-                  <div
-                    className={`${
-                      select === 0 ? "border" : "null"
-                    } cursor-pointer`}
-                  >
-                    <img
-                      src={`${data?.image_Url[0].url}`}
-                      alt=""
-                      className="h-[200px] overflow-hidden mr-3 mt-3"
-                      onClick={() => setSelect(0)}
-                    />
-                  </div>
-                  <div
-                    className={`${
-                      select === 1 ? "border" : "null"
-                    } cursor-pointer`}
-                  >
-                    <img
-                      src={`${data?.image_Url[1].url}`}
-                      alt=""
-                      className="h-[200px] overflow-hidden mr-3 mt-3"
-                      onClick={() => setSelect(1)}
-                    />
-                  </div>
-                  <div
-                    className={`${
-                      select === 1 ? "border" : "null"
-                    } cursor-pointer`}
-                  ></div>
+                  {data &&
+                    data.images.map((i, index) => (
+                      <div
+                        className={`${
+                          select === 0 ? "border" : "null"
+                        } cursor-pointer`}
+                      >
+                        <img
+                          src={`${i}`}
+                          alt=""
+                          className="h-[200px] overflow-hidden mr-3 mt-3"
+                          onClick={() => setSelect(index)}
+                        />
+                      </div>
+                    ))}
                 </div>
               </div>
               <div className="w-full 800px:w-[50%] pt-5">
@@ -111,10 +80,10 @@ const ProductDetails = ({ data }) => {
                 <p>{data.description}</p>
                 <div className="flex pt-3">
                   <h4 className={`${styles.productDiscountPrice}`}>
-                    {data.discount_price}DH
+                    {data.discountPrice} DH
                   </h4>
                   <h3 className={`${styles.price}`}>
-                    {data.price ? data.price + "DH" : null}
+                    {data.originalPrice ? data.originalPrice + "DH" : null}
                   </h3>
                 </div>
 
@@ -165,21 +134,21 @@ const ProductDetails = ({ data }) => {
                   </span>
                 </div>
                 <div className="flex items-center pt-8">
-                  <Link to={`/shop/preview/${data?.shop._id}`}>
+                  <Link to={`/seller/preview/${data?.seller.id}`}>
                     <img
-                      src={`${data.shop.shop_avatar.url}`}
+                      src={`${data.seller.avatar}`}
                       alt=""
                       className="w-[50px] h-[50px] rounded-full mr-2"
                     />
                   </Link>
                   <div className="pr-8">
-                    <Link to={`/shop/preview/${data?.shop._id}`}>
+                    <Link to={`/seller/preview/${data?.seller.id}`}>
                       <h3 className={`${styles.shop_name} pb-1 pt-1`}>
-                        {data.shop.name}
+                        {data.seller.name}
                       </h3>
                     </Link>
                     <h5 className="pb-3 text-[15px]">
-                      ({data.shop.ratings}/5) Ratings
+                      ({data.seller.ratings}/5) Ratings
                     </h5>
                   </div>
                   <div
@@ -196,9 +165,7 @@ const ProductDetails = ({ data }) => {
           </div>
           <ProductDetailsInfo
             data={data}
-            // products={products}
-            // totalReviewsLength={totalReviewsLength}
-            // averageRating={averageRating}
+            products={products}
           />
           <br />
           <br />
@@ -208,68 +175,63 @@ const ProductDetails = ({ data }) => {
   );
 };
 
-const ProductDetailsInfo = ({
-    data,
-    // products,
-    // totalReviewsLength,
-    // averageRating,
-  }) => {
-    const [active, setActive] = useState(1);
+const ProductDetailsInfo = ({ data, products }) => {
+  const [active, setActive] = useState(1);
 
-    return (
-      <div className="bg-[#f5f6fb] px-3 800px:px-10 py-2 rounded">
-        <div className="w-full flex justify-between border-b pt-10 pb-2">
-          <div className="relative">
-            <h5
-              className={
-                "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-              }
-              onClick={() => setActive(1)}
-            >
-              Product Details
-            </h5>
-            {active === 1 ? (
-              <div className={`${styles.active_indicator}`} />
-            ) : null}
-          </div>
-          <div className="relative">
-            <h5
-              className={
-                "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-              }
-              onClick={() => setActive(2)}
-            >
-              Product Reviews
-            </h5>
-            {active === 2 ? (
-              <div className={`${styles.active_indicator}`} />
-            ) : null}
-          </div>
-          <div className="relative">
-            <h5
-              className={
-                "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-              }
-              onClick={() => setActive(3)}
-            >
-              Seller Information
-            </h5>
-            {active === 3 ? (
-              <div className={`${styles.active_indicator}`} />
-            ) : null}
-          </div>
+  return (
+    <div className="bg-[#f5f6fb] px-3 800px:px-10 py-2 rounded">
+      <div className="w-full flex justify-between border-b pt-10 pb-2">
+        <div className="relative">
+          <h5
+            className={
+              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+            }
+            onClick={() => setActive(1)}
+          >
+            Product Details
+          </h5>
+          {active === 1 ? (
+            <div className={`${styles.active_indicator}`} />
+          ) : null}
         </div>
-        {active === 1 ? (
-          <>
-            <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
-              {data.description}
-            </p>
-          </>
-        ) : null}
+        <div className="relative">
+          <h5
+            className={
+              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+            }
+            onClick={() => setActive(2)}
+          >
+            Product Reviews
+          </h5>
+          {active === 2 ? (
+            <div className={`${styles.active_indicator}`} />
+          ) : null}
+        </div>
+        <div className="relative">
+          <h5
+            className={
+              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+            }
+            onClick={() => setActive(3)}
+          >
+            Seller Information
+          </h5>
+          {active === 3 ? (
+            <div className={`${styles.active_indicator}`} />
+          ) : null}
+        </div>
+      </div>
+      {active === 1 ? (
+        <>
+          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
+            {data.description}
+          </p>
+        </>
+      ) : null}
 
-        {active === 2 ? (
-          <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
-            {/* {data &&
+      {active === 2 ? (
+        <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
+          {/* {data &&
               data.reviews.map((item, index) => (
                 <div className="w-full flex my-2">
                   <img
@@ -292,69 +254,66 @@ const ProductDetailsInfo = ({
                 <h5>No Reviews have for this product!</h5>
               )}
             </div> */}
-            <p>No previews now!</p>
-          </div>
-        ) : null}
+          <p>No previews now!</p>
+        </div>
+      ) : null}
 
-        {active === 3 && (
-          <div className="w-full block 800px:flex p-5">
-            <div className="w-full 800px:w-[50%]">
-              <Link to={`/shop/preview/${data.shop._id}`}>
-                <div className="flex items-center">
-                  <img
-                    src={`${data.shop.shop_avatar.url}`}
-                    className="w-[50px] h-[50px] rounded-full"
-                    alt=""
-                  />
-                  <div className="pl-3">
-                    <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
-                    <h5 className="pb-2 text-[15px]">
-                      ({data.shop.ratings}/5) Ratings
-                    </h5>
-                  </div>
+      {active === 3 && (
+        <div className="w-full block 800px:flex p-5">
+          <div className="w-full 800px:w-[50%]">
+            <Link to={`/seller/preview/${data.seller.id}`}>
+              <div className="flex items-center">
+                <img
+                  src={`${data.seller.avatar}`}
+                  className="w-[50px] h-[50px] rounded-full"
+                  alt=""
+                />
+                <div className="pl-3">
+                  <h3 className={`${styles.shop_name}`}>{data.seller.fname}</h3>
+                  <h5 className="pb-2 text-[15px]">
+                    ({data.seller.ratings}/5) Ratings
+                  </h5>
+                </div>
+              </div>
+            </Link>
+            <p className="pt-2">{data.seller.description}</p>
+          </div>
+          <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
+            <div className="text-left">
+              <h5 className="font-[600]">
+                Joined on:
+                {" "}
+                <span className="font-[500]">
+                  {data.seller?.createdAt?.slice(0, 10)}
+                </span>
+              </h5>
+              <h5 className="font-[600] pt-3">
+                Total Products:
+                {" "}
+                <span className="font-[500]">
+                  {products && products.length}
+                </span>
+              </h5>
+              <h5 className="font-[600] pt-3">
+                Total Reviews:
+                {/* {" "} */}
+                <span className="font-[500]">
+                  {/* {totalReviewsLength} */}1
+                </span>
+              </h5>
+              <Link to="/">
+                <div
+                  className={`${styles.button} !rounded-[4px] !h-[39.5px] mt-3`}
+                >
+                  <h4 className="text-white">Visit Seller</h4>
                 </div>
               </Link>
-              <p className="pt-2">{data.shop.description}</p>
-            </div>
-            <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
-              <div className="text-left">
-                <h5 className="font-[600]">
-                  Joined on:
-                  {/* {" "} */}
-                  <span className="font-[500]">
-                    {/* {data.shop?.createdAt?.slice(0, 10)} */}
-                    15 April 2024
-                  </span>
-                </h5>
-                <h5 className="font-[600] pt-3">
-                  Total Products:
-                  {/* {" "} */}
-                  <span className="font-[500]">
-                    {/* {products && products.length} */}
-                    4
-                  </span>
-                </h5>
-                <h5 className="font-[600] pt-3">
-                  Total Reviews:
-                  {/* {" "} */}
-                  <span className="font-[500]">
-                    {/* {totalReviewsLength} */}
-                    1
-                    </span>
-                </h5>
-                <Link to="/">
-                  <div
-                    className={`${styles.button} !rounded-[4px] !h-[39.5px] mt-3`}
-                  >
-                    <h4 className="text-white">Visit Shop</h4>
-                  </div>
-                </Link>
-              </div>
             </div>
           </div>
-        )}
-      </div>
-    );
-  };
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default ProductDetails;

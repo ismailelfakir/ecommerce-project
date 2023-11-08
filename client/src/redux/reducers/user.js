@@ -19,32 +19,32 @@ export const userReducer = createReducer(initialState, {
     state.isAuthenticated = false;
   },
 
-  // // update user information
-  // updateUserInfoRequest: (state) => {
-  //   state.loading = true;
-  // },
-  // updateUserInfoSuccess: (state, action) => {
-  //   state.loading = false;
-  //   state.user = action.payload;
-  // },
-  // updateUserInfoFailed: (state, action) => {
-  //   state.loading = false;
-  //   state.error = action.payload;
-  // },
+  // update user information
+  updateUserInfoRequest: (state) => {
+    state.loading = true;
+  },
+  updateUserInfoSuccess: (state, action) => {
+    state.loading = false;
+    state.user = action.payload;
+  },
+  updateUserInfoFailed: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
 
-  // // update user address
-  // updateUserAddressRequest: (state) => {
-  //   state.addressloading = true;
-  // },
-  // updateUserAddressSuccess: (state, action) => {
-  //   state.addressloading = false;
-  //   state.successMessage = action.payload.successMessage;
-  //   state.user = action.payload.user;
-  // },
-  // updateUserAddressFailed: (state, action) => {
-  //   state.addressloading = false;
-  //   state.error = action.payload;
-  // },
+  // update user address
+  updateUserAddressRequest: (state) => {
+    state.addressloading = true;
+  },
+  updateUserAddressSuccess: (state, action) => {
+    state.addressloading = false;
+    state.successMessage = action.payload.successMessage;
+    state.user = action.payload.user;
+  },
+  updateUserAddressFailed: (state, action) => {
+    state.addressloading = false;
+    state.error = action.payload;
+  },
 
   // // delete user address
   // deleteUserAddressRequest: (state) => {
