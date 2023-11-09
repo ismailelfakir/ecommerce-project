@@ -5,7 +5,7 @@ import { server } from "../../server";
 // create product
 export const createProduct =
   (
-    newForm
+    productData
     // name,
     // description,
     // category,
@@ -26,7 +26,7 @@ export const createProduct =
 
       const { data } = await axios.post(
         `${server}/product/create-product`,
-        newForm,
+        productData,
         config
         // name,
         // description,
