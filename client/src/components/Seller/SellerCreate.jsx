@@ -33,7 +33,7 @@ const SellerCreate = () => {
     newForm.append("phoneNumber", phoneNumber);
     newForm.append("zipCode", zipCode);
 
-    axios.post(`${server}/seller/create-seller`, newForm , config)
+    axios.post(`${server}/seller/create-seller-cloud`, newForm , config)
     .then((res)=> {
       if(res.data.success === true) {
         toast.success(res.data.message);

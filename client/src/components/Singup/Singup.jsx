@@ -39,7 +39,7 @@ const Singup = () => {
     newForm.append("email", email);
     newForm.append("password", password);
 
-    axios.post(`${server}/user/create-user`, newForm , config)
+    axios.post(`${server}/user/create-user-cloud`, newForm , config)
     .then((res)=> {
       if(res.data.success === true) {
         toast.success(res.data.message);

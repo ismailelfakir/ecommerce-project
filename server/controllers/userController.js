@@ -11,6 +11,7 @@ const sendMail = require("../utils/sendMail");
 const { isAuthenticated } = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 const randomstring = require('randomstring');
+const cloudinary = require("cloudinary");
 
 router.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin");
@@ -21,6 +22,84 @@ router.use(function (req, res, next) {
   next();
 });
 //router ***********************************
+router.post("/create-user-cloud", upload.single("file"), async (req, res, next) => {
+  let errorOccurred = false; // Flag to track whether an error has occurred
+
+  try {
+    const { fname, lname, email, password } = req.body;
+    const userEmail = await User.findOne({ email });
+
+    if (userEmail) {
+      const filename = req.file.filename;
+      const filePath = `uploads/${filename}`;
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({ message: "error deleting file" });
+        }
+      });
+      return next(new ErrorHandler("User already exists", 400));
+    }
+
+    // Use the Cloudinary library to upload the image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path);
+    const fileUrl = result.secure_url;
+
+    // Delete the local file after successful upload to Cloudinary
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.error('Error deleting local file:', err);
+        errorOccurred = true;
+      }
+    });
+
+    const user = {
+      fname: fname,
+      lname: lname,
+      email: email,
+      password: password,
+      avatar: fileUrl,
+    };
+
+    const activationToken = createActivationToken(user);
+
+    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+
+    try {
+      await sendMail({
+        email: user.email,
+        subject: "Activate your account",
+        message: `Hello ${user.lname}, please click on the link to activate your account: ${activationUrl}`,
+      });
+      res.status(201).json({
+        success: true,
+        message: `Please check your email (${user.email}) to activate your account!`,
+      });
+    } catch (error) {
+      errorOccurred = true;
+      return next(new ErrorHandler(error.message, 500));
+    }
+  } catch (err) {
+    errorOccurred = true;
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.error('Error deleting local file:', err);
+      }
+    });
+    return next(new ErrorHandler(err.message, 400));
+  } finally {
+    // Delete the local file if an error occurred during processing
+    if (errorOccurred) {
+      fs.unlink(req.file.path, (err) => {
+        if (err) {
+          console.error('Error deleting local file:', err);
+        }
+      });
+    }
+  }
+});
+
+
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
     const { fname, lname, email, password } = req.body;

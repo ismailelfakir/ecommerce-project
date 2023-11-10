@@ -14,6 +14,8 @@ router.post(
   '/create-product',
   upload.array('images'),
   catchAsyncErrors(async (req, res, next) => {
+    let errorOccurred = false; // Flag to track whether an error has occurred
+
     try {
       const sellerId = req.body.sellerId;
       const seller = await Seller.findById(sellerId);
@@ -31,14 +33,15 @@ router.post(
         imageUrls.push(result.secure_url);
       }
 
+      // Delete files after successful upload
       files.forEach((file) => {
         fs.unlink(file.path, (err) => {
           if (err) {
             console.error('Error deleting file:', err);
+            errorOccurred = true; // Set the flag if an error occurs during deletion
           }
         });
       });
-
 
       const productData = req.body;
       productData.images = imageUrls;
@@ -51,7 +54,19 @@ router.post(
         product,
       });
     } catch (error) {
+      errorOccurred = true; // Set the flag if an error occurs during processing
       return next(new ErrorHandler(error, 400));
+    } finally {
+      // Delete files if an error occurred during processing
+      if (errorOccurred) {
+        files.forEach((file) => {
+          fs.unlink(file.path, (err) => {
+            if (err) {
+              console.error('Error deleting file:', err);
+            }
+          });
+        });
+      }
     }
   })
 );
