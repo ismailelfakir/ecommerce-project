@@ -20,10 +20,10 @@ import { backend_url } from "../../server";
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
-  // const { isSeller } = useSelector((state) => state.seller);
-  // const { wishlist } = useSelector((state) => state.wishlist);
-  // const { cart } = useSelector((state) => state.cart);
-  // const { allProducts } = useSelector((state) => state.products);
+  const { isSeller } = useSelector((state) => state.seller);
+  const { wishlist } = useSelector((state) => state.wishlist);
+  const { cart } = useSelector((state) => state.cart);
+  const { allProducts } = useSelector((state) => state.products);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
@@ -37,8 +37,8 @@ const Header = ({ activeHeading }) => {
     setSearchTerm(term);
 
     const filteredProducts =
-      productData &&
-      productData.filter((product) =>
+    allProducts &&
+    allProducts.filter((product) =>
         product.name.toLowerCase().includes(term.toLowerCase())
       );
     setSearchData(filteredProducts);
@@ -89,7 +89,7 @@ const Header = ({ activeHeading }) => {
                       <Link to={`/product/${product_name}`}>
                         <div className="w-full flex items-start-py-3">
                           <img
-                            src={`${i.image_Url[0]?.url}`}
+                            src={`${backend_url}${i.images[0]}`}
                             alt=""
                             className="w-[40px] h-[40px] mr-[10px]"
                           />
@@ -103,10 +103,9 @@ const Header = ({ activeHeading }) => {
           </div>
 
           <div className="flex items-center">
-            Let's be
-            <Link to={`/seller-create`}>
+            <Link to={`${isSeller ? "/dashboard" : "/seller-create"}`}>
               <h1 className="text-[#111] text-amber-600 flex items-center ml-3">
-                Seller
+                {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
                 <IoIosArrowForward className="ml-1" />
               </h1>
             </Link>
@@ -160,7 +159,7 @@ const Header = ({ activeHeading }) => {
               >
                 <AiOutlineHeart size={30} color="rgb(255 255 255 / 83%)" />
                 <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                  {/* {wishlist && wishlist.length} */}1
+                  {wishlist && wishlist.length}
                 </span>
               </div>
             </div>
@@ -175,7 +174,7 @@ const Header = ({ activeHeading }) => {
                   color="rgb(255 255 255 / 83%)"
                 />
                 <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                  {/* {cart && cart.length} */}1
+                  {cart && cart.length}
                 </span>
               </div>
             </div>
@@ -186,7 +185,6 @@ const Header = ({ activeHeading }) => {
                   <div>
                     <Link to="/profile">
                       <img
-                        // src={`${user.avatar?.url}`}
                         src={`${backend_url}${user.avatar}`}
                         alt=""
                         className="w-[45px] h-[45px] rounded-full border-[3px] border-[#0eae88]"
@@ -197,14 +195,14 @@ const Header = ({ activeHeading }) => {
                   <>
                     <Link
                       to="/login"
-                      className="text-[18px] pr-[10px] text-[#3d3d3db7]"
+                      className="text-[18px] pr-[10px] text-[#FFF] hover:underline"
                     >
                       Login |
                     </Link>
                   
                     <Link
                       to="/sign-up"
-                      className="text-[18px] text-[#3d3d3db7]"
+                      className="text-[18px] text-[#FFF] hover:underline"
                     >
                       Sign up
                     </Link>
@@ -256,7 +254,7 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={30} />
               <span class="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-                {/* {cart && cart.length} */}5
+                {cart && cart.length}
               </span>
             </div>
           </div>
@@ -281,7 +279,7 @@ const Header = ({ activeHeading }) => {
                   >
                     <AiOutlineHeart size={30} className="mt-5 ml-3" />
                     <span class="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-                      {/* {wishlist && wishlist.length} */}
+                    {wishlist && wishlist.length}
                     </span>
                   </div>
                 </div>
@@ -310,7 +308,7 @@ const Header = ({ activeHeading }) => {
                         <Link to={`/product/${Product_name}`}>
                           <div className="flex items-center">
                             <img
-                              src={i.image_Url[0]?.url}
+                              src={`${backend_url}${user.avatar}`}
                               alt=""
                               className="w-[50px] mr-2"
                             />
@@ -325,9 +323,10 @@ const Header = ({ activeHeading }) => {
 
               <Navbar active={activeHeading} />
               <div className={`${styles.button} ml-4 !rounded-[4px]`}>
-                <Link to="/seller-create">
+              <Link to={`${isSeller ? "/dashboard" : "/seller-create"}`}>
                   <h1 className="text-[#fff] flex items-center">
-                    Become Seller <IoIosArrowForward className="ml-1" />
+                  {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
+                   <IoIosArrowForward className="ml-1" />
                   </h1>
                 </Link>
               </div>
@@ -340,7 +339,7 @@ const Header = ({ activeHeading }) => {
                   <div>
                     <Link to="/profile">
                       <img
-                        src={`${user.avatar?.url}`}
+                        src={`${backend_url}${user.avatar?.url}`}
                         alt=""
                         className="w-[60px] h-[60px] rounded-full border-[3px] border-[#0eae88]"
                       />
@@ -352,7 +351,7 @@ const Header = ({ activeHeading }) => {
                       to="/login"
                       className="text-[18px] pr-[10px] text-[#000000b7]"
                     >
-                      Login /
+                      Login |
                     </Link>
                     <Link
                       to="/sign-up"
