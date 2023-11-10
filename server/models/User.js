@@ -50,10 +50,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
-  avatar:{
-    type: String,
-    required: true,
- },
+  avatar: {
+    url: { type: String, required: true },
+    publicId: { type: String, required: true },
+  },
  createdAt:{
   type: Date,
   default: Date.now(),

@@ -36,9 +36,9 @@ const sellerSchema = new mongoose.Schema({
     type: String,
     default: "Seller",
   },
-  avatar:{
-      type: String,
-      required: true,
+  avatar: {
+    url: { type: String, required: true },
+    publicId: { type: String, required: true },
   },
   zipCode: {
     type: Number,
