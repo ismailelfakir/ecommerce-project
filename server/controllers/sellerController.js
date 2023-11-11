@@ -5,13 +5,14 @@ const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
 const Seller = require("../models/Seller");
 const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
-// const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
 const sendSellerToken = require("../utils/sellerToken");
 const upload = require("../multer");
 const fs = require("fs");
 const randomstring = require('randomstring');
+
 
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin");
@@ -24,6 +25,89 @@ router.use(function (req, res, next) {
 
 
 // create seller -----------------------------------------
+router.post("/create-seller-cloud", upload.single("file"), async (req, res, next) => {
+  let errorOccurred = false; 
+
+  try {
+    const { fname, lname, email, password, address, phoneNumber, zipCode } = req.body;
+    const sellerEmail = await Seller.findOne({ email });
+
+    if (sellerEmail) {
+      const filename = req.file.filename;
+      const filePath = `img/${filename}`;
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({ message: "error deleting file" });
+        }
+      });
+      return next(new ErrorHandler("Seller already exists", 400));
+    }
+
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    const fileUrl = result.secure_url;
+    const publicId = result.public_id;
+
+    console.log("req.file.path : ", req.file.path)
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.error('Error deleting local file:', err);
+        errorOccurred = true;
+      }
+    });
+
+    const seller = {
+      fname: fname,
+      lname: lname,
+      email: email,
+      password: password,
+      avatar: {
+        url: fileUrl,
+        publicId: publicId,
+      },
+      address: address,
+      phoneNumber: phoneNumber,
+      zipCode: zipCode,
+    };
+
+    const activationToken = createActivationToken(seller);
+
+    const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
+
+    try {
+      await sendMail({
+        email: seller.email,
+        subject: "Activate your seller account",
+        message: `Hello ${seller.lname}, please click on the link to activate your seller account: ${activationUrl}`,
+      });
+      res.status(201).json({
+        success: true,
+        message: `Please check your email (${seller.email}) to activate your account!`,
+      });
+    } catch (error) {
+      errorOccurred = true;
+      return next(new ErrorHandler(error.message, 500));
+    }
+  } catch (err) {
+    errorOccurred = true;
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.error('Error deleting local file:', err);
+      }
+    });
+    return next(new ErrorHandler(err.message, 400));
+  } finally {
+    if (errorOccurred) {
+      fs.unlink(req.file.path, (err) => {
+        if (err) {
+          console.error('Error deleting local file:', err);
+        }
+      });
+    }
+  }
+});
+
 
 router.post("/create-seller", upload.single("file"), async (req, res, next) => {
     try {

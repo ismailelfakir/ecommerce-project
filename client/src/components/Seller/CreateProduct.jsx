@@ -58,7 +58,6 @@ const CreateProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const newForm = new FormData();
 
     images.forEach((image) => {
