@@ -112,6 +112,47 @@ router.delete(
     })
   );
 
+// update product info
+router.put(
+  "/update-event/:id",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const {
+        name,
+        description,
+        category,
+        tags,
+        originalPrice,
+        discountPrice,
+        stock,
+      } = req.body;
 
+      const event = await Event.findById(req.params.id);
+
+      if (!event) {
+        return next(new ErrorHandler("Event not found", 400));
+      }
+
+      event.name = name;
+      event.description = description;
+      event.category = category;
+      event.tags = tags;
+      event.originalPrice = originalPrice;
+      event.discountPrice = discountPrice;
+      event.stock = stock;
+
+
+      await event.save();
+
+      res.status(201).json({
+        success: true,
+        event,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 module.exports = router;

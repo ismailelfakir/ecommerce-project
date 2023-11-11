@@ -2,7 +2,7 @@ import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/styles";
@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 const AllCoupons = () => {
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(null);
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [coupons, setCoupons] = useState([]);
@@ -23,6 +24,18 @@ const AllCoupons = () => {
   const { products } = useSelector((state) => state.products);
 
   const dispatch = useDispatch();
+
+  // Function to handle opening the edit component
+  const handleOpenEdit = (couponId) => {
+    const updatedCoupon = coupons.find((coupon) => coupon._id === couponId);
+
+    setOpenEdit(updatedCoupon);
+  };
+
+  // Function to handle closing the edit component
+  const handleCloseEdit = () => {
+    setOpenEdit(null);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -89,6 +102,23 @@ const AllCoupons = () => {
       headerName: "Value",
       minWidth: 100,
       flex: 0.6,
+    },
+    {
+      field: "Update",
+      flex: 0.8,
+      minWidth: 100,
+      headerName: "",
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Button onClick={() => handleOpenEdit(params.id)}>
+              <AiOutlineEdit size={20} />
+            </Button>
+          </>
+        );
+      },
     },
     {
       field: "Delete",
@@ -243,9 +273,158 @@ const AllCoupons = () => {
               </div>
             </div>
           )}
+          {openEdit && (
+            <UpdateCoupon
+              coupon={openEdit}
+              onUpdate={(updatedCoupon) => {
+                handleOpenEdit(updatedCoupon);
+                handleCloseEdit(); // Close the edit dialog when the update is successful
+              }}
+            />
+          )}
         </div>
       )}
     </>
+  );
+};
+
+const UpdateCoupon = ({ coupon, onUpdate }) => {
+  // Add state to manage the form fields
+  const [name, setName] = useState(coupon.name);
+  const [value, setValue] = useState(coupon.value);
+  const [minAmount, setMinAmount] = useState(coupon.minAmount);
+  const [maxAmount, setMaxAmount] = useState(coupon.maxAmount);
+  const [selectedProducts , setSelectedProducts] = useState(coupon.selectedProducts);
+  const { products } = useSelector((state) => state.products);
+
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    await axios
+    .put(
+      `${server}/couponcode/update-coupon-code/${coupon._id}`,
+      {
+        name,
+        minAmount,
+        maxAmount,
+        selectedProducts,
+        value,
+      },
+      { withCredentials: true }
+    )
+    .then((res) => {
+      toast.success("Coupon code updated successfully!");
+      onUpdate(false);
+      window.location.reload();
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message);
+    });
+
+  };
+
+  return (
+    <div className="bg-[#fff]">
+      {coupon ? (
+        <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
+          <div className="w-[90%] 800px:w-[60%] h-[90vh] overflow-y-scroll 800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
+            <RxCross1
+              size={30}
+              className="absolute right-3 top-3 z-50"
+              onClick={() => onUpdate(false)}
+            />
+            <h5 className="text-[30px] font-Poppins text-center">
+              Update Coupon
+            </h5>
+            {/* create coupoun code */}
+            <form onSubmit={handleUpdate}>
+              <br />
+              <div>
+                <label className="pb-2">
+                  Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  value={name}
+                  className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your coupon code name..."
+                />
+              </div>
+              <br />
+              <div>
+                <label className="pb-2">
+                  Discount Percentenge <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="value"
+                  value={value}
+                  required
+                  className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  onChange={(e) => setValue(e.target.value)}
+                  placeholder="Enter your coupon code value..."
+                />
+              </div>
+              <br />
+              <div>
+                <label className="pb-2">Min Amount</label>
+                <input
+                  type="number"
+                  name="value"
+                  value={minAmount}
+                  className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  onChange={(e) => setMinAmount(e.target.value)}
+                  placeholder="Enter your coupon code min amount..."
+                />
+              </div>
+              <br />
+              <div>
+                <label className="pb-2">Max Amount</label>
+                <input
+                  type="number"
+                  name="value"
+                  value={maxAmount}
+                  className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  onChange={(e) => setMaxAmount(e.target.value)}
+                  placeholder="Enter your coupon code max amount..."
+                />
+              </div>
+              <br />
+              <div>
+                <label className="pb-2">Selected Product</label>
+                <select
+                  className="w-full mt-2 border h-[35px] rounded-[5px]"
+                  value={selectedProducts}
+                  onChange={(e) => setSelectedProducts(e.target.value)}
+                >
+                  <option value="Choose your selected products">
+                    Choose a selected product
+                  </option>
+                  {products &&
+                    products.map((i) => (
+                      <option value={i.name} key={i.name}>
+                        {i.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              <br />
+              <div>
+                <input
+                  type="submit"
+                  value="Update"
+                  className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 };
 

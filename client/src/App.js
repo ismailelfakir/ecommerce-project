@@ -28,6 +28,7 @@ import {
   SellerSettingsPage,
   ResetPasswordSellerPage,
   PasswordChangedConfirmationSeller,
+  SellerPreviewPage,
 } from "./routes/SellerRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -74,6 +75,7 @@ const App = () => {
             </ProtectedRoute>
           }
         ></Route>
+        <Route path="/seller/preview/:id" element={<SellerPreviewPage />} />
         {/* Seller routes */}
 
         <Route path="/seller-create" element={<SellerCreatePage />}></Route>

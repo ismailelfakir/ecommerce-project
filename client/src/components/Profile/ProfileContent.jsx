@@ -547,7 +547,7 @@ const Address = () => {
   const [address2, setAddress2] = useState("");
   const [addressType, setAddressType] = useState("");
   const { user } = useSelector((state) => state.user);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const addressTypeData = [
     {
@@ -567,16 +567,16 @@ const Address = () => {
     if (addressType === "" || country === "" || city === "") {
       toast.error("Please fill all the fields!");
     } else {
-      // dispatch(
-      //   updatUserAddress(
-      //     country,
-      //     city,
-      //     address1,
-      //     address2,
-      //     zipCode,
-      //     addressType
-      //   )
-      // );
+      dispatch(
+        updatUserAddress(
+          country,
+          city,
+          address1,
+          address2,
+          zipCode,
+          addressType
+        )
+      );
       setOpen(false);
       setCountry("");
       setCity("");
@@ -585,11 +585,13 @@ const Address = () => {
       setZipCode(null);
       setAddressType("");
     }
+    toast.success("Address Add successfully");
   };
 
   const handleDelete = (item) => {
     const id = item._id;
-    // dispatch(deleteUserAddress(id));
+    dispatch(deleteUserAddress(id));
+    toast.success("Address deleted successfully");
   };
 
   return (

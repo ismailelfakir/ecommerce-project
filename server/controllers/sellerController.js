@@ -270,4 +270,21 @@ router.post('/reset-password-seller', async (req, res, next) => {
   }
 });
 
+
+// get shop info
+router.get(
+  "/get-seller-info/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const seller = await Seller.findById(req.params.id);
+      res.status(201).json({
+        success: true,
+        seller,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
 module.exports = router;
