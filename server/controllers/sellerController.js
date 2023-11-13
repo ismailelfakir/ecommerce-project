@@ -108,61 +108,6 @@ router.post("/create-seller-cloud", upload.single("file"), async (req, res, next
   }
 });
 
-
-router.post("/create-seller", upload.single("file"), async (req, res, next) => {
-    try {
-        const { fname, lname, email, password , address , phoneNumber , zipCode  } = req.body;
-        const sellerEmail = await Seller.findOne({ email });
-  
-      if (sellerEmail) {
-        const filename = req.file.filename;
-        const filePath = `uploads/${filename}`;
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            console.log(err);
-            res.status(500).json({ message: "error deliting file" });
-          }
-        });
-        return next(new ErrorHandler("Seller already exists", 400));
-      }
-  
-      const filename = req.file.filename;
-      const fileUrl = path.join(filename);
-  
-      const seller = {
-        fname: fname,
-        lname: lname,
-        email: email,
-        password: password,
-        avatar: fileUrl,
-        address: address,
-        phoneNumber: phoneNumber,
-        zipCode: zipCode,
-      };
-      
-      const activationToken = createActivationToken(seller);
-  
-      const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
-  
-      try {
-        await sendMail({
-          email: seller.email,
-          subject: "Activate your seller account",
-          message: `Hello ${seller.lname}, please click on the link to activate your seller account: ${activationUrl}`,
-        });
-        res.status(201).json({
-          success: true,
-          message: `please check your email:- ${seller.email} to activate your account!`,
-        });
-      } catch (error) {
-        return next(new ErrorHandler(error.message, 500));
-      }
-  
-    } catch (err) {
-      return next(new ErrorHandler(err.message, 400));
-    }
-  });
-
   // create activation token
 const createActivationToken = (seller) => {
     return jwt.sign(seller, process.env.ACTIVATION_SECRET, {
@@ -209,6 +154,49 @@ const createActivationToken = (seller) => {
       }
     })
   );
+
+  // update seller avatar
+router.put(
+  "/update-seller-avatar",
+  isSeller,
+  upload.single("avatar"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      let existsSeller = await Seller.findById(req.seller.id);
+      if (req.body.avatar !== "") {
+        const imageId = existsSeller .avatar.publicId;
+
+        await cloudinary.v2.uploader.destroy(imageId);
+
+        // Use the Cloudinary library to upload the image to Cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path);
+        const fileUrl = result.secure_url;
+        const publicId = result.public_id;
+
+        // Delete the local file after successful upload to Cloudinary
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error("Error deleting local file:", err);
+            errorOccurred = true;
+          }
+        });
+
+        existsSeller.avatar = {
+          url: fileUrl,
+          publicId: publicId,
+        };
+      }
+      await existsSeller.save();
+
+      res.status(200).json({
+        success: true,
+        seller: existsSeller,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 // login seller ---------------------------------------------
 router.post(
@@ -353,5 +341,22 @@ router.post('/reset-password-seller', async (req, res, next) => {
     return next(new ErrorHandler(error.message, 500));
   }
 });
+
+
+// get shop info
+router.get(
+  "/get-seller-info/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const seller = await Seller.findById(req.params.id);
+      res.status(201).json({
+        success: true,
+        seller,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 module.exports = router;

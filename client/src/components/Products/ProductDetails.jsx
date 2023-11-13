@@ -8,18 +8,20 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsSeller } from "../../redux/actions/product";
-// import { server } from "../../server";
+import { server } from "../../server";
 import styles from "../../styles/styles";
-// import {
-//   addToWishlist,
-//   removeFromWishlist,
-// } from "../../redux/actions/wishlist";
-// import { addTocart } from "../../redux/actions/cart";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/actions/wishlist";
+import { addTocart } from "../../redux/actions/cart";
 import { toast } from "react-toastify";
 import Ratings from "./Ratings";
 import axios from "axios";
 
 const ProductDetails = ({ data }) => {
+  const { wishlist } = useSelector((state) => state.wishlist);
+  const { cart } = useSelector((state) => state.cart);
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const { products } = useSelector((state) => state.products);
   const [count, setCount] = useState(1);
@@ -30,9 +32,12 @@ const ProductDetails = ({ data }) => {
 
   useEffect(() => {
     dispatch(getAllProductsSeller(data && data.seller.id));
-  }, [data]);
-
-  console.log(data);
+    if (wishlist && wishlist.find((i) => i._id === data?._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [data, wishlist]);
 
   const incrementCount = () => {
     setCount(count + 1);
@@ -43,6 +48,47 @@ const ProductDetails = ({ data }) => {
       setCount(count - 1);
     }
   };
+
+  const removeFromWishlistHandler = (data) => {
+    setClick(!click);
+    dispatch(removeFromWishlist(data));
+  };
+
+  const addToWishlistHandler = (data) => {
+    setClick(!click);
+    dispatch(addToWishlist(data));
+  };
+
+  const addToCartHandler = (id) => {
+    const isItemExists = cart && cart.find((i) => i._id === id);
+    if (isItemExists) {
+      toast.error("Item already in cart!");
+    } else {
+      if (data.stock < 1) {
+        toast.error("Product stock limited!");
+      } else {
+        const cartData = { ...data, qty: count };
+        dispatch(addTocart(cartData));
+        toast.success("Item added to cart successfully!");
+      }
+    }
+  };
+
+  const totalReviewsLength =
+  products &&
+  products.reduce((acc, product) => acc + product.reviews.length, 0);
+
+const totalRatings =
+  products &&
+  products.reduce(
+    (acc, product) =>
+      acc + product.reviews.reduce((sum, review) => sum + review.rating, 0),
+    0
+  );
+
+const avg =  totalRatings / totalReviewsLength || 0;
+
+const averageRating = avg.toFixed(2);
 
   const handleMessageSubmit = async () => {
     //test
@@ -56,7 +102,7 @@ const ProductDetails = ({ data }) => {
           <div className="w-full py-5">
             <div className="block w-full 800px:flex">
               <div className="w-full 800px:w-[50%]">
-                <img src={data.images[select]} alt="" className="w-[80%]" />
+                <img src={data && data.images[select].url} alt="" className="w-[80%]" />
                 <div className="w-full flex">
                   {data &&
                     data.images.map((i, index) => (
@@ -66,13 +112,18 @@ const ProductDetails = ({ data }) => {
                         } cursor-pointer`}
                       >
                         <img
-                          src={`${i}`}
+                          src={`${i?.url}`}
                           alt=""
                           className="h-[200px] overflow-hidden mr-3 mt-3"
                           onClick={() => setSelect(index)}
                         />
                       </div>
                     ))}
+                  <div
+                    className={`${
+                      select === 1 ? "border" : "null"
+                    } cursor-pointer`}
+                  ></div>
                 </div>
               </div>
               <div className="w-full 800px:w-[50%] pt-5">
@@ -99,7 +150,7 @@ const ProductDetails = ({ data }) => {
                       {count}
                     </span>
                     <button
-                      className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
+                      className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-r px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
                       onClick={incrementCount}
                     >
                       +
@@ -110,7 +161,7 @@ const ProductDetails = ({ data }) => {
                       <AiFillHeart
                         size={30}
                         className="cursor-pointer"
-                        // onClick={() => removeFromWishlistHandler(data)}
+                        onClick={() => removeFromWishlistHandler(data)}
                         color={click ? "red" : "#333"}
                         title="Remove from wishlist"
                       />
@@ -118,7 +169,7 @@ const ProductDetails = ({ data }) => {
                       <AiOutlineHeart
                         size={30}
                         className="cursor-pointer"
-                        // onClick={() => addToWishlistHandler(data)}
+                        onClick={() => addToWishlistHandler(data)}
                         color={click ? "red" : "#333"}
                         title="Add to wishlist"
                       />
@@ -127,24 +178,24 @@ const ProductDetails = ({ data }) => {
                 </div>
                 <div
                   className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
-                  // onClick={() => addToCartHandler(data._id)}
+                  onClick={() => addToCartHandler(data._id)}
                 >
                   <span className="text-white flex items-center">
                     Add to cart <AiOutlineShoppingCart className="ml-1" />
                   </span>
                 </div>
                 <div className="flex items-center pt-8">
-                  <Link to={`/seller/preview/${data?.seller.id}`}>
+                  <Link to={`/seller/preview/${data?.seller._id}`}>
                     <img
-                      src={`${data.seller.avatar}`}
+                      src={`${data.seller.avatar.url}`}
                       alt=""
                       className="w-[50px] h-[50px] rounded-full mr-2"
                     />
                   </Link>
                   <div className="pr-8">
-                    <Link to={`/seller/preview/${data?.seller.id}`}>
+                    <Link to={`/seller/preview/${data?.seller._id}`}>
                       <h3 className={`${styles.shop_name} pb-1 pt-1`}>
-                        {data.seller.name}
+                        {data.seller.fname}
                       </h3>
                     </Link>
                     <h5 className="pb-3 text-[15px]">
@@ -166,6 +217,8 @@ const ProductDetails = ({ data }) => {
           <ProductDetailsInfo
             data={data}
             products={products}
+            // totalReviewsLength={totalReviewsLength}
+            // averageRating={averageRating}
           />
           <br />
           <br />
@@ -175,7 +228,12 @@ const ProductDetails = ({ data }) => {
   );
 };
 
-const ProductDetailsInfo = ({ data, products }) => {
+const ProductDetailsInfo = ({
+  data,
+  products,
+  // totalReviewsLength,
+  // averageRating,
+ }) => {
   const [active, setActive] = useState(1);
 
   return (
@@ -231,7 +289,7 @@ const ProductDetailsInfo = ({ data, products }) => {
 
       {active === 2 ? (
         <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
-          {/* {data &&
+          {data &&
               data.reviews.map((item, index) => (
                 <div className="w-full flex my-2">
                   <img
@@ -241,7 +299,7 @@ const ProductDetailsInfo = ({ data, products }) => {
                   />
                   <div className="pl-2 ">
                     <div className="w-full flex items-center">
-                      <h1 className="font-[500] mr-3">{item.user.name}</h1>
+                      <h1 className="font-[500] mr-3">{item.user.fname}</h1>
                       <Ratings rating={data?.ratings} />
                     </div>
                     <p>{item.comment}</p>
@@ -253,7 +311,7 @@ const ProductDetailsInfo = ({ data, products }) => {
               {data && data.reviews.length === 0 && (
                 <h5>No Reviews have for this product!</h5>
               )}
-            </div> */}
+            </div>
           <p>No previews now!</p>
         </div>
       ) : null}

@@ -13,7 +13,10 @@ const DashboardSideBar = ({ active }) => {
   return (
     <div className="w-full h-[90vh] bg-white shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
       {/* single item */}
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 1 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link to="/dashboard" className="w-full flex items-center">
           <RxDashboard
             size={30}
@@ -29,7 +32,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 2 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link to="/dashboard-orders" className="w-full flex items-center">
           <FiShoppingBag
             size={30}
@@ -45,7 +51,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 3 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link to="/dashboard-products" className="w-full flex items-center">
           <FiPackage size={30} color={`${active === 3 ? "#1900ff" : "#555"}`} />
           <h5
@@ -58,7 +67,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 4 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link
           to="/dashboard-create-product"
           className="w-full flex items-center"
@@ -77,7 +89,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 5 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link to="/dashboard-events" className="w-full flex items-center">
           <MdOutlineLocalOffer
             size={30}
@@ -93,7 +108,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 6 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link to="/dashboard-create-event" className="w-full flex items-center">
           <VscNewFile
             size={30}
@@ -109,7 +127,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 7 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link
           to="/dashboard-withdraw-money"
           className="w-full flex items-center"
@@ -128,7 +149,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 8 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link to="/dashboard-messages" className="w-full flex items-center">
           <BiMessageSquareDetail
             size={30}
@@ -144,7 +168,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 9 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link to="/dashboard-coupouns" className="w-full flex items-center">
           <AiOutlineGift
             size={30}
@@ -160,7 +187,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 10 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link to="/dashboard-refunds" className="w-full flex items-center">
           <HiOutlineReceiptRefund
             size={30}
@@ -176,7 +206,10 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      <div
+      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
+      ${active === 11 ? "bg-[#F6F6F5] " : "" }`}
+      >
         <Link to="/settings" className="w-full flex items-center">
           <CiSettings
             size={30}

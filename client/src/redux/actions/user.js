@@ -45,7 +45,7 @@ export const loadSeller = () => async (dispatch) => {
 
 // user update information
 export const updateUserInformation =
-  (name, email, phoneNumber, password) => async (dispatch) => {
+  (fname, lname , phoneNumber, email) => async (dispatch) => {
     try {
       dispatch({
         type: "updateUserInfoRequest",
@@ -54,10 +54,10 @@ export const updateUserInformation =
       const { data } = await axios.put(
         `${server}/user/update-user-info`,
         {
-          email,
-          password,
+          fname,
+          lname,
           phoneNumber,
-          name,
+          email,
         },
         {
           withCredentials: true,
@@ -116,32 +116,32 @@ export const updatUserAddress =
     }
   };
 
-// // delete user address
-// export const deleteUserAddress = (id) => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "deleteUserAddressRequest",
-//     });
+// delete user address
+export const deleteUserAddress = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "deleteUserAddressRequest",
+    });
 
-//     const { data } = await axios.delete(
-//       `${server}/user/delete-user-address/${id}`,
-//       { withCredentials: true }
-//     );
+    const { data } = await axios.delete(
+      `${server}/user/delete-user-address/${id}`,
+      { withCredentials: true }
+    );
 
-//     dispatch({
-//       type: "deleteUserAddressSuccess",
-//       payload: {
-//         successMessage: "User deleted successfully!",
-//         user: data.user,
-//       },
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "deleteUserAddressFailed",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    dispatch({
+      type: "deleteUserAddressSuccess",
+      payload: {
+        successMessage: "User Adresses deleted successfully!",
+        user: data.user,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "deleteUserAddressFailed",
+      payload: error.response.data.message,
+    });
+  }
+};
 
 // // get all users --- admin
 // export const getAllUsers = () => async (dispatch) => {

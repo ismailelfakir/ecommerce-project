@@ -7,20 +7,42 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const upload = require("../multer");
 const Event = require("../models/Event");
 const fs = require("fs");
+const cloudinary = require("cloudinary");
 
 // create event
 router.post(
     "/create-event",
     upload.array("images"),
     catchAsyncErrors(async (req, res, next) => {
+      let errorOccurred = false;
       try {
         const sellerId = req.body.sellerId;
         const seller = await Seller.findById(sellerId);
         if (!seller) {
           return next(new ErrorHandler("Seller Id is invalid!", 400));
         } else {
+
           const files = req.files;
-          const imageUrls = files.map((file) => `${file.filename}`);
+      const imageUrls = [];
+
+   // Use the Cloudinary library to upload each image to Cloudinary
+   for (const file of files) {
+    const result = await cloudinary.uploader.upload(file.path);
+    imageUrls.push({
+      url: result.secure_url,
+      publicId: result.public_id,
+    });
+  }
+
+  // Delete files after successful upload
+  files.forEach((file) => {
+    fs.unlink(file.path, (err) => {
+      if (err) {
+        console.error('Error deleting file:', err);
+        errorOccurred = true; // Set the flag if an error occurs during deletion
+      }
+    });
+  });
   
           const eventData = req.body;
           eventData.images = imageUrls;
@@ -112,6 +134,47 @@ router.delete(
     })
   );
 
+// update product info
+router.put(
+  "/update-event/:id",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const {
+        name,
+        description,
+        category,
+        tags,
+        originalPrice,
+        discountPrice,
+        stock,
+      } = req.body;
 
+      const event = await Event.findById(req.params.id);
+
+      if (!event) {
+        return next(new ErrorHandler("Event not found", 400));
+      }
+
+      event.name = name;
+      event.description = description;
+      event.category = category;
+      event.tags = tags;
+      event.originalPrice = originalPrice;
+      event.discountPrice = discountPrice;
+      event.stock = stock;
+
+
+      await event.save();
+
+      res.status(201).json({
+        success: true,
+        event,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 module.exports = router;

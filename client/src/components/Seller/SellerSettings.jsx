@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { backend_url, server } from "../../server";
+import { server } from "../../server";
 import { AiOutlineCamera } from "react-icons/ai";
 import styles from "../../styles/styles";
 import axios from "axios";
@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 const SellerSettings = () => {
   const { seller } = useSelector((state) => state.seller);
-  const [avatar, setAvatar] = useState();
+  const [avatar, setAvatar] = useState(null);
   const [fname, setFname] = useState(seller && seller.fname);
   const [lname, setLname] = useState(seller && seller.lname);
   const [description, setDescription] = useState(
@@ -22,8 +22,34 @@ const SellerSettings = () => {
   const dispatch = useDispatch();
 
   const handleImage = async (e) => {
-    e.preventDefault();
+    const reader = new FileReader();
+  
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+        const formData = new FormData();
+        formData.append('avatar', e.target.files[0]);
+  
+        axios
+          .put(`${server}/seller/update-seller-avatar`, formData, {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((response) => {
+            dispatch(loadSeller());
+            toast.success('Avatar updated successfully!');
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
+      }
+    };
+  
+    reader.readAsDataURL(e.target.files[0]);
   };
+
 
   const updateHandler = async (e) => {
     e.preventDefault();
@@ -56,7 +82,7 @@ const SellerSettings = () => {
         <div className="w-full flex items-center justify-center">
           <div className="relative">
             <img
-              src={`${backend_url}${seller.avatar}`}
+              src={`${seller?.avatar?.url}`}
               alt=""
               className="w-[200px] h-[200px] rounded-full cursor-pointer"
             />

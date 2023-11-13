@@ -1,69 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { RxCross1 } from "react-icons/rx";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
-import { toast } from "react-toastify";
-import { createProduct } from "../../redux/actions/product";
+import { updateEvent } from "../../redux/actions/event";
+import { useDispatch } from "react-redux";
 
-const CreateProduct = () => {
-  const { seller } = useSelector((state) => state.seller);
-  const { success, error } = useSelector((state) => state.products);
-  const navigate = useNavigate();
+const UpdateEvent = ({ event, onUpdate }) => {
+  // Add state to manage the form fields
+  const [images, setImages] = useState([]);
+  const [name, setName] = useState(event.name);
+  const [description, setDescription] = useState(event.description);
+  const [category, setCategory] = useState(event.category);
+  const [tags, setTags] = useState(event.tags);
+  const [originalPrice, setOriginalPrice] = useState(event.originalPrice);
+  const [discountPrice, setDiscountPrice] = useState(event.discountPrice);
+  const [stock, setStock] = useState(event.stock);
+  
+const handleImageChange = (e) => {
+  const newImages = Array.from(e.target.files);
+
+  setImages([...images, ...newImages]);
+};
+
   const dispatch = useDispatch();
 
-  const [images, setImages] = useState([]);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [tags, setTags] = useState("");
-  const [originalPrice, setOriginalPrice] = useState();
-  const [discountPrice, setDiscountPrice] = useState();
-  const [stock, setStock] = useState();
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-    if (success) {
-      toast.success("Product created successfully!");
-      navigate("/dashboard-products");
-      window.location.reload();
-    }
-  }, [dispatch, error, success]);
-
-  const handleImageChange = (e) => {
-
+  const handleUpdate = (e) => {
     e.preventDefault();
 
-    let files = Array.from(e.target.files);
-
-    setImages((prevImages)=> [...prevImages , ...files]);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newForm = new FormData();
-
-    images.forEach((image) => {
-      newForm.append("images", image);
-    });
-    newForm.append("name", name);
-    newForm.append("description", description);
-    newForm.append("category", category);
-    newForm.append("tags", tags);
-    newForm.append("originalPrice", originalPrice);
-    newForm.append("discountPrice", discountPrice);
-    newForm.append("stock", stock);
-    newForm.append("sellerId", seller._id);
-    dispatch(createProduct(newForm));
+    dispatch(
+      updateEvent(
+        event._id,
+        name,
+        description,
+        category,
+        tags,
+        originalPrice,
+        discountPrice,
+        stock
+      )
+    );
+    window.location.reload();
   };
 
   return (
-    <div className="w-[90%] 800px:w-[50%] bg-white  shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
-      <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
-      {/* create product form */}
-      <form onSubmit={handleSubmit}>
+    <div className="bg-[#fff]">
+      {event ? (
+        <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
+          <div className="w-[90%] 800px:w-[60%] h-[90vh] overflow-y-scroll 800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
+            <RxCross1
+              size={30}
+              className="absolute right-3 top-3 z-50"
+              onClick={() => onUpdate(false)}
+            />
+            <h5 className="text-[30px] font-Poppins text-center">
+              Update Event
+            </h5>
+            {/* Update product form */}
+            <form onSubmit={handleUpdate}>
         <br />
         <div>
           <label className="pb-2">
@@ -75,7 +69,7 @@ const CreateProduct = () => {
             value={name}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your product name..."
+            placeholder="Enter your event product name..."
           />
         </div>
         <br />
@@ -92,7 +86,7 @@ const CreateProduct = () => {
             value={description}
             className="mt-2 appearance-none block w-full pt-2 px-3 border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter your product description..."
+            placeholder="Enter your event product description..."
           ></textarea>
         </div>
         <br />
@@ -123,7 +117,7 @@ const CreateProduct = () => {
             value={tags}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setTags(e.target.value)}
-            placeholder="Enter your product tags..."
+            placeholder="Enter your event product tags..."
           />
         </div>
         <br />
@@ -135,7 +129,7 @@ const CreateProduct = () => {
             value={originalPrice}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setOriginalPrice(e.target.value)}
-            placeholder="Enter your product price..."
+            placeholder="Enter your event product price..."
           />
         </div>
         <br />
@@ -149,7 +143,7 @@ const CreateProduct = () => {
             value={discountPrice}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setDiscountPrice(e.target.value)}
-            placeholder="Enter your product price with discount..."
+            placeholder="Enter your event product price with discount..."
           />
         </div>
         <br />
@@ -163,9 +157,41 @@ const CreateProduct = () => {
             value={stock}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setStock(e.target.value)}
-            placeholder="Enter your product stock..."
+            placeholder="Enter your event product stock..."
           />
         </div>
+        {/* <br />
+        <div>
+          <label className="pb-2">
+            Event Start Date <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            name="price"
+            id="start-date"
+            value={startDate ? startDate.toISOString().slice(0, 10) : ""}
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            onChange={handleStartDateChange}
+            min={today}
+            placeholder="Enter your event product stock..."
+          />
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">
+            Event End Date <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            name="price"
+            id="start-date"
+            value={endDate ? endDate.toISOString().slice(0, 10) : ""}
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            onChange={handleEndDateChange}
+            min={minEndDate}
+            placeholder="Enter your event product stock..."
+          />
+        </div> */}
         <br />
         <div>
           <label className="pb-2">
@@ -186,7 +212,8 @@ const CreateProduct = () => {
             {images &&
               images.map((i) => (
                 <img
-                  src={URL.createObjectURL(i)}
+                src={URL.createObjectURL(i)}
+                //   src={i}
                   key={i}
                   alt=""
                   className="h-[120px] w-[120px] object-cover m-2"
@@ -197,14 +224,17 @@ const CreateProduct = () => {
           <div>
             <input
               type="submit"
-              value="Create"
+              value="Update"
               className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
         </div>
       </form>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };
 
-export default CreateProduct;
+export default UpdateEvent;

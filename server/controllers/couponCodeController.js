@@ -31,6 +31,47 @@ router.post(
   })
 );
 
+// update COUPON info
+router.put(
+  "/update-coupon-code/:id",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const {
+        name,
+        minAmount,
+        maxAmount,
+        selectedProducts,
+        value,
+      } = req.body;
+
+      const coupon = await CouponCode.findById(req.params.id);
+
+      if (!coupon) {
+        return next(new ErrorHandler("Coupon not found", 400));
+      }
+
+      coupon.name = name;
+      coupon.minAmount = minAmount;
+      coupon.maxAmount = maxAmount;
+      coupon.selectedProducts = selectedProducts;
+      coupon.value = value;
+
+
+      await coupon.save();
+
+      res.status(201).json({
+        success: true,
+        coupon,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+
+
 // get all coupons of a seller
 router.get(
   "/get-coupon/:id",

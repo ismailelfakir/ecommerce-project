@@ -11,7 +11,7 @@ export const createevent = (newForm) => async (dispatch) => {
     const config = { Headers: { "Content-Type": "multipart/form-data" } };
 
     const { data } = await axios.post(
-      `${server}/product/create-product`,
+      `${server}/event/create-event`,
       newForm,
       config
     );
@@ -92,3 +92,43 @@ export const getAllEvents = () => async (dispatch) => {
     });
   }
 };
+
+// event update information
+export const updateEvent =
+  (eventId,name, description, category, tags, originalPrice, discountPrice, stock) =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: "updateEventRequest",
+      });
+
+      const { data } = await axios.put(
+        `${server}/event/update-event/${eventId}`,
+        {
+          name,
+          description,
+          category,
+          tags,
+          originalPrice,
+          discountPrice,
+          stock,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Access-Control-Allow-Credentials": true,
+          },
+        }
+      );
+
+      dispatch({
+        type: "updateEventSuccess",
+        payload: data.event,
+      });
+    } catch (error) {
+      dispatch({
+        type: "updateEventFailed",
+        payload: error.response.data.message,
+      });
+    }
+  };

@@ -1,7 +1,30 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { navItems } from '../../static/data'
 import styles from '../../styles/styles'
+
+// navigation Data
+export const navItems = [
+  {
+    title: "Home",
+    url: "/",
+  },
+  {
+    title: "Best Selling",
+    url: "/best-selling",
+  },
+  {
+    title: "Products",
+    url: "/products",
+  },
+  {
+    title: "Events",
+    url: "/events",
+  },
+  {
+    title: "FAQ",
+    url: "/faq",
+  },
+];
 
 const Navbar = ({active}) => {
   return (

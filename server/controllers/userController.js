@@ -10,7 +10,7 @@ const sendToken = require("../utils/jwtToken");
 const sendMail = require("../utils/sendMail");
 const { isAuthenticated } = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
-const randomstring = require('randomstring');
+const randomstring = require("randomstring");
 const cloudinary = require("cloudinary");
 
 router.use(function (req, res, next) {
@@ -21,136 +21,91 @@ router.use(function (req, res, next) {
   );
   next();
 });
-//router ***********************************
-router.post("/create-user-cloud", upload.single("file"), async (req, res, next) => {
-  let errorOccurred = false; // Flag to track whether an error has occurred
-
-  try {
-    const { fname, lname, email, password } = req.body;
-    const userEmail = await User.findOne({ email });
-
-    if (userEmail) {
-      const filename = req.file.filename;
-      const filePath = `uploads/${filename}`;
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({ message: "error deleting file" });
-        }
-      });
-      return next(new ErrorHandler("User already exists", 400));
-    }
-
-    // Use the Cloudinary library to upload the image to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path);
-    const fileUrl = result.secure_url;
-
-    // Delete the local file after successful upload to Cloudinary
-    fs.unlink(req.file.path, (err) => {
-      if (err) {
-        console.error('Error deleting local file:', err);
-        errorOccurred = true;
-      }
-    });
-
-    const user = {
-      fname: fname,
-      lname: lname,
-      email: email,
-      password: password,
-      avatar: fileUrl,
-    };
-
-    const activationToken = createActivationToken(user);
-
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+//------------- create user ----------------
+router.post(
+  "/create-user-cloud",
+  upload.single("file"),
+  async (req, res, next) => {
+    let errorOccurred = false; // Flag to track whether an error has occurred
 
     try {
-      await sendMail({
-        email: user.email,
-        subject: "Activate your account",
-        message: `Hello ${user.lname}, please click on the link to activate your account: ${activationUrl}`,
-      });
-      res.status(201).json({
-        success: true,
-        message: `Please check your email (${user.email}) to activate your account!`,
-      });
-    } catch (error) {
-      errorOccurred = true;
-      return next(new ErrorHandler(error.message, 500));
-    }
-  } catch (err) {
-    errorOccurred = true;
-    fs.unlink(req.file.path, (err) => {
-      if (err) {
-        console.error('Error deleting local file:', err);
+      const { fname, lname, email, password } = req.body;
+      const userEmail = await User.findOne({ email });
+
+      if (userEmail) {
+        const filename = req.file.filename;
+        const filePath = `img/${filename}`;
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.log(err);
+            res.status(500).json({ message: "error deleting file" });
+          }
+        });
+        return next(new ErrorHandler("User already exists", 400));
       }
-    });
-    return next(new ErrorHandler(err.message, 400));
-  } finally {
-    // Delete the local file if an error occurred during processing
-    if (errorOccurred) {
+
+      // Use the Cloudinary library to upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+      const fileUrl = result.secure_url;
+      const publicId = result.public_id;
+
+      // Delete the local file after successful upload to Cloudinary
       fs.unlink(req.file.path, (err) => {
         if (err) {
-          console.error('Error deleting local file:', err);
+          console.error("Error deleting local file:", err);
+          errorOccurred = true;
         }
       });
-    }
-  }
-});
 
+      const user = {
+        fname: fname,
+        lname: lname,
+        email: email,
+        password: password,
+        avatar: {
+          url: fileUrl,
+          publicId: publicId,
+        },
+      };
 
-router.post("/create-user", upload.single("file"), async (req, res, next) => {
-  try {
-    const { fname, lname, email, password } = req.body;
-    const userEmail = await User.findOne({ email });
+      const activationToken = createActivationToken(user);
 
-    if (userEmail) {
-      const filename = req.file.filename;
-      const filePath = `uploads/${filename}`;
-      fs.unlink(filePath, (err) => {
+      const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+
+      try {
+        await sendMail({
+          email: user.email,
+          subject: "Activate your account",
+          message: `Hello ${user.lname}, please click on the link to activate your account: ${activationUrl}`,
+        });
+        res.status(201).json({
+          success: true,
+          message: `Please check your email (${user.email}) to activate your account!`,
+        });
+      } catch (error) {
+        errorOccurred = true;
+        return next(new ErrorHandler(error.message, 500));
+      }
+    } catch (err) {
+      errorOccurred = true;
+      fs.unlink(req.file.path, (err) => {
         if (err) {
-          console.log(err);
-          res.status(500).json({ message: "error deliting file" });
+          console.error("Error deleting local file:", err);
         }
       });
-      return next(new ErrorHandler("User already exists", 400));
+      return next(new ErrorHandler(err.message, 400));
+    } finally {
+      // Delete the local file if an error occurred during processing
+      if (errorOccurred) {
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error("Error deleting local file:", err);
+          }
+        });
+      }
     }
-
-    const filename = req.file.filename;
-    const fileUrl = path.join(filename);
-
-    const user = {
-      fname: fname,
-      lname: lname,
-      email: email,
-      password: password,
-      avatar: fileUrl,
-    };
-
-    const activationToken = createActivationToken(user);
-
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
-
-    try {
-      await sendMail({
-        email: user.email,
-        subject: "Activate your account",
-        message: `Hello ${user.lname}, please click on the link to activate your account: ${activationUrl}`,
-      });
-      res.status(201).json({
-        success: true,
-        message: `please check your email:- ${user.email} to activate your account!`,
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
-    }
-
-    sendToken(newUser, 201, res);
-  } catch (err) {
-    return next(new ErrorHandler(err.message, 400));
   }
-});
+);
 
 // create activation token
 const createActivationToken = (user) => {
@@ -271,8 +226,7 @@ router.get(
   })
 );
 
-router.post('/reset-password', async (req, res) => {
-
+router.post("/reset-password", async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -304,8 +258,81 @@ router.post('/reset-password', async (req, res) => {
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
-
 });
+
+// update user info
+router.put(
+  "/update-user-info",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { fname, lname, phoneNumber, email } = req.body;
+
+      const user = await User.findById(req.user.id);
+
+      if (!user) {
+        return next(new ErrorHandler("User not found", 400));
+      }
+
+      user.fname = fname;
+      user.lname = lname;
+      user.phoneNumber = phoneNumber;
+      user.email = email;
+
+      await user.save();
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// update user avatar
+router.put(
+  "/update-avatar",
+  isAuthenticated,
+  upload.single("avatar"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      let existsUser = await User.findById(req.user.id);
+      if (req.body.avatar !== "") {
+        const imageId = existsUser.avatar.publicId;
+
+        await cloudinary.v2.uploader.destroy(imageId);
+
+        // Use the Cloudinary library to upload the image to Cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path);
+        const fileUrl = result.secure_url;
+        const publicId = result.public_id;
+
+        // Delete the local file after successful upload to Cloudinary
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error("Error deleting local file:", err);
+            errorOccurred = true;
+          }
+        });
+
+        existsUser.avatar = {
+          url: fileUrl,
+          publicId: publicId,
+        };
+      }
+      await existsUser.save();
+
+      res.status(200).json({
+        success: true,
+        user: existsUser,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 // update user password
 router.put(
@@ -323,7 +350,7 @@ router.put(
         return next(new ErrorHandler("Old password is incorrect!", 400));
       }
 
-      if (req.body.newPassword !== req.body.confirmPassword){
+      if (req.body.newPassword !== req.body.confirmPassword) {
         return next(
           new ErrorHandler("Password doesn't matched with each other!", 400)
         );
@@ -342,6 +369,69 @@ router.put(
   })
 );
 
+// update user addresses
+router.put(
+  "/update-user-addresses",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
 
+      const sameTypeAddress = user.addresses.find(
+        (address) => address.addressType === req.body.addressType
+      );
+      if (sameTypeAddress) {
+        return next(
+          new ErrorHandler(`${req.body.addressType} address already exists`)
+        );
+      }
+
+      const existsAddress = user.addresses.find(
+        (address) => address._id === req.body._id
+      );
+
+      if (existsAddress) {
+        Object.assign(existsAddress, req.body);
+      } else {
+        // add the new address to the array
+        user.addresses.push(req.body);
+      }
+
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// delete user address
+router.delete(
+  "/delete-user-address/:id",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const userId = req.user._id;
+      const addressId = req.params.id;
+
+      await User.updateOne(
+        {
+          _id: userId,
+        },
+        { $pull: { addresses: { _id: addressId } } }
+      );
+
+      const user = await User.findById(userId);
+
+      res.status(200).json({ success: true, user });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 module.exports = router;
