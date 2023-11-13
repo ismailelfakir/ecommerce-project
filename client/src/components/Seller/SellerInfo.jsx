@@ -53,8 +53,7 @@ const SellerInfo = ({ isOwner }) => {
       <div className="w-full py-5">
         <div className="w-full flex item-center justify-center">
           <img
-            // src={`${data.avatar?.url}`}
-            src={`${backend_url}${seller?.avatar}`}
+            src={`${data.avatar?.url}`}
             alt=""
             className="w-[150px] h-[150px] object-cover rounded-full"
           />

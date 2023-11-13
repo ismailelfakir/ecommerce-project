@@ -28,7 +28,7 @@ const CreateEvent = () => {
     const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
     setStartDate(startDate);
     setEndDate(null);
-    document.getElementById("end-date").min = minEndDate.toISOString.slice(
+    document.getElementById("end-date").min = minEndDate.toISOString().slice(
       0,
       10
     );
@@ -250,7 +250,6 @@ const CreateEvent = () => {
               images.map((i) => (
                 <img
                 src={URL.createObjectURL(i)}
-                //   src={i}
                   key={i}
                   alt=""
                   className="h-[120px] w-[120px] object-cover m-2"

@@ -27,7 +27,7 @@ const CreateProduct = () => {
     }
     if (success) {
       toast.success("Product created successfully!");
-      navigate("/dashboard");
+      navigate("/dashboard-products");
       window.location.reload();
     }
   }, [dispatch, error, success]);
@@ -39,21 +39,6 @@ const CreateProduct = () => {
     let files = Array.from(e.target.files);
 
     setImages((prevImages)=> [...prevImages , ...files]);
-
-    // const files = Array.from(e.target.files);
-
-    // setImages([]);
-
-    // files.forEach((file) => {
-    //   const reader = new FileReader();
-
-    //   reader.onload = () => {
-    //     if (reader.readyState === 2) {
-    //       setImages((old) => [...old, reader.result]);
-    //     }
-    //   };
-    //   reader.readAsDataURL(file);
-    // });
   };
 
   const handleSubmit = (e) => {
@@ -72,19 +57,6 @@ const CreateProduct = () => {
     newForm.append("stock", stock);
     newForm.append("sellerId", seller._id);
     dispatch(createProduct(newForm));
-    // dispatch(
-    //   createProduct({
-    //     name,
-    //     description,
-    //     category,
-    //     tags,
-    //     originalPrice,
-    //     discountPrice,
-    //     stock,
-    //     shopId: seller._id,
-    //     images,
-    //   })
-    // );
   };
 
   return (

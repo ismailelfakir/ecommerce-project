@@ -33,9 +33,50 @@ const ProfileContent = ({ active }) => {
   const [avatar, setAvatar] = useState(null);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: "clearErrors" });
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch({ type: "clearMessages" });
+    }
+  }, [error, successMessage]);
+
+  const handleImage = async (e) => {
+    const reader = new FileReader();
+  
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+        const formData = new FormData();
+        formData.append('avatar', e.target.files[0]);
+  
+        axios
+          .put(`${server}/user/update-avatar`, formData, {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((response) => {
+            dispatch(loadUser());
+            toast.success('Avatar updated successfully!');
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
+      }
+    };
+  
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast.success("updated successfully");
+    dispatch(updateUserInformation(fname, lname, phoneNumber, email,));
+    toast.success('informations updated successfully');
   };
 
   return (
@@ -46,8 +87,7 @@ const ProfileContent = ({ active }) => {
           <div className="flex justify-center w-full">
             <div className="relative">
               <img
-                // src={`${user?.avatar?.url}`}
-                src={`${backend_url}/${user.avatar}`}
+                src={`${user?.avatar?.url}`}
                 className="w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#3ad132]"
                 alt=""
               />
@@ -56,7 +96,7 @@ const ProfileContent = ({ active }) => {
                   type="file"
                   id="image"
                   className="hidden"
-                  //   onChange={handleImage}
+                    onChange={handleImage}
                 />
                 <label htmlFor="image">
                   <AiOutlineCamera />
@@ -585,13 +625,11 @@ const Address = () => {
       setZipCode(null);
       setAddressType("");
     }
-    toast.success("Address Add successfully");
   };
 
   const handleDelete = (item) => {
     const id = item._id;
     dispatch(deleteUserAddress(id));
-    toast.success("Address deleted successfully");
   };
 
   return (

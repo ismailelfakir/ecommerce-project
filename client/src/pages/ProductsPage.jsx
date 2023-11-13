@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { productData } from "../static/data";
 import { useSearchParams } from "react-router-dom";
 import Footer from "../components/Layout/Footer";
 import Header from "../components/Layout/Header";
@@ -23,7 +22,7 @@ const ProductsPage = () => {
       allProducts && allProducts.filter((i) => i.category === categoryData);
       setData(d);
     }
-    //    window.scrollTo(0,0);
+       window.scrollTo(0,0);
   }, [allProducts]);
 
   return (

@@ -7,20 +7,42 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const upload = require("../multer");
 const Event = require("../models/Event");
 const fs = require("fs");
+const cloudinary = require("cloudinary");
 
 // create event
 router.post(
     "/create-event",
     upload.array("images"),
     catchAsyncErrors(async (req, res, next) => {
+      let errorOccurred = false;
       try {
         const sellerId = req.body.sellerId;
         const seller = await Seller.findById(sellerId);
         if (!seller) {
           return next(new ErrorHandler("Seller Id is invalid!", 400));
         } else {
+
           const files = req.files;
-          const imageUrls = files.map((file) => `${file.filename}`);
+      const imageUrls = [];
+
+   // Use the Cloudinary library to upload each image to Cloudinary
+   for (const file of files) {
+    const result = await cloudinary.uploader.upload(file.path);
+    imageUrls.push({
+      url: result.secure_url,
+      publicId: result.public_id,
+    });
+  }
+
+  // Delete files after successful upload
+  files.forEach((file) => {
+    fs.unlink(file.path, (err) => {
+      if (err) {
+        console.error('Error deleting file:', err);
+        errorOccurred = true; // Set the flag if an error occurs during deletion
+      }
+    });
+  });
   
           const eventData = req.body;
           eventData.images = imageUrls;

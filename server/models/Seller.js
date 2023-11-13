@@ -37,39 +37,43 @@ const sellerSchema = new mongoose.Schema({
     default: "Seller",
   },
   avatar: {
-    url: { type: String, required: true },
-    publicId: { type: String, required: true },
+    url: { 
+      type: String 
+    },
+    publicId: { 
+      type: String 
+    },
   },
   zipCode: {
     type: Number,
     required: true,
   },
-  // withdrawMethod: {
-  //   type: Object,
-  // },
-  // availableBalance: {
-  //   type: Number,
-  //   default: 0,
-  // },
-  // transections: [
-  //   {
-  //     amount: {
-  //       type: Number,
-  //       required: true,
-  //     },
-  //     status: {
-  //       type: String,
-  //       default: "Processing",
-  //     },
-  //     createdAt: {
-  //       type: Date,
-  //       default: Date.now(),
-  //     },
-  //     updatedAt: {
-  //       type: Date,
-  //     },
-  //   },
-  // ],
+  withdrawMethod: {
+    type: Object,
+  },
+  availableBalance: {
+    type: Number,
+    default: 0,
+  },
+  transections: [
+    {
+      amount: {
+        type: Number,
+        required: true,
+      },
+      status: {
+        type: String,
+        default: "Processing",
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now(),
+      },
+      updatedAt: {
+        type: Date,
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),

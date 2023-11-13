@@ -29,30 +29,30 @@ const productSchema = new mongoose.Schema({
   },
   images: [
     {
-      url: { type: String, required: true },
-      publicId: { type: String, required: true },
+      url: { type: String },
+      publicId: { type: String },
     },
   ],
-  // reviews: [
-  //   {
-  //     user: {
-  //       type: Object,
-  //     },
-  //     rating: {
-  //       type: Number,
-  //     },
-  //     comment: {
-  //       type: String,
-  //     },
-  //     productId: {
-  //       type: String,
-  //     },
-  //     createdAt:{
-  //       type: Date,
-  //       default: Date.now(),
-  //     }
-  //   },
-  // ],
+  reviews: [
+    {
+      user: {
+        type: Object,
+      },
+      rating: {
+        type: Number,
+      },
+      comment: {
+        type: String,
+      },
+      productId: {
+        type: String,
+      },
+      createdAt:{
+        type: Date,
+        default: Date.now(),
+      }
+    },
+  ],
   ratings: {
     type: Number,
   },

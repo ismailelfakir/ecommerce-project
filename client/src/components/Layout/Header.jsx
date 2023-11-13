@@ -6,6 +6,7 @@ import {
   AiOutlineHeart,
   AiOutlineSearch,
   AiOutlineShoppingCart,
+  AiOutlineLogin
 } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiMenuAltLeft } from "react-icons/bi";
@@ -83,13 +84,11 @@ const Header = ({ activeHeading }) => {
               <div className="absolute w-full min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
                 {searchData &&
                   searchData.map((i, index) => {
-                    const d = i.name;
-                    const product_name = d.replace(/\s+/g, "-");
                     return (
-                      <Link to={`/product/${product_name}`}>
+                      <Link to={`/product/${i._id}`}>
                         <div className="w-full flex items-start-py-3">
                           <img
-                            src={`${backend_url}${i.images[0]}`}
+                            src={`${i.images[0].url}`}
                             alt=""
                             className="w-[40px] h-[40px] mr-[10px]"
                           />
@@ -121,7 +120,9 @@ const Header = ({ activeHeading }) => {
           className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
         >
           {/* categories */}
-          <div onClick={() => setDropDown(!dropDown)}>
+          <div 
+          className="cursor-pointer"
+          onClick={() => setDropDown(!dropDown)}>
             <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
               <BiMenuAltLeft
                 size={30}
@@ -132,11 +133,6 @@ const Header = ({ activeHeading }) => {
               >
                 All Categories
               </button>
-              <IoIosArrowDown
-                size={20}
-                className="absolute right-20 top-5 cursor-pointer text-white"
-                onClick={() => setDropDown(!dropDown)}
-              />
               {dropDown ? (
                 <DropDown
                   categoriesData={categoriesData}
@@ -185,33 +181,16 @@ const Header = ({ activeHeading }) => {
                   <div>
                     <Link to="/profile">
                       <img
-<<<<<<< HEAD
-                        src={`${backend_url}${user.avatar}`}
-=======
-                        // src={`${user.avatar?.url}`}
-                        src={`${user.avatar}`}
->>>>>>> 1885bc688c96c1ee0f026a796d0ff58328248931
+                        src={`${user.avatar?.url}`}
                         alt=""
                         className="w-[45px] h-[45px] rounded-full border-[3px] border-[#0eae88]"
                       />
                     </Link>
                   </div>
                 ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      className="text-[18px] pr-[10px] text-[#FFF] hover:underline"
-                    >
-                      Login |
-                    </Link>
-                  
-                    <Link
-                      to="/sign-up"
-                      className="text-[18px] text-[#FFF] hover:underline"
-                    >
-                      Sign up
-                    </Link>
-                  </>
+                  <Link to="/login">
+                    <AiOutlineLogin size={30} color="rgb(255 255 255 / 83%)" />
+                  </Link>
                 )}
               </div>
             </div>
@@ -252,7 +231,7 @@ const Header = ({ activeHeading }) => {
               <h1 className="text-4xl font-bold">LOGO</h1>
             </Link>
           </div>
-          <div>
+          <div className="flex">
             <div
               className="relative mr-[20px]"
               onClick={() => setOpenCart(true)}
@@ -306,14 +285,11 @@ const Header = ({ activeHeading }) => {
                 {searchData && (
                   <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
                     {searchData.map((i) => {
-                      const d = i.name;
-
-                      const Product_name = d.replace(/\s+/g, "-");
                       return (
-                        <Link to={`/product/${Product_name}`}>
+                        <Link to={`/product/${i.id}`}>
                           <div className="flex items-center">
                             <img
-                              src={`${backend_url}${user.avatar}`}
+                              src={`${i.images[0].avatar.url}`}
                               alt=""
                               className="w-[50px] mr-2"
                             />
@@ -344,7 +320,7 @@ const Header = ({ activeHeading }) => {
                   <div>
                     <Link to="/profile">
                       <img
-                        src={`${backend_url}${user.avatar?.url}`}
+                        src={`${user.avatar?.url}`}
                         alt=""
                         className="w-[60px] h-[60px] rounded-full border-[3px] border-[#0eae88]"
                       />
@@ -356,7 +332,7 @@ const Header = ({ activeHeading }) => {
                       to="/login"
                       className="text-[18px] pr-[10px] text-[#000000b7]"
                     >
-                      Login |
+                      Login  |
                     </Link>
                     <Link
                       to="/sign-up"
