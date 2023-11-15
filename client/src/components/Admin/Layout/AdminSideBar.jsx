@@ -46,7 +46,7 @@ const AdminSideBar = ({ active }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/admin-sellers" className="w-full flex items-center">
+        <Link to="/admin/all-seller" className="w-full flex items-center">
           <GrWorkshop
             size={30}
             color={`${active === 3 ? "#1900ff" : "#555"}`}
