@@ -16,6 +16,7 @@ import {
   SellerCreatePage,
   SellerActivationPage,
   SellerLoginPage,
+  UserInbox,
 } from "./routes/Routes.js";
 import {
   SellerDashboardPage,
@@ -29,6 +30,7 @@ import {
   ResetPasswordSellerPage,
   PasswordChangedConfirmationSeller,
   SellerPreviewPage,
+  SellerInboxPage,
 } from "./routes/SellerRoutes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -75,7 +77,16 @@ const App = () => {
             </ProtectedRoute>
           }
         ></Route>
+        <Route
+          path="/inbox"
+          element={
+            <ProtectedRoute>
+              <UserInbox />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/seller/preview/:id" element={<SellerPreviewPage />} />
+
         {/* Seller routes */}
 
         <Route path="/seller-create" element={<SellerCreatePage />}></Route>
@@ -146,6 +157,16 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+        <Route
+          path="/dashboard-messages"
+          element={
+            <SellerProtectedRoute>
+              <SellerInboxPage />
+            </SellerProtectedRoute>
+          }
+        />
+
+        
       </Routes>
       <ToastContainer
         position="top-right"

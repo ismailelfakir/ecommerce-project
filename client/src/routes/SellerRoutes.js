@@ -8,7 +8,8 @@ import SellerAllCoupons from '../pages/Seller/SellerAllCoupons';
 import SellerSettingsPage from '../pages/Seller/SellerSettingsPage';
 import ResetPasswordSellerPage from '../pages/Seller/ResetPasswordSellerPage';
 import PasswordChangedConfirmationSeller from '../pages/Seller/PasswordChangedConfirmationSeller';
-import SellerPreviewPage from '../pages/Seller/SellerPreviewPage.jsx'
+import SellerPreviewPage from '../pages/Seller/SellerPreviewPage';
+import SellerInboxPage from '../pages/Seller/SellerInboxPage';
 
 export {
     SellerHomePage,
@@ -21,5 +22,6 @@ export {
     SellerSettingsPage,
     ResetPasswordSellerPage,
     PasswordChangedConfirmationSeller,
-    SellerPreviewPage
+    SellerPreviewPage,
+    SellerInboxPage
 }
