@@ -172,7 +172,7 @@ const DashboardSideBar = ({ active }) => {
       className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
       ${active === 9 ? "bg-[#F6F6F5] " : "" }`}
       >
-        <Link to="/dashboard-coupouns" className="w-full flex items-center">
+        <Link to="/dashboard-coupons" className="w-full flex items-center">
           <AiOutlineGift
             size={30}
             color={`${active === 9 ? "#1900ff" : "#555"}`}
