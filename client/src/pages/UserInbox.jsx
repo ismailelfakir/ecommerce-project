@@ -287,6 +287,8 @@ const MessageList = ({
     getUser();
   }, [me, data]);
 
+  console.log("user : "+user.fname + " " + user.lname);
+
   return (
     <div
       className={`w-full flex p-3 px-3 ${
@@ -315,9 +317,9 @@ const MessageList = ({
       <div className="pl-3">
         <h1 className="text-[18px]">{user?.fname}</h1>
         <p className="text-[16px] text-[#000c]">
-          {!loading && data?.lastMessageId !== userData?._id
-            ? "You:"
-            : userData?.fname.split(" ")[0] + ": "}{" "}
+          {!loading && data?.lastMessageId !== user?._id
+            ? "You: "
+            : user?.fname + ": "}
           {data?.lastMessage}
         </p>
       </div>

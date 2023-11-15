@@ -163,7 +163,7 @@ const DashboardSideBar = ({ active }) => {
               active === 8 ? "text-[#1900ff]" : "text-[#555]"
             }`}
           >
-            Shop Inbox
+            Inbox
           </h5>
         </Link>
       </div>
