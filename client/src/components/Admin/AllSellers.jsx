@@ -23,7 +23,7 @@ const AllSellers = () => {
 
   const handleDelete = async (id) => {
     await axios
-    .delete(`${server}/shop/delete-seller/${id}`, { withCredentials: true })
+    .delete(`${server}/seller/delete-seller/${id}`, { withCredentials: true })
     .then((res) => {
       toast.success(res.data.message);
     });
@@ -32,7 +32,7 @@ const AllSellers = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "Seller ID", minWidth: 150, flex: 0.7 },
+    // { field: "id", headerName: "Seller ID", minWidth: 150, flex: 0.7 },
 
     {
       field: "name",
@@ -72,7 +72,7 @@ const AllSellers = () => {
         renderCell: (params) => {
           return (
             <>
-            <Link to={`/shop/preview/${params.id}`}>
+            <Link to={`/seller/preview/${params.id}`}>
             <Button>
                 <AiOutlineEye size={20} />
               </Button>
@@ -105,7 +105,7 @@ const AllSellers = () => {
   sellers.forEach((item) => {
       row.push({
         id: item._id,
-        name: item?.name,
+        name: item?.fname+" "+item.lname,
         email: item?.email,
         joinedAt: item.createdAt.slice(0, 10),
         address: item.address,

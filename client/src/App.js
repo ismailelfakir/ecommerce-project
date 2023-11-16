@@ -37,6 +37,7 @@ import {
   AdminDashboardUsersPage,
   AdminDashboardSellersPage,
   AdminDashboardProducts,
+  AdminDashboardEvents,
 } from "./routes/AdminRoutes.js";
 
 import { ToastContainer } from "react-toastify";
@@ -192,6 +193,15 @@ const App = () => {
           element={
             <AdminProtectedRoute>
               <AdminDashboardProducts />
+            </AdminProtectedRoute>
+          }
+        ></Route>
+
+           <Route
+          path="/admin/dashboard-events"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboardEvents />
             </AdminProtectedRoute>
           }
         ></Route>

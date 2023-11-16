@@ -78,7 +78,7 @@ const AdminSideBar = ({ active }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/product/admin-all-products" className="w-full flex items-center">
+        <Link to="/admin/dashboard-products" className="w-full flex items-center">
           <BsHandbag
             size={30}
             color={`${active === 5 ? "#1900ff" : "#555"}`}
@@ -94,7 +94,7 @@ const AdminSideBar = ({ active }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/admin-events" className="w-full flex items-center">
+        <Link to="/admin/dashboard-events" className="w-full flex items-center">
           <MdOutlineLocalOffer
             size={30}
             color={`${active === 6 ? "#1900ff" : "#555"}`}

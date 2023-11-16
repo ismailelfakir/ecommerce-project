@@ -4,14 +4,19 @@ import React, { useEffect } from "react";
 import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllProductsShop } from "../../redux/actions/product";
-import { deleteProduct } from "../../redux/actions/product";
+import { getAllProducts } from "../../redux/actions/product";
 import Loader from "../Layout/Loader";
 import axios from "axios";
 import { server } from "../../server";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { RxCross1 } from "react-icons/rx";
+import styles from "../../styles/styles";
 
 const AllProducts = () => {
+  const [open, setOpen] = useState(false);
+  const [productId, setProductId] = useState("");
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -20,8 +25,19 @@ const AllProducts = () => {
     })
   }, []);
 
+  const handleDelete = async (id) => {
+    await axios
+    .delete(`${server}/product/delete-admin-product/${id}`, { withCredentials: true })
+    .then((res) => {
+      toast.success(res.data.message);
+      window.location.reload();
+    });
+
+  dispatch(getAllProducts());
+  };
+
   const columns = [
-    { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
+    // { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
     {
       field: "name",
       headerName: "Name",
@@ -68,6 +84,23 @@ const AllProducts = () => {
         );
       },
     },
+    {
+      field: " ",
+      flex: 1,
+      minWidth: 150,
+      headerName: "Delete User",
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Button onClick={() => setProductId(params.id) || setOpen(true)}>
+              <AiOutlineDelete size={20} />
+            </Button>
+          </>
+        );
+      },
+    },
   ];
 
   const row = [];
@@ -77,7 +110,7 @@ const AllProducts = () => {
       row.push({
         id: item._id,
         name: item.name,
-        price: "US$ " + item.discountPrice,
+        price: item.discountPrice + "  DH",
         Stock: item.stock,
         sold: item?.sold_out,
       });
@@ -94,6 +127,33 @@ const AllProducts = () => {
             autoHeight
           />
         </div>
+
+        {open && (
+          <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
+            <div className="w-[95%] 800px:w-[40%] min-h-[20vh] bg-white rounded shadow p-5">
+              <div className="w-full flex justify-end cursor-pointer">
+                <RxCross1 size={25} onClick={() => setOpen(false)} />
+              </div>
+              <h3 className="text-[25px] text-center py-5 font-Poppins text-[#000000cb]">
+                Are you sure you wanna delete this product?
+              </h3>
+              <div className="w-full flex items-center justify-center">
+                <div
+                  className={`${styles.button} text-white text-[18px] !h-[42px] mr-4`}
+                  onClick={() => setOpen(false)}
+                >
+                  cancel
+                </div>
+                <div
+                  className={`${styles.button} text-white text-[18px] !h-[42px] ml-4`}
+                  onClick={() =>  setOpen(false) || handleDelete(productId)}
+                >
+                  confirm
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
     </>
   );
 };

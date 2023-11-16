@@ -32,7 +32,7 @@ const AllUsers = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "User ID", minWidth: 150, flex: 0.7 },
+    // { field: "id", headerName: "User ID", minWidth: 150, flex: 0.7 },
 
     {
       field: "name",
@@ -87,7 +87,7 @@ const AllUsers = () => {
     users.forEach((item) => {
       row.push({
         id: item._id,
-        name: item.name,
+        name: item.fname+" "+item.lname,
         email: item.email,
         role: item.role,
         joinedAt: item.createdAt.slice(0, 10),
