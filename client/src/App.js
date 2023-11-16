@@ -17,6 +17,7 @@ import {
   SellerCreatePage,
   SellerActivationPage,
   SellerLoginPage,
+  UserInbox,
 } from "./routes/Routes.js";
 import {
   SellerDashboardPage,
@@ -30,6 +31,7 @@ import {
   ResetPasswordSellerPage,
   PasswordChangedConfirmationSeller,
   SellerPreviewPage,
+  SellerInboxPage,
 } from "./routes/SellerRoutes.js";
 
 import {
@@ -46,7 +48,7 @@ import Store from "./redux/store";
 import { loadSeller, loadUser } from "./redux/actions/user";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
-import AdminProtectedRoute from './routes/ProtectedAdminRoute'
+import AdminProtectedRoute from "./routes/ProtectedAdminRoute";
 import { getAllProducts } from "./redux/actions/product";
 import { getAllEvents } from "./redux/actions/event";
 
@@ -65,7 +67,10 @@ const App = () => {
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/sign-up" element={<SignupPage />}></Route>
         <Route path="/reset-password" element={<ResetPasswordPage />}></Route>
-        <Route path="/confirmation-reset" element={<PasswordChangedConfirmation />}></Route>
+        <Route
+          path="/confirmation-reset"
+          element={<PasswordChangedConfirmation />}
+        ></Route>
 
         <Route
           path="/activation/:activation_token"
@@ -88,13 +93,28 @@ const App = () => {
             </ProtectedRoute>
           }
         ></Route>
+        <Route
+          path="/inbox"
+          element={
+            <ProtectedRoute>
+              <UserInbox />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/seller/preview/:id" element={<SellerPreviewPage />} />
+
         {/* Seller routes */}
 
         <Route path="/seller-create" element={<SellerCreatePage />}></Route>
         <Route path="/seller-login" element={<SellerLoginPage />}></Route>
-        <Route path="/reset-password-seller" element={<ResetPasswordSellerPage />}></Route>
-        <Route path="/confirmation-reset-seller" element={<PasswordChangedConfirmationSeller />}></Route>
+        <Route
+          path="/reset-password-seller"
+          element={<ResetPasswordSellerPage />}
+        ></Route>
+        <Route
+          path="/confirmation-reset-seller"
+          element={<PasswordChangedConfirmationSeller />}
+        ></Route>
         <Route
           path="/seller/:id"
           element={
@@ -159,6 +179,14 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+        <Route
+          path="/dashboard-messages"
+          element={
+            <SellerProtectedRoute>
+              <SellerInboxPage />
+            </SellerProtectedRoute>
+          }
+        />
         {/* Admin route  */}
 
         <Route
@@ -197,7 +225,7 @@ const App = () => {
           }
         ></Route>
 
-           <Route
+        <Route
           path="/admin/dashboard-events"
           element={
             <AdminProtectedRoute>
@@ -205,8 +233,6 @@ const App = () => {
             </AdminProtectedRoute>
           }
         ></Route>
-
-        {/* ___________________________________________ */}
       </Routes>
       <ToastContainer
         position="top-right"

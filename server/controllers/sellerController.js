@@ -343,7 +343,7 @@ router.post('/reset-password-seller', async (req, res, next) => {
 });
 
 
-// get shop info
+// get seller info
 router.get(
   "/get-seller-info/:id",
   catchAsyncErrors(async (req, res, next) => {
