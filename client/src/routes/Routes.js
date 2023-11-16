@@ -12,6 +12,8 @@ import ResetPasswordPage from '../pages/ResetPasswordPage';
 import SellerCreatePage from '../pages/SellerCreatePage';
 import SellerActivationPage from '../pages/SellerActivationPage';
 import SellerLoginPage from '../pages/SellerLoginPage';
+import PasswordChangedConfirmation from '../pages/PasswordChangedConfirmation';
+
 
 
 
@@ -27,6 +29,7 @@ export {
     ProductsDetailsPage,
     ProfilePage,
     ResetPasswordPage,
+    PasswordChangedConfirmation,
     SellerCreatePage,
     SellerActivationPage,
     SellerLoginPage,

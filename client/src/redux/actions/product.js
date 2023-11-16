@@ -6,15 +6,6 @@ import { server } from "../../server";
 export const createProduct =
   (
     productData
-    // name,
-    // description,
-    // category,
-    // tags,
-    // originalPrice,
-    // discountPrice,
-    // stock,
-    // sellerId,
-    // images
   ) =>
   async (dispatch) => {
     try {
@@ -28,15 +19,6 @@ export const createProduct =
         `${server}/product/create-product`,
         productData,
         config
-        // name,
-        // description,
-        // category,
-        // tags,
-        // originalPrice,
-        // discountPrice,
-        // stock,
-        // sellerId,
-        // images,
       );
       dispatch({
         type: "productCreateSuccess",
