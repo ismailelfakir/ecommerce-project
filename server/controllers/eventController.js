@@ -177,4 +177,56 @@ router.put(
   })
 );
 
+// // all events --- for admin
+router.get(
+  "/admin-all-events",
+  isAuthenticated,
+  isAdmin("Admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const events = await Event.find().sort({
+        createdAt: -1,
+      });
+      res.status(201).json({
+        success: true,
+        events,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// delete admin events 
+router.delete(
+  "/delete-admin-event/:id",
+  isAuthenticated,
+  isAdmin("Admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      // const product = await Product.findById(req.params.id);
+      const event = await Event.findByIdAndDelete(req.params.id);
+
+      if (!event) {
+        return next(new ErrorHandler("Event is not found with this id", 404));
+      }
+
+      // for (let i = 0; 1 < product.images.length; i++) {
+      //   const result = await cloudinary.v2.uploader.destroy(
+      //     product.images[i].public_id
+      //   );
+      // }
+
+      // await product.remove();
+
+      res.status(201).json({
+        success: true,
+        message: "Event Deleted successfully!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
 module.exports = router;

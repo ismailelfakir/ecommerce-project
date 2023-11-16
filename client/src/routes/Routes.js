@@ -28,6 +28,7 @@ export {
     ProductsDetailsPage,
     ProfilePage,
     ResetPasswordPage,
+    PasswordChangedConfirmation,
     SellerCreatePage,
     SellerActivationPage,
     SellerLoginPage,

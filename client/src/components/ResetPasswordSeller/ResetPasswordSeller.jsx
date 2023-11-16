@@ -30,7 +30,6 @@ const ResetPasswordSeller = () => {
 
       toast.success("Reset Password For Seller Success!");
       window.location.reload(true); 
-
     })
     .catch((err) => {
       toast.error(err.response.data.message);

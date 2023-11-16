@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
-
+  const navigate = useNavigate();
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     setEmailError(false);
@@ -26,6 +26,8 @@ const ResetPassword = () => {
       { withCredentials: true }
     )
     .then((res) => {
+      navigate("/confirmation-reset"); // Remplacez "/confirmation-reset" par le chemin de votre choix
+
       toast.success("Reset Password Success!");
       window.location.reload(true); 
     })
@@ -91,7 +93,7 @@ const ResetPassword = () => {
         <a className="pl-3 text-sm text-gray-600 decoration-2 hover:text-blue-600 hover:underline" href="#"> FAQs </a>
         <span className="inline pr-3 text-sm text-gray-600">
           Remember your password?
-          <a className="font-medium text-blue-600 decoration-2 hover:underline" href="sign-up"> Sign in here </a>
+          <a className="font-medium text-blue-600 decoration-2 hover:underline" href="login"> Sign in here </a>
    
           </span>
         <a className="pl-3 text-sm text-gray-600 decoration-2 hover:text-blue-600 hover:underline" href="#" target="_blank"> Contact Support </a>
