@@ -48,7 +48,7 @@ import Store from "./redux/store";
 import { loadSeller, loadUser } from "./redux/actions/user";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
-import AdminProtectedRoute from './routes/ProtectedAdminRoute'
+import AdminProtectedRoute from "./routes/ProtectedAdminRoute";
 import { getAllProducts } from "./redux/actions/product";
 import { getAllEvents } from "./redux/actions/event";
 
@@ -67,7 +67,10 @@ const App = () => {
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/sign-up" element={<SignupPage />}></Route>
         <Route path="/reset-password" element={<ResetPasswordPage />}></Route>
-        <Route path="/confirmation-reset" element={<PasswordChangedConfirmation />}></Route>
+        <Route
+          path="/confirmation-reset"
+          element={<PasswordChangedConfirmation />}
+        ></Route>
 
         <Route
           path="/activation/:activation_token"
@@ -104,8 +107,14 @@ const App = () => {
 
         <Route path="/seller-create" element={<SellerCreatePage />}></Route>
         <Route path="/seller-login" element={<SellerLoginPage />}></Route>
-        <Route path="/reset-password-seller" element={<ResetPasswordSellerPage />}></Route>
-        <Route path="/confirmation-reset-seller" element={<PasswordChangedConfirmationSeller />}></Route>
+        <Route
+          path="/reset-password-seller"
+          element={<ResetPasswordSellerPage />}
+        ></Route>
+        <Route
+          path="/confirmation-reset-seller"
+          element={<PasswordChangedConfirmationSeller />}
+        ></Route>
         <Route
           path="/seller/:id"
           element={
@@ -178,8 +187,52 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+        {/* Admin route  */}
 
-        
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboardPage />
+            </AdminProtectedRoute>
+          }
+        ></Route>
+
+        <Route
+          path="/admin/dashboard-all-user"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboardUsersPage />
+            </AdminProtectedRoute>
+          }
+        ></Route>
+
+        <Route
+          path="/admin/all-seller"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboardSellersPage />
+            </AdminProtectedRoute>
+          }
+        ></Route>
+
+        <Route
+          path="/admin/dashboard-products"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboardProducts />
+            </AdminProtectedRoute>
+          }
+        ></Route>
+
+        <Route
+          path="/admin/dashboard-events"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboardEvents />
+            </AdminProtectedRoute>
+          }
+        ></Route>
       </Routes>
       <ToastContainer
         position="top-right"

@@ -13,6 +13,7 @@ import SellerCreatePage from '../pages/SellerCreatePage';
 import SellerActivationPage from '../pages/SellerActivationPage';
 import SellerLoginPage from '../pages/SellerLoginPage';
 import UserInbox from '../pages/UserInbox';
+import PasswordChangedConfirmation from '../pages/PasswordChangedConfirmation';
 
 
 
