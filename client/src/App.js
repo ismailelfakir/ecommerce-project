@@ -17,6 +17,7 @@ import {
   SellerCreatePage,
   SellerActivationPage,
   SellerLoginPage,
+  CheckoutPage,
   UserInbox,
 } from "./routes/Routes.js";
 import {
@@ -85,6 +86,14 @@ const App = () => {
         <Route path="/best-selling" element={<BestSellingPage />}></Route>
         <Route path="/events" element={<EventsPage />}></Route>
         <Route path="/faq" element={<FAQPage />}></Route>
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/profile"
           element={

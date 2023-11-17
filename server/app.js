@@ -32,6 +32,9 @@ const couponCodeController = require("./controllers/couponCodeController");
 const eventController = require("./controllers/eventController");
 const conversationController = require("./controllers/conversationController");
 const messagesController = require("./controllers/messagesController");
+const orderController = require("./controllers/orderController");
+const paymentController = require("./controllers/paymentController");
+
 
 
 
@@ -43,8 +46,8 @@ app.use("/v2/couponcode", couponCodeController);
 app.use("/v2/event", eventController);
 app.use("/v2/conversation", conversationController);
 app.use("/v2/messages", messagesController);
-
-
+app.use("/v2/payment", paymentController);
+app.use("/v2/order", orderController);
 
 // it's for ErrorHandling
 app.use(ErrorHandler);
