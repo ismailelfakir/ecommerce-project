@@ -3,9 +3,18 @@ const router = express.Router();
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
-const Order = require("../models/order");
+const Order = require("../models/Order");
 const Seller = require("../models/Seller");
 const Product = require("../models/Product");
+
+router.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 // create new order
 router.post(
@@ -14,21 +23,21 @@ router.post(
     try {
       const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
 
-      //   group cart items by shopId
-      const shopItemsMap = new Map();
+      //   group cart items by sellerId
+      const sellerItemsMap = new Map();
 
       for (const item of cart) {
-        const shopId = item.shopId;
-        if (!shopItemsMap.has(shopId)) {
-          shopItemsMap.set(shopId, []);
+        const sellerId = item.sellerId;
+        if (!sellerItemsMap.has(sellerId)) {
+          sellerItemsMap.set(sellerId, []);
         }
-        shopItemsMap.get(shopId).push(item);
+        sellerItemsMap.get(sellerId).push(item);
       }
 
       // create an order for each shop
       const orders = [];
 
-      for (const [shopId, items] of shopItemsMap) {
+      for (const [sellerId, items] of sellerItemsMap) {
         const order = await Order.create({
           cart: items,
           shippingAddress,
@@ -70,11 +79,11 @@ router.get(
 
 // get all orders of seller
 router.get(
-  "/get-seller-all-orders/:shopId",
+  "/get-seller-all-orders/:sellerId",
   catchAsyncErrors(async (req, res, next) => {
     try {
       const orders = await Order.find({
-        "cart.shopId": req.params.shopId,
+        "cart.sellerId": req.params.sellerId,
       }).sort({
         createdAt: -1,
       });
@@ -212,7 +221,7 @@ router.put(
 );
 
 // all orders --- for admin
-/*
+
 router.get(
   "/admin-all-orders",
   isAuthenticated,
@@ -232,6 +241,6 @@ router.get(
     }
   })
 );
-*/
+
 
 module.exports = router;

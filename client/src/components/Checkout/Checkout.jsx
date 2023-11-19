@@ -66,12 +66,12 @@ const Checkout = () => {
     e.preventDefault();
     const name = couponCode;
 
-    await axios.get(`${server}/coupon/get-coupon-value/${name}`).then((res) => {
-      const shopId = res.data.couponCode?.shopId;
+    await axios.get(`${server}/couponcode/get-coupon-value/${name}`).then((res) => {
+      const sellerId = res.data.couponCode?.sellerId;
       const couponCodeValue = res.data.couponCode?.value;
       if (res.data.couponCode !== null) {
         const isCouponValid =
-          cart && cart.filter((item) => item.shopId === shopId);
+          cart && cart.filter((item) => item.sellerId === sellerId);
 
         if (isCouponValid.length === 0) {
           toast.error("Coupon code is not valid for this shop");
@@ -169,7 +169,7 @@ const ShippingInfo = ({
             <label className="block pb-2">Full Name</label>
             <input
               type="text"
-              value={user && user.name}
+              value={user && user.fname +" "+user.lname}
               required
               className={`${styles.input} !w-[95%]`}
             />
@@ -316,21 +316,21 @@ const CartData = ({
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">subtotal:</h3>
-        <h5 className="text-[18px] font-[600]">${subTotalPrice}</h5>
+        <h5 className="text-[18px] font-[600]">{subTotalPrice} DH</h5>
       </div>
       <br />
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">shipping:</h3>
-        <h5 className="text-[18px] font-[600]">${shipping.toFixed(2)}</h5>
+        <h5 className="text-[18px] font-[600]">{shipping.toFixed(2)} DH</h5>
       </div>
       <br />
       <div className="flex justify-between border-b pb-3">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
         <h5 className="text-[18px] font-[600]">
-          - {discountPercentenge ? "$" + discountPercentenge.toString() : null}
+          - {discountPercentenge ?  discountPercentenge.toString()+ " DH" : null}
         </h5>
       </div>
-      <h5 className="text-[18px] font-[600] text-end pt-3">${totalPrice}</h5>
+      <h5 className="text-[18px] font-[600] text-end pt-3">{totalPrice} DH</h5>
       <br />
       <form onSubmit={handleSubmit}>
         <input

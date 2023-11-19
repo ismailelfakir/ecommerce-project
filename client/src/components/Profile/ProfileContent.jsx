@@ -22,7 +22,7 @@ import { Country, State } from "country-state-city";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-// import { getAllOrdersOfUser } from "../../redux/actions/order";
+import { getAllOrdersOfUser } from "../../redux/actions/order";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -206,25 +206,12 @@ const ProfileContent = ({ active }) => {
 
 const AllOrders = () => {
   const { user } = useSelector((state) => state.user);
-  // const { orders } = useSelector((state) => state.order);
-  // const dispatch = useDispatch();
+  const { orders } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getAllOrdersOfUser(user._id));
-  // }, []);
-
-  const orders = [
-    {
-      _id: "32422423214FREZ44",
-      orderItems: [
-        {
-          name: "jellaba pro max",
-        },
-      ],
-      totalPrice: 130,
-      status: "Processing",
-    },
-  ];
+  useEffect(() => {
+    dispatch(getAllOrdersOfUser(user._id));
+  }, []);
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -283,9 +270,9 @@ const AllOrders = () => {
     orders.forEach((item) => {
       row.push({
         id: item._id,
-        itemsQty: item.orderItems.length,
-        total: "DH" + item.totalPrice,
-        status: item.orderStatus,
+        itemsQty: item.cart.length,
+        total: item.totalPrice + " DH",
+        status: item.status,
       });
     });
 
@@ -304,25 +291,12 @@ const AllOrders = () => {
 
 const AllRefundOrders = () => {
   const { user } = useSelector((state) => state.user);
-  // const { orders } = useSelector((state) => state.order);
-  // const dispatch = useDispatch();
+  const { orders } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
 
-  const orders = [
-    {
-      _id: "32422423214FREZ44",
-      orderItems: [
-        {
-          name: "jellaba pro max",
-        },
-      ],
-      totalPrice: 130,
-      status: "Processing",
-    },
-  ];
-
-  // useEffect(() => {
-  //   dispatch(getAllOrdersOfUser(user._id));
-  // }, []);
+  useEffect(() => {
+    dispatch(getAllOrdersOfUser(user._id));
+  }, []);
 
   const eligibleOrders =
     orders && orders.filter((item) => item.status === "Processing refund");
@@ -385,7 +359,7 @@ const AllRefundOrders = () => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
-        total: "DH " + item.totalPrice,
+        total: item.totalPrice +" DH" ,
         status: item.status,
       });
     });
@@ -405,25 +379,13 @@ const AllRefundOrders = () => {
 
 const TrackOrder = () => {
   const { user } = useSelector((state) => state.user);
-  // const { orders } = useSelector((state) => state.order);
-  // const dispatch = useDispatch();
+  const { orders } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
 
-  const orders = [
-    {
-      _id: "32422423214FREZ44",
-      orderItems: [
-        {
-          name: "jellaba pro max",
-        },
-      ],
-      totalPrice: 130,
-      status: "Processing",
-    },
-  ];
 
-  // useEffect(() => {
-  //   dispatch(getAllOrdersOfUser(user._id));
-  // }, []);
+  useEffect(() => {
+    dispatch(getAllOrdersOfUser(user._id));
+  }, []);
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -482,8 +444,8 @@ const TrackOrder = () => {
     orders.forEach((item) => {
       row.push({
         id: item._id,
-        itemsQty: item.orderItems.length,
-        total: "DH" + item.totalPrice,
+        itemsQty: item.cart.length,
+        total: item.totalPrice+ " DH",
         status: item.status,
       });
     });

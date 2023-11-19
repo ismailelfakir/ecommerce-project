@@ -15,6 +15,9 @@ import SellerLoginPage from '../pages/SellerLoginPage';
 import UserInbox from '../pages/UserInbox';
 import PasswordChangedConfirmation from '../pages/PasswordChangedConfirmation';
 import CheckoutPage from "../pages/CheckoutPage";
+import OrderSuccessPage from "../pages/OrderSuccessPage";
+import OrderDetailsPage from "../pages/OrderDetailsPage";
+import TrackOrderPage from "../pages/TrackOrderPage";
 import PaymentPage from "../pages/PaymentPage";
 
 
@@ -37,5 +40,8 @@ export {
     SellerActivationPage,
     SellerLoginPage,
     UserInbox,
-    PaymentPage
+    PaymentPage,
+    OrderSuccessPage,
+    TrackOrderPage,
+    OrderDetailsPage,
 };

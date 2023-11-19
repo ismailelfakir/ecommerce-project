@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardHeader from "../../components/Seller/Layout/DashboardHeader";
-import DashboardSideBar from "../../components/Seller/Layout/DashboardSideBar.jsx";
+import DashboardSideBar from "../../components/Seller/Layout/DashboardSideBar";
+import DashboardHero from "../../components/Seller/DashboardHero.jsx";
 
 const SellerDashboardPage = () => {
   return (
@@ -10,6 +11,7 @@ const SellerDashboardPage = () => {
             <div className="w-[80px] 800px:w-[330px]">
               <DashboardSideBar active={1} />
             </div>
+            <DashboardHero />
           </div>
     </div>
   )
