@@ -19,14 +19,14 @@ export const orderReducer = createReducer(initialState, {
   },
   
   // get all orders of shop
-  getAllOrdersShopRequest: (state) => {
+  getAllOrdersSellerRequest: (state) => {
     state.isLoading = true;
   },
-  getAllOrdersShopSuccess: (state, action) => {
+  getAllOrdersSellerSuccess: (state, action) => {
     state.isLoading = false;
     state.orders = action.payload;
   },
-  getAllOrdersShopFailed: (state, action) => {
+  getAllOrdersSellerFailed: (state, action) => {
     state.isLoading = false;
     state.error = action.payload;
   },

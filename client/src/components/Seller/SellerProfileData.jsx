@@ -4,7 +4,7 @@ import { Link, useParams , useSearchParams} from "react-router-dom";
 import { getAllProductsSeller } from "../../redux/actions/product";
 import styles from "../../styles/styles";
 import ProductCard from "../Route/ProductCard/ProductCard";
-// import Ratings from "../Products/Ratings";
+import Ratings from "../Products/Ratings";
 import { getAllEventsSeller } from "../../redux/actions/event";
 import { productData } from "../../static/data";
 
@@ -23,8 +23,8 @@ const [data, setData] = useState([]);
 
   const [active, setActive] = useState(1);
 
-//   const allReviews =
-//     products && products.map((product) => product.reviews).flat();
+  const allReviews =
+    products && products.map((product) => product.reviews).flat();
 
   return (
     <div className="w-full">
@@ -95,7 +95,7 @@ const [data, setData] = useState([]);
         </div>
       )}
 
-      {/* {active === 3 && (
+      {active === 3 && (
         <div className="w-full">
           {allReviews &&
             allReviews.map((item, index) => (
@@ -121,7 +121,7 @@ const [data, setData] = useState([]);
             </h5>
           )}
         </div>
-      )} */}
+      )}
     </div>
   );
 };

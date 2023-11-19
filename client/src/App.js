@@ -18,6 +18,10 @@ import {
   SellerActivationPage,
   SellerLoginPage,
   CheckoutPage,
+  PaymentPage,
+  OrderDetailsPage,
+  TrackOrderPage,
+  OrderSuccessPage,
   UserInbox,
 } from "./routes/Routes.js";
 import {
@@ -27,11 +31,15 @@ import {
   SellerAllProducts,
   SellerCreateEvents,
   SellerAllEvents,
+  SellerAllOrders,
+  SellerAllRefunds,
+  SellerOrderDetails,
   SellerAllCoupons,
   SellerSettingsPage,
   ResetPasswordSellerPage,
   PasswordChangedConfirmationSeller,
   SellerPreviewPage,
+  SellerWithDrawMoneyPage,
   SellerInboxPage,
 } from "./routes/SellerRoutes.js";
 
@@ -41,6 +49,7 @@ import {
   AdminDashboardSellersPage,
   AdminDashboardProducts,
   AdminDashboardEvents,
+  AdminDashboardWithdraw,
 } from "./routes/AdminRoutes.js";
 
 import { ToastContainer } from "react-toastify";
@@ -49,20 +58,47 @@ import Store from "./redux/store";
 import { loadSeller, loadUser } from "./redux/actions/user";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
-import AdminProtectedRoute from "./routes/ProtectedAdminRoute";
 import { getAllProducts } from "./redux/actions/product";
 import { getAllEvents } from "./redux/actions/event";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { server } from "./server";
+import axios from "axios";
+import { useState } from "react";
+import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
 
 const App = () => {
+  const [stripeApikey, setStripeApiKey] = useState("");
+
+  async function getStripeApikey() {
+    const { data } = await axios.get(`${server}/payment/stripeapikey`);
+    setStripeApiKey(data.stripeApikey);
+  }
+
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
     Store.dispatch(getAllProducts());
     Store.dispatch(getAllEvents());
+    getStripeApikey();
   }, []);
 
   return (
     <BrowserRouter>
+    {stripeApikey && (
+        <Elements stripe={loadStripe(stripeApikey)}>
+          <Routes>
+            <Route
+              path="/payment"
+              element={
+                <ProtectedRoute>
+                  <PaymentPage />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Elements>
+      )}
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
@@ -94,6 +130,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/order/success" element={<OrderSuccessPage />} />
         <Route
           path="/profile"
           element={
@@ -107,6 +144,22 @@ const App = () => {
           element={
             <ProtectedRoute>
               <UserInbox />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/order/:id"
+          element={
+            <ProtectedRoute>
+              <OrderDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/track/order/:id"
+          element={
+            <ProtectedRoute>
+              <TrackOrderPage />
             </ProtectedRoute>
           }
         />
@@ -173,6 +226,31 @@ const App = () => {
           }
         />
         <Route
+          path="/dashboard-orders"
+          element={
+            <SellerProtectedRoute>
+              <SellerAllOrders />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-refunds"
+          element={
+            <SellerProtectedRoute>
+              <SellerAllRefunds />
+            </SellerProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/order/:id"
+          element={
+            <SellerProtectedRoute>
+              <SellerOrderDetails />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
           path="/dashboard-coupons"
           element={
             <SellerProtectedRoute>
@@ -189,6 +267,14 @@ const App = () => {
           }
         />
         <Route
+          path="/dashboard-withdraw-money"
+          element={
+            <SellerProtectedRoute>
+              <SellerWithDrawMoneyPage />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
           path="/dashboard-messages"
           element={
             <SellerProtectedRoute>
@@ -201,47 +287,55 @@ const App = () => {
         <Route
           path="/admin/dashboard"
           element={
-            <AdminProtectedRoute>
+            <ProtectedAdminRoute>
               <AdminDashboardPage />
-            </AdminProtectedRoute>
+            </ProtectedAdminRoute>
           }
         ></Route>
 
         <Route
           path="/admin/dashboard-all-user"
           element={
-            <AdminProtectedRoute>
+            <ProtectedAdminRoute>
               <AdminDashboardUsersPage />
-            </AdminProtectedRoute>
+            </ProtectedAdminRoute>
           }
         ></Route>
 
         <Route
           path="/admin/all-seller"
           element={
-            <AdminProtectedRoute>
+            <ProtectedAdminRoute>
               <AdminDashboardSellersPage />
-            </AdminProtectedRoute>
+            </ProtectedAdminRoute>
           }
         ></Route>
 
         <Route
           path="/admin/dashboard-products"
           element={
-            <AdminProtectedRoute>
+            <ProtectedAdminRoute>
               <AdminDashboardProducts />
-            </AdminProtectedRoute>
+            </ProtectedAdminRoute>
           }
         ></Route>
 
         <Route
           path="/admin/dashboard-events"
           element={
-            <AdminProtectedRoute>
+            <ProtectedAdminRoute>
               <AdminDashboardEvents />
-            </AdminProtectedRoute>
+            </ProtectedAdminRoute>
           }
         ></Route>
+        <Route
+          path="/admin-withdraw-request"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardWithdraw />
+            </ProtectedAdminRoute>
+          }
+        />
       </Routes>
       <ToastContainer
         position="top-right"

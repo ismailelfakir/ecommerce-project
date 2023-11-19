@@ -8,6 +8,7 @@ const upload = require("../multer");
 const Product = require("../models/Product");
 const fs = require("fs");
 const cloudinary = require("cloudinary");
+const Order = require("../models/Order");
 
 // Create product route
 router.post(
@@ -239,7 +240,7 @@ router.put(
   })
 );
 
-// // all products --- for admin
+// all products --- for admin
 router.get(
   "/admin-all-products",
   isAuthenticated,
