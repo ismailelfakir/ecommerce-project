@@ -32,6 +32,8 @@ const couponCodeController = require("./controllers/couponCodeController");
 const eventController = require("./controllers/eventController");
 const conversationController = require("./controllers/conversationController");
 const messagesController = require("./controllers/messagesController");
+const categoriesController = require("./controllers/categorie");
+
 
 
 
@@ -43,6 +45,7 @@ app.use("/v2/couponcode", couponCodeController);
 app.use("/v2/event", eventController);
 app.use("/v2/conversation", conversationController);
 app.use("/v2/messages", messagesController);
+app.use("/v2/categories", categoriesController );
 
 
 

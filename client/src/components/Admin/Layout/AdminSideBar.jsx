@@ -136,11 +136,11 @@ const AdminSideBar = ({ active }) => {
         >
           <CiMoneyBill
             size={30}
-            color={`${active === 7 ? "#1900ff" : "#555"}`}
+            color={`${active === 8 ? "#1900ff" : "#555"}`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 7 ? "text-[#1900ff]" : "text-[#555]"
+              active === 8 ? "text-[#1900ff]" : "text-[#555]"
             }`}
           >
             Withdraw Request
@@ -155,11 +155,11 @@ const AdminSideBar = ({ active }) => {
         >
           <AiOutlineSetting
             size={30}
-            color={`${active === 8 ? "#1900ff" : "#555"}`}
+            color={`${active === 9 ? "#1900ff" : "#555"}`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 8 ? "text-[#1900ff]" : "text-[#555]"
+              active === 9 ? "text-[#1900ff]" : "text-[#555]"
             }`}
           >
             Settings
