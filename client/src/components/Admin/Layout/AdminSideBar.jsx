@@ -150,6 +150,25 @@ const AdminSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link
+          to="/admin-categories"
+          className="w-full flex items-center"
+        >
+          <MdOutlineCategory
+            size={30}
+            color={`${active === 7 ? "#1900ff" : "#555"}`}
+          />
+          <h5
+            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+              active === 8 ? "text-[#1900ff]" : "text-[#555]"
+            }`}
+          >
+            Categories
+          </h5>
+        </Link>
+      </div>
+
+      <div className="w-full flex items-center p-4">
+        <Link
           to="/profile"
           className="w-full flex items-center"
         >

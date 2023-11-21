@@ -287,7 +287,6 @@ const MessageList = ({
     getUser();
   }, [me, data]);
 
-  console.log("user : "+user.fname + " " + user.lname);
 
   return (
     <div
