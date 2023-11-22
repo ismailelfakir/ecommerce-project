@@ -28,7 +28,7 @@ const Cart = ({ setOpenCart }) => {
 
   return (
     <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-      <div className="fixed top-0 right-0 h-full w-[80%] 800px:w-[25%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
+      <div className="fixed top-0 right-0 h-full w-[80%] 800px:w-[40%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
          {cart && cart.length === 0 ? (
           <div className="w-full h-screen flex items-center justify-center">
             <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">
@@ -114,7 +114,8 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
 
   return (
     <div className="border-b p-4">
-      <div className="w-full flex items-center">
+      <div className="w-full flex justify-between">
+      <div className="flex items-center">
         <div>
         <div
             className={`bg-[#e44343] border border-[#e4434373] rounded-full w-[25px] h-[25px] ${styles.noramlFlex} justify-center cursor-pointer`}
@@ -144,10 +145,13 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
              {totalPrice} DH
           </h4>
         </div>
+        </div>
+        <div className="flex items-center">
         <RxCross1
           className="cursor-pointer"
           onClick={() => removeFromCartHandler(data)}
         />
+        </div>
       </div>
     </div>
   );

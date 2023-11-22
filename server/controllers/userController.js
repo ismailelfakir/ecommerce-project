@@ -151,6 +151,53 @@ router.post(
   })
 );
 
+// sign up with google
+router.post('/signup-google',async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      sendToken(user, 201, res);
+      return next(new ErrorHandler("User already exists",400));
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const newUser = new User({
+        fname:req.body.fname,
+        lname:req.body.lname,
+        email: req.body.email,
+        password: generatedPassword,
+        avatar: {
+          url: req.body.photo,
+        },
+      });
+      await newUser.save();
+      res.status(200).json({
+        success:true,
+        newUser
+      })}
+  } catch (error) {
+    next(error);
+  }
+});
+
+// sign up with google
+router.post('/login-google',async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return next(new ErrorHandler("User not found please Sign Up to continue",400));
+    } else {
+      sendToken(user, 201, res);
+      res.status(200).json({
+        success:true,
+        user
+      })}
+  } catch (error) {
+    next(error);
+  }
+});
+
 // login user
 router.post(
   "/login-user",
