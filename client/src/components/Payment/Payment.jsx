@@ -102,17 +102,10 @@ const Payment = () => {
   const paymentHandler = async (e) => {
     e.preventDefault();
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer sk_test_51OCMw3GNMXGIZ46m1MuN0pbUmiWARlAiT3gVc0ZBbdkzDr1jMzc5rSKmwL2OyooFCXskMCi0HT7j6XWKbG8MLGyy00XPDnGplv',
-        },
-      };
-
       const { data } = await axios.post(
         `${server}/payment/process`,
         paymentData,
-        config
+        { withCredentials: true }
       );
 
       const client_secret = data.client_secret;
@@ -135,7 +128,8 @@ const Payment = () => {
           };
 
           await axios
-            .post(`${server}/order/create-order`, order, config)
+            .post(`${server}/order/create-order`, order,
+            { withCredentials: true })
             .then((res) => {
               setOpen(false);
               navigate("/order/success");

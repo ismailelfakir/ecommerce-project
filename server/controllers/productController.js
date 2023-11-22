@@ -8,7 +8,7 @@ const upload = require("../multer");
 const Product = require("../models/Product");
 const fs = require("fs");
 const cloudinary = require("cloudinary");
-const Order = require("../models/Order");
+const Order = require("../models/Order"); 
 
 // Create product route
 router.post(
@@ -17,61 +17,64 @@ router.post(
   catchAsyncErrors(async (req, res, next) => {
     let errorOccurred = false; // Flag to track whether an error has occurred
 
-    try {
-      const sellerId = req.body.sellerId;
-      const seller = await Seller.findById(sellerId);
-
-      if (!seller) {
-        return next(new ErrorHandler('Seller Id is invalid!', 400));
-      }
-
-      const files = req.files;
-      const imageUrls = [];
-
-      // Use the Cloudinary library to upload each image to Cloudinary
-      for (const file of files) {
-        const result = await cloudinary.uploader.upload(file.path);
-        imageUrls.push({
-          url: result.secure_url,
-          publicId: result.public_id,
-        });
-      }
-
-      // Delete files after successful upload
-      files.forEach((file) => {
-        fs.unlink(file.path, (err) => {
-          if (err) {
-            console.error('Error deleting file:', err);
-            errorOccurred = true; // Set the flag if an error occurs during deletion
-          }
-        });
-      });
-
-      const productData = req.body;
-      productData.images = imageUrls;
-      productData.seller = seller;
-
-      const product = await Product.create(productData);
-
-      res.status(201).json({
-        success: true,
-        product,
-      });
-    } catch (error) {
-      errorOccurred = true; // Set the flag if an error occurs during processing
-      return next(new ErrorHandler(error, 400));
-    } finally {
-      // Delete files if an error occurred during processing
-      if (errorOccurred) {
+    if(req.files.length > 0) {
+      try {
+        const sellerId = req.body.sellerId;
+        const seller = await Seller.findById(sellerId);
+  
+        if (!seller) {
+          return next(new ErrorHandler('Seller Id is invalid!', 400));
+        }
+  
+        const files = req.files;
+        const imageUrls = [];
+  
+        // Use the Cloudinary library to upload each image to Cloudinary
+        for (const file of files) {
+          const result = await cloudinary.uploader.upload(file.path);
+          imageUrls.push({
+            url: result.secure_url,
+            publicId: result.public_id,
+          });
+        }
+  
+        // Delete files after successful upload
         files.forEach((file) => {
           fs.unlink(file.path, (err) => {
             if (err) {
               console.error('Error deleting file:', err);
+              errorOccurred = true; // Set the flag if an error occurs during deletion
             }
           });
         });
+  
+        const productData = req.body;
+        productData.images = imageUrls;
+        productData.seller = seller;
+  
+        const product = await Product.create(productData);
+  
+        res.status(201).json({
+          success: true,
+          product,
+        });
+      } catch (error) {
+        errorOccurred = true; // Set the flag if an error occurs during processing
+        return next(new ErrorHandler(error, 400));
+      } finally {
+        // Delete files if an error occurred during processing
+        if (errorOccurred) {
+          files.forEach((file) => {
+            fs.unlink(file.path, (err) => {
+              if (err) {
+                console.error('Error deleting file:', err);
+              }
+            });
+          });
+        }
       }
     }
+    return next(new ErrorHandler('images is required', 400));
   })
 );
 

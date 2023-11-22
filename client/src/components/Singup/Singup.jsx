@@ -1,4 +1,4 @@
-import  React, { useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
@@ -6,8 +6,7 @@ import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
-
-
+import OAuthSignup from "../../firebase/authentication/OAuthSignup";
 
 const Singup = () => {
   const [email, setEmail] = useState("");
@@ -16,10 +15,6 @@ const Singup = () => {
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
-  // const navigate = useNavigate();
-  // const handleSubmit = () => {
-  //   console.log("Form submitted with data:", {fname, lname, email, password, avatar });
-  // };
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -27,10 +22,9 @@ const Singup = () => {
   };
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
 
-    const config = {headers: {'Content-Type': 'multipart/form-data'}};
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
     const newForm = new FormData();
 
     newForm.append("file", avatar);
@@ -39,21 +33,22 @@ const Singup = () => {
     newForm.append("email", email);
     newForm.append("password", password);
 
-    axios.post(`${server}/user/create-user-cloud`, newForm , config)
-    .then((res)=> {
-      if(res.data.success === true) {
-        toast.success(res.data.message);
-        setFname("");
-        setLname("");
-        setEmail("");
-        setPassword("");
-        setAvatar();
-      }
-    }).catch((err)=> {
-      toast.error(err.response.data.message);
-    });
+    axios
+      .post(`${server}/user/create-user-cloud`, newForm, config)
+      .then((res) => {
+        if (res.data.success === true) {
+          toast.success(res.data.message);
+          setFname("");
+          setLname("");
+          setEmail("");
+          setPassword("");
+          setAvatar();
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
-
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -65,8 +60,7 @@ const Singup = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
-
-          <div>
+            <div>
               <label
                 htmlFor="avatar"
                 className="block text-sm font-medium text-gray-700"
@@ -193,22 +187,27 @@ const Singup = () => {
               </div>
             </div>
 
-
             <div>
               <button
                 type="submit"
                 className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
-                Submit
+                Sign up
               </button>
             </div>
             <div className={`${styles.noramlFlex} w-full`}>
               <h4>Already have an account?</h4>
               <Link to="/login" className="text-blue-600 pl-2">
-                Sign In
+                Sign in
               </Link>
             </div>
           </form>
+          <div className="my-4 flex items-center">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <p className="mx-4 text-sm font-semibold text-gray-800">OR</p>
+            <div className="flex-1 border-t border-gray-300"></div>
+          </div>
+          <OAuthSignup />
         </div>
       </div>
     </div>
