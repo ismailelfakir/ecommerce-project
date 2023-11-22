@@ -7,11 +7,12 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const fs = require("fs");
 const sendToken = require("../utils/jwtToken");
-const sendMail = require("../utils/sendMail");
+const sendMail = require("../utils/sendMail")
 const { isAuthenticated,isAdmin } = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 const randomstring = require("randomstring");
 const cloudinary = require("cloudinary");
+const Subscriber = require ("../models/Subscriber")
 
 router.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin");
@@ -503,5 +504,19 @@ router.get(
     }
   })
 );
+
+//Subscriber 
+
+router.post('/saveSubscriber', async (req, res) => {
+  try {
+    const { lname, fname, email, userId } = req.body;
+    const newSubscriber = new Subscriber({ userId: userId,lastname: lname ,firstname: fname,email: email });
+    await newSubscriber.save();
+
+    res.status(200).json({ message: 'Subscriber saved successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;

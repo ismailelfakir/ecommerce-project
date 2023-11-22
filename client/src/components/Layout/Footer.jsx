@@ -1,4 +1,5 @@
-import React from "react";
+import axios from 'axios';
+import React, { useState } from "react";
 import {
   AiFillFacebook,
   AiFillInstagram,
@@ -11,8 +12,40 @@ import {
   footerProductLinks,
   footerSupportLinks,
 } from "../../static/data";
+import { useSelector } from "react-redux";
+import {server} from "../../server"
+import { toast } from "react-toastify";
+
 
 const Footer = () => {
+  const { user } = useSelector((state) => state.user);
+  const [email, setEmail] = useState('');
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const saveSubscriber = async () => {
+    try {
+      const response = await axios.post(`${server}/user/saveSubscriber`, {
+        userId: user._id,
+        fname: user.fname,
+        lname: user.lname,
+        email: email
+      }, {
+        withCredentials: true,
+      });
+  
+      // Check for a successful response (status code in the 200 range)
+      if (response.status === 200) {
+        toast.success("Subscriber saved successfully");
+      } else {
+        toast.error("Failed to save subscriber");
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Error in saving subscriber');
+    }
+  };
   return (
     <div className="bg-[#000] text-white">
       <div className="md:flex md:justify-between md:items-center sm:px-12 px-4 bg-[#4d4d4f] py-7">
@@ -28,8 +61,9 @@ const Footer = () => {
             placeholder="Enter your email..."
             className="text-gray-800
                 sm:w-72 w-full sm:mr-5 mr-1 lg:mb-0 mb-4 py-2.5 rounded px-2 focus:outline-none"
-          />
-          <button className="bg-[#37f76a] hover:bg-teal-500 duration-300 px-5 py-2.5 rounded-md text-whie md:w-auto w-full">
+                onChange={handleEmailChange}
+                />
+          <button onClick={saveSubscriber} className="bg-[#37f76a] hover:bg-teal-500 duration-300 px-5 py-2.5 rounded-md text-whie md:w-auto w-full">
             Subscribe
           </button>
         </div>
