@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllUsers } from "../../redux/actions/user";
 import { DataGrid } from "@material-ui/data-grid";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Button } from "@material-ui/core";
@@ -11,35 +10,41 @@ import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
 
-const AllUsers = () => {
+const AllSubscribers = () => {
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
   const [userId, setUserId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [subscribers, setSubscribers] = useState("");
+
+
 
   useEffect(() => {
-    dispatch(getAllUsers());
+    setIsLoading(true);
+    axios
+      .get(`${server}/user/getAllSubscribers`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setIsLoading(false);
+        setSubscribers(res.data.subscribers);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+      });
   }, [dispatch]);
 
   const handleDelete = async (id) => {
     await axios
-    .delete(`${server}/user/delete-user/${id}`, { withCredentials: true })
+    .delete(`${server}/user/delete-subscriber/${id}`, { withCredentials: true })
     .then((res) => {
       toast.success(res.data.message);
     });
-
-  dispatch(getAllUsers());
   };
 
   const columns = [
     // { field: "id", headerName: "User ID", minWidth: 150, flex: 0.7 },
 
-    {
-      field: "name",
-      headerName: "name",
-      minWidth: 130,
-      flex: 0.7,
-    },
     {
       field: "email",
       headerName: "Email",
@@ -59,7 +64,7 @@ const AllUsers = () => {
       field: " ",
       flex: 1,
       minWidth: 150,
-      headerName: "Delete User",
+      headerName: "Delete Subscriber",
       type: "number",
       sortable: false,
       renderCell: (params) => {
@@ -75,11 +80,10 @@ const AllUsers = () => {
   ];
 
   const row = [];
-  users &&
-    users.forEach((item) => {
+  subscribers &&
+  subscribers.forEach((item) => {
       row.push({
         id: item._id,
-        name: item.fname+" "+item.lname,
         email: item.email,
         joinedAt: item.createdAt.slice(0, 10),
       });
@@ -88,7 +92,7 @@ const AllUsers = () => {
   return (
     <div className="w-full flex justify-center pt-5">
       <div className="w-[97%]">
-        <h3 className="text-[22px] font-Poppins pb-2">All Users</h3>
+        <h3 className="text-[22px] font-Poppins pb-2">All Subscribers</h3>
         <div className="w-full min-h-[45vh] bg-white rounded">
           <DataGrid
             rows={row}
@@ -105,7 +109,7 @@ const AllUsers = () => {
                 <RxCross1 size={25} onClick={() => setOpen(false)} />
               </div>
               <h3 className="text-[25px] text-center py-5 font-Poppins text-[#000000cb]">
-                Are you sure you wanna delete this user?
+                Are you sure you wanna delete this Subscriber?
               </h3>
               <div className="w-full flex items-center justify-center">
                 <div
@@ -129,4 +133,4 @@ const AllUsers = () => {
   );
 };
 
-export default AllUsers;
+export default AllSubscribers;

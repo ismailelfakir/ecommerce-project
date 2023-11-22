@@ -488,7 +488,7 @@ router.delete(
   })
 );
 
-// find user infoormation with the userId
+// find user information with the userId
 router.get(
   "/user-info/:id",
   catchAsyncErrors(async (req, res, next) => {
@@ -509,8 +509,8 @@ router.get(
 
 router.post('/saveSubscriber', async (req, res) => {
   try {
-    const { lname, fname, email, userId } = req.body;
-    const newSubscriber = new Subscriber({ userId: userId,lastname: lname ,firstname: fname,email: email });
+    const { email } = req.body;
+    const newSubscriber = new Subscriber({ email: email });
     await newSubscriber.save();
 
     res.status(200).json({ message: 'Subscriber saved successfully' });
@@ -518,5 +518,47 @@ router.post('/saveSubscriber', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+// get All Subscribers
+router.get('/getAllSubscribers', 
+isAuthenticated,
+isAdmin("Admin"),
+catchAsyncErrors(async (req, res, next) => {
+  try {
+    const subscribers = await Subscriber.find().sort({
+      createdAt: -1,
+    });
+    res.status(201).json({
+      success: true,
+      subscribers,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+})
+);
+
+// delete Subscribers --- admin
+router.delete(
+  "/delete-subscriber/:id",
+  isAuthenticated,
+  isAdmin("Admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const subscriber = await Subscriber.findByIdAndDelete(req.params.id);
+
+      if (!subscriber) {
+        return next(
+          new ErrorHandler("Subscriber is not available with this id", 400)
+        );
+      }
+      res.status(201).json({
+        success: true,
+        message: "Subscriber deleted successfully!"
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 module.exports = router;
