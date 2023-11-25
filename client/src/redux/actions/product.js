@@ -82,7 +82,7 @@ export const deleteProduct = (id) => async (dispatch) => {
 
 // product update information
 export const updateProduct =
-  (productId,name, description, category, tags, originalPrice, discountPrice, stock) =>
+  (productId, productData) =>
   async (dispatch) => {
     try {
       dispatch({
@@ -91,15 +91,7 @@ export const updateProduct =
 
       const { data } = await axios.put(
         `${server}/product/update-product/${productId}`,
-        {
-          name,
-          description,
-          category,
-          tags,
-          originalPrice,
-          discountPrice,
-          stock,
-        },
+        productData,
         {
           withCredentials: true,
           headers: {

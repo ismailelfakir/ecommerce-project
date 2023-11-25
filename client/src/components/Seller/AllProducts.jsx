@@ -13,7 +13,7 @@ const AllProducts = () => {
   const { products, isLoading } = useSelector((state) => state.products);
   const { seller } = useSelector((state) => state.seller);
   const [openEdit, setOpenEdit] = useState(null);
-
+  const dispatch = useDispatch();
 
   // Function to handle opening the edit component
   const handleOpenEdit = (productId) => {
@@ -28,7 +28,7 @@ const AllProducts = () => {
     setOpenEdit(null);
   };
 
-  const dispatch = useDispatch();
+  
 
   useEffect(() => {
     dispatch(getAllProductsSeller(seller._id));
@@ -36,7 +36,7 @@ const AllProducts = () => {
 
   const handleDelete = (id) => {
     dispatch(deleteProduct(id));
-    window.location.reload();
+    
   };
 
   const columns = [
