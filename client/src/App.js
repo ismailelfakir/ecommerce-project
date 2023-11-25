@@ -52,6 +52,7 @@ import {
   AdminDashboardWithdraw,
   AdminDashboardCategories,
   AdminDashboardSubscription,
+  AdminDashboardOrders,
 } from "./routes/AdminRoutes.js";
 
 import { ToastContainer } from "react-toastify";
@@ -68,6 +69,7 @@ import { server } from "./server";
 import axios from "axios";
 import { useState } from "react";
 import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
+import DarkModeToggle from "./darkmode/darkModeToggle";
 
 const App = () => {
   const [stripeApikey, setStripeApiKey] = useState("");
@@ -87,7 +89,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-    {stripeApikey && (
+      {stripeApikey && (
         <Elements stripe={loadStripe(stripeApikey)}>
           <Routes>
             <Route
@@ -294,7 +296,22 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         ></Route>
-
+        <Route
+          path="/admin/dashboard-orders"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardOrders />
+            </ProtectedAdminRoute>
+          }
+        ></Route>
+        <Route
+          path="/admin/dashboard-events"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardEvents />
+            </ProtectedAdminRoute>
+          }
+        ></Route>
         <Route
           path="/admin/dashboard-all-user"
           element={
@@ -368,6 +385,7 @@ const App = () => {
         pauseOnHover
         theme="dark"
       />
+      <DarkModeToggle />
     </BrowserRouter>
   );
 };

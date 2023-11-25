@@ -26,11 +26,9 @@ const sellerSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-    required: true,
   },
   phoneNumber: {
     type: Number,
-    required: true,
   },
   role: {
     type: String,
@@ -46,7 +44,6 @@ const sellerSchema = new mongoose.Schema({
   },
   zipCode: {
     type: Number,
-    required: true,
   },
   withdrawMethod: {
     type: Object,

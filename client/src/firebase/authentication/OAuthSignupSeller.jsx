@@ -19,25 +19,28 @@ export default function OAuth() {
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
 
-      // Extract user details from the result
-      const { email } = result.user;
+      // Extract seller details from the result
+      const { displayName, email, photoURL } = result.user;
+      const [firstName, lastName] = displayName.split(" ");
 
       // Send a POST request using Axios
       await axios.post(
-        `${server}/user/login-google`,
+        `${server}/seller/signup-google`,
         {
+          fname: firstName,
+          lname: lastName,
           email: email,
+          photo: photoURL,
         },
         {
           withCredentials: true, // Include credentials in the request
         }
       );
-      toast.success("Login Success!");
-      navigate("/");
-      window.location.reload(true);
+      toast.success("Seller signed in successfully");
+      navigate("/seller-login");
     } catch (error) {
       console.error("Could not sign in with Google:", error);
-      toast.error("Error signing in with Google");
+      toast.error("Error Signup in with Google");
     }
   };
 
@@ -47,44 +50,46 @@ export default function OAuth() {
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
 
-      // Extract user details from the result
-      const { email } = result.user;
+      // Extract seller details from the result
+      const { displayName, email, photoURL } = result.user;
+      const [firstName, lastName] = displayName.split(" ");
 
-      // Send a POST request using Axios to the server for login
+      // Send a POST request using Axios for seller signup via Facebook
       await axios.post(
-        `${server}/user/login-facebook`,
+        `${server}/seller/signup-facebook`,
         {
+          fname: firstName,
+          lname: lastName,
           email: email,
+          photo: photoURL,
         },
         {
-          withCredentials: true, // Include credentials in the request
+          withCredentials: true,
         }
       );
 
-      // Perform actions upon successful login
-      toast.success("Facebook Login Success!");
-      navigate("/");
-      window.location.reload(true); // Reload the window after login
+      toast.success("Facebook Signup Success!");
+      navigate("/seller-login");
     } catch (error) {
-      console.error("Could not sign in with Facebook:", error);
-      toast.error("Error signing in with Facebook");
+      console.error("Could not sign up with Facebook:", error);
+      toast.error("Error signing up with Facebook");
     }
   };
 
   return (
     <div>
-       <button
-          onClick={handleGoogleClick}
-          className="px-4 py-2 w-full border flex justify-center gap-3 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-100 dark:hover:shadow-md"
-        >
-          <img
-            className="w-6 h-6"
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            loading="lazy"
-            alt="google logo"
-          />
-          <span>Login with Google</span>
-        </button>
+      <button
+        onClick={handleGoogleClick}
+        className="px-4 py-2 w-full border flex justify-center gap-3 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150"
+      >
+        <img
+          className="w-6 h-6"
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          loading="lazy"
+          alt="google logo"
+        />
+        <span>Sign up with Google</span>
+      </button>
       <button
         type="button"
         onClick={handleFacebookClick}
@@ -102,7 +107,7 @@ export default function OAuth() {
             data-original="#010002"
           />
         </svg>
-        Login with Facebook
+        Sign up with Facebook
       </button>
     </div>
   );
