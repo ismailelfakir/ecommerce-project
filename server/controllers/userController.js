@@ -8,10 +8,11 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const fs = require("fs");
 const sendToken = require("../utils/jwtToken");
 const sendMail = require("../utils/sendMail");
-const { isAuthenticated,isAdmin } = require("../middleware/auth");
+const { isAuthenticated, isAdmin } = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 const randomstring = require("randomstring");
 const cloudinary = require("cloudinary");
+const createImageWithText = require("../utils/createImageWithText");
 
 router.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin");
@@ -25,14 +26,39 @@ router.use(function (req, res, next) {
 router.post(
   "/create-user-cloud",
   upload.single("file"),
-  async (req, res, next) => {
-    let errorOccurred = false; // Flag to track whether an error has occurred
+  catchAsyncErrors(async (req, res, next) => {
 
-    try {
       const { fname, lname, email, password } = req.body;
       const userEmail = await User.findOne({ email });
 
-      if (userEmail) {
+      let fileUrl = ''; 
+      let publicId = '';
+
+      if (!req.file) {
+        // Generate a default image based on the first letter of the first name
+        const firstLetter = fname.charAt(0).toUpperCase() + lname.charAt(0).toUpperCase();
+        const defaultImage = createImageWithText(firstLetter); // Use the function from the utility file
+
+        // Upload the default image to Cloudinary
+        const defaultImageResult = await cloudinary.uploader.upload(defaultImage);
+        fileUrl = defaultImageResult.secure_url;
+        publicId = defaultImageResult.public_id;
+      } else {
+        // Proceed with the existing code for handling uploaded file
+        const result = await cloudinary.uploader.upload(req.file.path);
+        fileUrl = result.secure_url;
+        publicId = result.public_id;
+
+        // Delete the local file after successful upload to Cloudinary
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error("Error deleting local file:", err);
+            errorOccurred = true;
+          }
+        });
+      }
+
+      if (userEmail && req.file) {
         const filename = req.file.filename;
         const filePath = `img/${filename}`;
         fs.unlink(filePath, (err) => {
@@ -43,19 +69,6 @@ router.post(
         });
         return next(new ErrorHandler("User already exists", 400));
       }
-
-      // Use the Cloudinary library to upload the image to Cloudinary
-      const result = await cloudinary.uploader.upload(req.file.path);
-      const fileUrl = result.secure_url;
-      const publicId = result.public_id;
-
-      // Delete the local file after successful upload to Cloudinary
-      fs.unlink(req.file.path, (err) => {
-        if (err) {
-          console.error("Error deleting local file:", err);
-          errorOccurred = true;
-        }
-      });
 
       const user = {
         fname: fname,
@@ -72,39 +85,85 @@ router.post(
 
       const activationUrl = `http://localhost:3000/activation/${activationToken}`;
 
+      const mjmlTemplate = `
+      <mjml>
+      <mj-head>
+        <mj-title>Email Verification</mj-title>
+        <mj-font name="Helvetica Neue" href="https://fonts.googleapis.com/css?family=Helvetica+Neue" />
+        <mj-attributes>
+          <mj-all font-family="Helvetica Neue, Helvetica, Arial, sans-serif" />
+          <mj-text font-size="18px" line-height="1.5" />
+          <mj-button background-color="#F45E43" color="white" />
+        </mj-attributes>
+        <mj-style>
+          .header-top {
+            background-color: #000000;
+            color: white;
+          }
+          .logo img {
+            max-width: 100px;
+          }
+        </mj-style>
+      </mj-head>
+      <mj-body>
+        <mj-section padding="10px 0" css-class="header-top">
+          <mj-column>
+            <mj-image src="" css-class="logo" alt="logo" width="100px"></mj-image>
+          </mj-column>
+        </mj-section>
+        <mj-section background-color="#FEFEFE">
+          <mj-column>
+            <mj-text font-size="22px" font-weight="bold" color="#FEFEFE" padding-bottom="30px">Email verification</mj-text>
+            <mj-text>Hi ${fname},</mj-text>
+            <mj-text>You're almost set to start enjoying MOROCCAN PRODUCTS. Simply click the link below to verify your email address and get started. The link expires in 48 hours.</mj-text>
+            <mj-button href="${activationUrl}" background-color="#000000">Activate your account</mj-button>
+          </mj-column>
+        </mj-section>
+        <mj-section padding-top="30px">
+          <mj-column>
+            <mj-social font-size="15px" icon-size="30px" mode="horizontal">
+              <mj-social-element name="facebook"></mj-social-element>
+              <mj-social-element name="twitter"></mj-social-element>
+              <mj-social-element name="linkedin"></mj-social-element>
+              <mj-social-element name="instagram"></mj-social-element>
+            </mj-social>
+          </mj-column>
+        </mj-section>
+        <mj-section background-color="#EEEEEE" padding="20px 0">
+          <mj-column>
+            <mj-text font-size="12px" color="#333333" align="center">
+              800 Broadway Suit 1500 New York, NY 000423, USA
+            </mj-text>
+          </mj-column>
+        </mj-section>
+        <mj-section padding="10px 0">
+          <mj-column>
+            <mj-text font-size="12px" align="center">
+              <a href="link_to_privacy_policy" style="color: #333333; text-decoration: none;">Privacy Policy</a> | 
+              <a href="link_to_contact_details" style="color: #333333; text-decoration: none;">Contact Details</a>
+            </mj-text>
+          </mj-column>
+        </mj-section>
+      </mj-body>
+    </mjml>
+`;
+
       try {
         await sendMail({
           email: user.email,
-          subject: "Activate your account",
-          message: `Hello ${user.lname}, please click on the link to activate your account: ${activationUrl}`,
+          subject: "Activate your account (user)",
+          // Use the MJML template content in the message
+          message: mjmlTemplate,
         });
         res.status(201).json({
           success: true,
           message: `Please check your email (${user.email}) to activate your account!`,
         });
       } catch (error) {
-        errorOccurred = true;
         return next(new ErrorHandler(error.message, 500));
       }
-    } catch (err) {
-      errorOccurred = true;
-      fs.unlink(req.file.path, (err) => {
-        if (err) {
-          console.error("Error deleting local file:", err);
-        }
-      });
-      return next(new ErrorHandler(err.message, 400));
-    } finally {
-      // Delete the local file if an error occurred during processing
-      if (errorOccurred) {
-        fs.unlink(req.file.path, (err) => {
-          if (err) {
-            console.error("Error deleting local file:", err);
-          }
-        });
-      }
-    }
-  }
+    
+  })
 );
 
 // create activation token
@@ -152,19 +211,19 @@ router.post(
 );
 
 // sign up with google
-router.post('/signup-google',async (req, res, next) => {
+router.post("/signup-google", async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       sendToken(user, 201, res);
-      return next(new ErrorHandler("User already exists",400));
+      return next(new ErrorHandler("User already exists", 400));
     } else {
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
       const newUser = new User({
-        fname:req.body.fname,
-        lname:req.body.lname,
+        fname: req.body.fname,
+        lname: req.body.lname,
         email: req.body.email,
         password: generatedPassword,
         avatar: {
@@ -173,26 +232,88 @@ router.post('/signup-google',async (req, res, next) => {
       });
       await newUser.save();
       res.status(200).json({
-        success:true,
-        newUser
-      })}
+        success: true,
+        newUser,
+      });
+    }
   } catch (error) {
     next(error);
   }
 });
 
 // sign up with google
-router.post('/login-google',async (req, res, next) => {
+router.post("/login-google", async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return next(new ErrorHandler("User not found please Sign Up to continue",400));
+      return next(
+        new ErrorHandler("User not found please Sign Up to continue", 400)
+      );
     } else {
       sendToken(user, 201, res);
       res.status(200).json({
-        success:true,
-        user
-      })}
+        success: true,
+        user,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+// sign up with facebook
+router.post("/signup-facebook", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      sendToken(user, 201, res);
+      return next(new ErrorHandler("User already exists", 400));
+    } else {
+      // Assuming you generate a random password for Facebook users too
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      const newUser = new User({
+        fname: req.body.fname,
+        lname: req.body.lname,
+        email: req.body.email,
+        password: generatedPassword,
+        avatar: {
+          url: req.body.photo,
+        },
+      });
+
+      await newUser.save();
+
+      res.status(200).json({
+        success: true,
+        newUser,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Login with Facebook
+router.post("/login-facebook", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      return next(
+        new ErrorHandler("User not found. Please sign up to continue", 400)
+      );
+    } else {
+      sendToken(user, 201, res);
+
+      res.status(200).json({
+        success: true, 
+        user, 
+      });
+    }
   } catch (error) {
     next(error);
   }

@@ -12,6 +12,7 @@ const sendSellerToken = require("../utils/sellerToken");
 const upload = require("../multer");
 const fs = require("fs");
 const randomstring = require('randomstring');
+const createImageWithText = require("../utils/createImageWithText");
 
 
 router.use(function (req, res, next) {
@@ -26,36 +27,48 @@ router.use(function (req, res, next) {
 
 // create seller -----------------------------------------
 router.post("/create-seller-cloud", upload.single("file"), async (req, res, next) => {
-  let errorOccurred = false; 
 
-  try {
-    const { fname, lname, email, password, address, phoneNumber, zipCode } = req.body;
+    const { fname, lname, email, password} = req.body;
     const sellerEmail = await Seller.findOne({ email });
 
-    if (sellerEmail) {
-      const filename = req.file.filename;
-      const filePath = `img/${filename}`;
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({ message: "error deleting file" });
-        }
-      });
-      return next(new ErrorHandler("Seller already exists", 400));
-    }
+      let fileUrl = ''; 
+      let publicId = '';
 
-    const result = await cloudinary.uploader.upload(req.file.path);
+      if (!req.file) {
+        // Generate a default image based on the first letter of the first name
+        const firstLetter = fname.charAt(0).toUpperCase() + lname.charAt(0).toUpperCase();
+        const defaultImage = createImageWithText(firstLetter); // Use the function from the utility file
 
-    const fileUrl = result.secure_url;
-    const publicId = result.public_id;
+        // Upload the default image to Cloudinary
+        const defaultImageResult = await cloudinary.uploader.upload(defaultImage);
+        fileUrl = defaultImageResult.secure_url;
+        publicId = defaultImageResult.public_id;
+      } else {
+        // Proceed with the existing code for handling uploaded file
+        const result = await cloudinary.uploader.upload(req.file.path);
+        fileUrl = result.secure_url;
+        publicId = result.public_id;
 
-    console.log("req.file.path : ", req.file.path)
-    fs.unlink(req.file.path, (err) => {
-      if (err) {
-        console.error('Error deleting local file:', err);
-        errorOccurred = true;
+        // Delete the local file after successful upload to Cloudinary
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error("Error deleting local file:", err);
+            errorOccurred = true;
+          }
+        });
       }
-    });
+
+      if (sellerEmail && req.file) {
+        const filename = req.file.filename;
+        const filePath = `img/${filename}`;
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.log(err);
+            res.status(500).json({ message: "error deleting file" });
+          }
+        });
+        return next(new ErrorHandler("Seller already exists", 400));
+      }
 
     const seller = {
       fname: fname,
@@ -66,20 +79,80 @@ router.post("/create-seller-cloud", upload.single("file"), async (req, res, next
         url: fileUrl,
         publicId: publicId,
       },
-      address: address,
-      phoneNumber: phoneNumber,
-      zipCode: zipCode,
     };
 
     const activationToken = createActivationToken(seller);
 
     const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
 
+    const mjmlTemplate = `
+      <mjml>
+      <mj-head>
+        <mj-title>Email Verification</mj-title>
+        <mj-font name="Helvetica Neue" href="https://fonts.googleapis.com/css?family=Helvetica+Neue" />
+        <mj-attributes>
+          <mj-all font-family="Helvetica Neue, Helvetica, Arial, sans-serif" />
+          <mj-text font-size="18px" line-height="1.5" />
+          <mj-button background-color="#F45E43" color="white" />
+        </mj-attributes>
+        <mj-style>
+          .header-top {
+            background-color: #000000;
+            color: white;
+          }
+          .logo img {
+            max-width: 100px;
+          }
+        </mj-style>
+      </mj-head>
+      <mj-body>
+        <mj-section padding="10px 0" css-class="header-top">
+          <mj-column>
+            <mj-image src="" css-class="logo" alt="logo" width="100px"></mj-image>
+          </mj-column>
+        </mj-section>
+        <mj-section background-color="#FEFEFE">
+          <mj-column>
+            <mj-text font-size="22px" font-weight="bold" color="#FEFEFE" padding-bottom="30px">Email verification</mj-text>
+            <mj-text>Hi ${fname},</mj-text>
+            <mj-text>You're almost set to start enjoying MOROCCAN PRODUCTS. Simply click the link below to verify your email address and get started. The link expires in 48 hours.</mj-text>
+            <mj-button href="${activationUrl}" background-color="#000000">Activate your account</mj-button>
+          </mj-column>
+        </mj-section>
+        <mj-section padding-top="30px">
+          <mj-column>
+            <mj-social font-size="15px" icon-size="30px" mode="horizontal">
+              <mj-social-element name="facebook"></mj-social-element>
+              <mj-social-element name="twitter"></mj-social-element>
+              <mj-social-element name="linkedin"></mj-social-element>
+              <mj-social-element name="instagram"></mj-social-element>
+            </mj-social>
+          </mj-column>
+        </mj-section>
+        <mj-section background-color="#EEEEEE" padding="20px 0">
+          <mj-column>
+            <mj-text font-size="12px" color="#333333" align="center">
+              800 Broadway Suit 1500 New York, NY 000423, USA
+            </mj-text>
+          </mj-column>
+        </mj-section>
+        <mj-section padding="10px 0">
+          <mj-column>
+            <mj-text font-size="12px" align="center">
+              <a href="link_to_privacy_policy" style="color: #333333; text-decoration: none;">Privacy Policy</a> | 
+              <a href="link_to_contact_details" style="color: #333333; text-decoration: none;">Contact Details</a>
+            </mj-text>
+          </mj-column>
+        </mj-section>
+      </mj-body>
+    </mjml>
+`;
+
     try {
       await sendMail({
         email: seller.email,
-        subject: "Activate your seller account",
-        message: `Hello ${seller.lname}, please click on the link to activate your seller account: ${activationUrl}`,
+        subject: "Activate your account (Seller)",
+        message: mjmlTemplate ,
       });
       res.status(201).json({
         success: true,
@@ -89,23 +162,7 @@ router.post("/create-seller-cloud", upload.single("file"), async (req, res, next
       errorOccurred = true;
       return next(new ErrorHandler(error.message, 500));
     }
-  } catch (err) {
-    errorOccurred = true;
-    fs.unlink(req.file.path, (err) => {
-      if (err) {
-        console.error('Error deleting local file:', err);
-      }
-    });
-    return next(new ErrorHandler(err.message, 400));
-  } finally {
-    if (errorOccurred) {
-      fs.unlink(req.file.path, (err) => {
-        if (err) {
-          console.error('Error deleting local file:', err);
-        }
-      });
-    }
-  }
+  
 });
 
   // create activation token
@@ -155,6 +212,107 @@ const createActivationToken = (seller) => {
     })
   );
 
+  // sign up with google
+router.post("/signup-google", async (req, res, next) => {
+  try {
+    const seller = await Seller.findOne({ email: req.body.email });
+    if (seller) {
+      sendSellerToken(seller, 201, res);
+      return next(new ErrorHandler("Seller already exists", 400));
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const newSeller = new Seller({
+        fname: req.body.fname,
+        lname: req.body.lname,
+        email: req.body.email,
+        password: generatedPassword,
+        avatar: {
+          url: req.body.photo,
+        },
+      });
+      await newSeller.save();
+      res.status(200).json({
+        success: true,
+        newSeller,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// login with google
+router.post("/login-google", async (req, res, next) => {
+  try {
+    const seller = await Seller.findOne({ email: req.body.email });
+    if (!seller) {
+      return next(
+        new ErrorHandler("Seller not found please Sign Up to continue", 400)
+      );
+    } else {
+      sendSellerToken(seller, 201, res);
+      res.status(200).json({
+        success: true,
+        seller,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Sign up with Facebook
+router.post("/signup-facebook", async (req, res, next) => {
+  try {
+    const seller = await Seller.findOne({ email: req.body.email });
+    if (seller) {
+      sendSellerToken(seller, 201, res);
+      return next(new ErrorHandler("Seller already exists", 400));
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const newSeller = new Seller({
+        fname: req.body.fname,
+        lname: req.body.lname,
+        email: req.body.email,
+        password: generatedPassword,
+        avatar: {
+          url: req.body.photo,
+        },
+      });
+      await newSeller.save();
+      res.status(200).json({
+        success: true,
+        newSeller,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Login with Facebook
+router.post("/login-facebook", async (req, res, next) => {
+  try {
+    const seller = await Seller.findOne({ email: req.body.email });
+    if (!seller) {
+      return next(
+        new ErrorHandler("Seller not found. Please sign up to continue", 400)
+      );
+    } else {
+      sendSellerToken(seller, 201, res);
+      res.status(200).json({
+        success: true,
+        seller,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
   // update seller avatar
 router.put(
   "/update-seller-avatar",
@@ -312,7 +470,7 @@ router.post('/reset-password-seller', async (req, res, next) => {
   try {
     const { email } = req.body;
 
-    // Find the user by their email
+    // Find the seller by their email
     const seller = await Seller.findOne({ email });
 
     if (!seller) {
@@ -322,11 +480,11 @@ router.post('/reset-password-seller', async (req, res, next) => {
     // Generate a new random password
     const newRandomPassword = randomstring.generate(10);
 
-    // Update the user's password in the database
+    // Update the seller's password in the database
     seller.password = newRandomPassword;
     await seller.save();
 
-    // Send an email to the user with the new random password
+    // Send an email to the seller with the new random password
     await sendMail({
       email: seller.email,
       subject: "Reset Password For Seller",
@@ -359,7 +517,7 @@ router.get(
   })
 );
 
-// all users --- for admin
+// all sellers --- for admin
 router.get(
   "/admin-all-sellers",
   isAuthenticated,

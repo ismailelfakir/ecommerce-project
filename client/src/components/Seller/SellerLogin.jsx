@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import OAuthLoginSeller from "../../firebase/authentication/OAuthLoginSeller";
 
 const SellerLogin = () => {
   const navigate = useNavigate();
@@ -134,6 +135,12 @@ const SellerLogin = () => {
               </Link>
             </div>
           </form>
+          <div className="my-4 flex items-center">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <p className="mx-4 text-sm font-semibold text-gray-800">OR</p>
+            <div className="flex-1 border-t border-gray-300"></div>
+          </div>
+          <OAuthLoginSeller />
         </div>
       </div>
     </div>

@@ -6,14 +6,12 @@ import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
 import { RxAvatar } from "react-icons/rx";
+import OAuthSignupSeller from "../../firebase/authentication/OAuthSignupSeller";
 
 const SellerCreate = () => {
   const [email, setEmail] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState();
-  const [address, setAddress] = useState("");
-  const [zipCode, setZipCode] = useState();
   const [avatar, setAvatar] = useState();
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
@@ -29,9 +27,6 @@ const SellerCreate = () => {
     newForm.append("lname", lname);
     newForm.append("email", email);
     newForm.append("password", password);
-    newForm.append("address", address);
-    newForm.append("phoneNumber", phoneNumber);
-    newForm.append("zipCode", zipCode);
 
     axios.post(`${server}/seller/create-seller-cloud`, newForm , config)
     .then((res)=> {
@@ -42,52 +37,11 @@ const SellerCreate = () => {
         setEmail("");
         setPassword("");
         setAvatar();
-        setAddress("");
-        setPhoneNumber();
-        setZipCode("");
       }
     }).catch((err)=> {
       toast.error(err.response.data.message);
     });
-
-    // axios
-    //   .post(`${server}/seller/create-seller`, {
-    //     fname,
-    //     lname,
-    //     email,
-    //     password,
-    //     avatar,
-    //     zipCode,
-    //     address,
-    //     phoneNumber,
-    //   })
-    //   .then((res) => {
-    //     toast.success(res.data.message);
-    //     setFname("");
-    //     setLname("");
-    //     setEmail("");
-    //     setPassword("");
-    //     setAvatar();
-    //     setZipCode();
-    //     setAddress("");
-    //     setPhoneNumber();
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error.response.data.message);
-    //   });
   };
-
-  // const handleFileInputChange = (e) => {
-  //   const reader = new FileReader();
-
-  //   reader.onload = () => {
-  //     if (reader.readyState === 2) {
-  //       setAvatar(reader.result);
-  //     }
-  //   };
-
-  //   reader.readAsDataURL(e.target.files[0]);
-  // };
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -177,26 +131,6 @@ const SellerCreate = () => {
                 />
               </div>
             </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Phone Number
-              </label>
-              <div className="mt-1">
-                <input
-                  type="number"
-                  name="phone-number"
-                  required
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
-
             <div>
               <label
                 htmlFor="email"
@@ -212,44 +146,6 @@ const SellerCreate = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Address
-              </label>
-              <div className="mt-1">
-                <input
-                  type="address"
-                  name="address"
-                  required
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Zip Code
-              </label>
-              <div className="mt-1">
-                <input
-                  type="number"
-                  name="zipcode"
-                  required
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div>
@@ -303,6 +199,12 @@ const SellerCreate = () => {
               </Link>
             </div>
           </form>
+          <div className="my-4 flex items-center">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <p className="mx-4 text-sm font-semibold text-gray-800">OR</p>
+            <div className="flex-1 border-t border-gray-300"></div>
+          </div>
+          <OAuthSignupSeller />
         </div>
       </div>
     </div>

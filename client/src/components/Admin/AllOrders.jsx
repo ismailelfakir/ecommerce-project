@@ -8,7 +8,7 @@ import { getAllOrdersOfAdmin } from "../../redux/actions/order";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
 const AllOrders = () => {
-  const { orders, isLoading } = useSelector((state) => state.order);
+  const { adminOrders,adminOrderLoading } = useSelector((state) => state.order);
 
   const dispatch = useDispatch();
 
@@ -45,12 +45,19 @@ const AllOrders = () => {
       minWidth: 130,
       flex: 0.8,
     },
+    {
+      field: "createdAt",
+      headerName: "Order Date",
+      type: "number",
+      minWidth: 130,
+      flex: 0.8,
+    },
   ];
 
   const row = [];
 
-  orders &&
-    orders.forEach((item) => {
+  adminOrders &&
+  adminOrders.forEach((item) => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
@@ -61,7 +68,7 @@ const AllOrders = () => {
 
   return (
     <>
-      {isLoading ? (
+      {adminOrderLoading ? (
         <Loader />
       ) : (
         <div className="w-full mx-8 pt-1 mt-10 bg-white">
