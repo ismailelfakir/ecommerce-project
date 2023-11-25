@@ -50,6 +50,8 @@ import {
   AdminDashboardProducts,
   AdminDashboardEvents,
   AdminDashboardWithdraw,
+  AdminDashboardCategories,
+  AdminDashboardSubscription,
   AdminDashboardOrders,
 } from "./routes/AdminRoutes.js";
 
@@ -345,11 +347,28 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         ></Route>
+         <Route
+          path="/admin/dashboard-categories"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardCategories />
+            </ProtectedAdminRoute>
+          }
+        ></Route>
         <Route
           path="/admin-withdraw-request"
           element={
             <ProtectedAdminRoute>
               <AdminDashboardWithdraw />
+            </ProtectedAdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin-dashboard-subscription"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardSubscription />
             </ProtectedAdminRoute>
           }
         />

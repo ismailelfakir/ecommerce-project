@@ -1,22 +1,22 @@
 import React from 'react'
 import AdminHeader from '../../components/Admin/Layout/AdminHeader'
 import AdminSideBar from '../../components/Admin/Layout/AdminSideBar'
-import AllWithdraw from "../../components/Admin/AllWithdraw";
+import AdminSubscription from "../../components/Admin/AdminSubscription";
 
-const AdminDashboardWithdraw = () => {
+const AdminDashboardSubscription = () => {
   return (
     <div>
     <AdminHeader />
     <div className="w-full flex">
       <div className="flex items-start justify-between w-full">
         <div className="w-[80px] 800px:w-[330px]">
-          <AdminSideBar active={8} />
+          <AdminSideBar active={9} />
         </div>
-         <AllWithdraw />
+         <AdminSubscription />
       </div>
     </div>
   </div>
   )
 }
 
-export default AdminDashboardWithdraw
+export default AdminDashboardSubscription

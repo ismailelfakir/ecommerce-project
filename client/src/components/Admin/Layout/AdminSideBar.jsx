@@ -6,8 +6,11 @@ import { CiMoneyBill, CiSettings } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { BsHandbag } from "react-icons/bs";
-import { MdOutlineCategory, MdOutlineLocalOffer } from "react-icons/md";
+import { MdOutlineLocalOffer } from "react-icons/md";
+import { MdOutlineCategory } from "react-icons/md";
 import { AiOutlineSetting } from "react-icons/ai";
+import { MdOutlineSubscriptions } from "react-icons/md";
+
 
 const AdminSideBar = ({ active }) => {
   return (
@@ -109,7 +112,24 @@ const AdminSideBar = ({ active }) => {
         </Link>
       </div>
 
-
+      <div className="w-full flex items-center p-4">
+        <Link
+          to="/admin/dashboard-categories"
+          className="w-full flex items-center"
+        >
+          <MdOutlineCategory
+            size={30}
+            color={`${active === 7 ? "#1900ff" : "#555"}`}
+          />
+          <h5
+            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+              active === 7 ? "text-[#1900ff]" : "text-[#555]"
+            }`}
+          >
+            All Categories
+          </h5>
+        </Link>
+      </div>
 
       <div className="w-full flex items-center p-4">
         <Link
@@ -118,11 +138,11 @@ const AdminSideBar = ({ active }) => {
         >
           <CiMoneyBill
             size={30}
-            color={`${active === 7 ? "#1900ff" : "#555"}`}
+            color={`${active === 8 ? "#1900ff" : "#555"}`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 7 ? "text-[#1900ff]" : "text-[#555]"
+              active === 8 ? "text-[#1900ff]" : "text-[#555]"
             }`}
           >
             Withdraw Request
@@ -132,22 +152,24 @@ const AdminSideBar = ({ active }) => {
 
       <div className="w-full flex items-center p-4">
         <Link
-          to="/admin-categories"
+          to="/admin-dashboard-subscription"
           className="w-full flex items-center"
         >
-          <MdOutlineCategory
+          <MdOutlineSubscriptions
             size={30}
-            color={`${active === 7 ? "#1900ff" : "#555"}`}
+            color={`${active === 9 ? "#1900ff" : "#555"}`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 8 ? "text-[#1900ff]" : "text-[#555]"
+              active === 9 ? "text-[#1900ff]" : "text-[#555]"
             }`}
           >
-            Categories
+            Subscription
           </h5>
         </Link>
       </div>
+
+   
 
       <div className="w-full flex items-center p-4">
         <Link
@@ -156,17 +178,18 @@ const AdminSideBar = ({ active }) => {
         >
           <AiOutlineSetting
             size={30}
-            color={`${active === 8 ? "#1900ff" : "#555"}`}
+            color={`${active === 10 ? "#1900ff" : "#555"}`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 9 ? "text-[#1900ff]" : "text-[#555]"
+              active === 10 ? "text-[#1900ff]" : "text-[#555]"
             }`}
           >
             Settings
           </h5>
         </Link>
       </div>
+
 
     </div>
   );
