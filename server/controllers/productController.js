@@ -127,6 +127,7 @@ router.delete(
 );
 
 // update product info
+/*
 router.put(
   "/update-product/:id",
   isSeller,
@@ -168,7 +169,65 @@ router.put(
     }
   })
 );
+*/
 
+router.put(
+  "/update-product/:id",
+  isSeller,
+  upload.array('images'), // 'newImages' is the name of the field in the form
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const {
+        name,
+        description,
+        category,
+        tags,
+        originalPrice,
+        discountPrice,
+        stock,
+      } = req.body;
+      const product = await Product.findById(req.params.id);
+     
+
+      if (!product) {
+        return next(new ErrorHandler("Product not found", 400));
+      }
+
+      // Upload new images and add to product
+      const newImages = req.files;
+      for (const file of newImages) {
+        const result = await cloudinary.uploader.upload(file.path);
+        product.images.push({
+          url: result.secure_url,
+          publicId: result.public_id,
+        });
+        fs.unlinkSync(file.path); // Delete file from the server after upload
+      }
+
+      product.name = name;
+      product.description = description;
+      product.category = category;
+      product.tags = tags;
+      product.originalPrice = originalPrice;
+      product.discountPrice = discountPrice;
+      product.stock = stock;
+
+      await product.save();
+
+      res.status(201).json({
+        success: true,
+        product,
+      });
+    } catch (error) {
+      // Clean up any new images if an error occurs
+      req.files.forEach(file => {
+        fs.unlinkSync(file.path);
+      });
+
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 // get all products
 router.get(
   "/get-all-products",
@@ -295,5 +354,33 @@ router.delete(
   })
 );
 
+// Endpoint to delete an image from a product
+router.delete('/product/:productId/delete-image/:imagePublicId', async (req, res) => {
+  const { productId, imagePublicId } = req.params;
+  console.log("productId : ", productId , "imagePublicId : ", imagePublicId)
+
+  try {
+    const cloudinaryRes = await cloudinary.uploader.destroy(imagePublicId);
+
+    if (cloudinaryRes.result === 'ok') {
+      const product = await Product.findById(productId);
+
+      if (product) {
+        product.images = product.images.filter(img => img.publicId !== imagePublicId);
+
+        await product.save();
+
+        res.status(200).send({ message: 'Image deleted successfully.' });
+      } else {
+        res.status(404).send({ message: 'Product not found.' });
+      }
+    } else {
+      res.status(500).send({ message: 'Failed to delete image from Cloudinary.' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Server error occurred.', error: error.message });
+  }
+});
 
 module.exports = router;
