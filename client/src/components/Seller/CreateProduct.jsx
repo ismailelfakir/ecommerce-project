@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
 import { toast } from "react-toastify";
 import { createProduct } from "../../redux/actions/product";
+import { AiOutlinePlusCircle, AiOutlineClose } from "react-icons/ai"; // Importing the close icon
+
 
 const CreateProduct = () => {
   const { seller } = useSelector((state) => state.seller);
@@ -38,7 +39,11 @@ const CreateProduct = () => {
 
     let files = Array.from(e.target.files);
 
-    setImages((prevImages)=> [...prevImages , ...files]);
+    setImages((prevImages) => [...prevImages, ...files]);
+  };
+
+  const handleDeleteImage = (image) => {
+    setImages(images.filter((img) => img !== image));
   };
 
   const handleSubmit = (e) => {
@@ -183,15 +188,22 @@ const CreateProduct = () => {
             <label htmlFor="upload">
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
-            {images &&
-              images.map((i) => (
+            {images.map((image, index) => (
+              <div key={index} className="relative m-2">
                 <img
-                  src={URL.createObjectURL(i)}
-                  key={i}
-                  alt=""
-                  className="h-[120px] w-[120px] object-cover m-2"
+                  src={URL.createObjectURL(image)}
+                  alt={`Image ${index}`}
+                  className="h-[120px] w-[120px] object-cover"
                 />
-              ))}
+                <button
+                  onClick={() => handleDeleteImage(image)}
+                  className="absolute top-0 right-0 bg-red-500 rounded-full p-1"
+                >
+                  <AiOutlineClose color="white" />
+                </button>
+              </div>
+            ))}
+
           </div>
           <br />
           <div>

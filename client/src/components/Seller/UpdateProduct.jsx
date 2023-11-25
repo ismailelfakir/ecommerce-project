@@ -3,11 +3,19 @@ import { RxCross1 } from "react-icons/rx";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { categoriesData } from "../../static/data";
 import { updateProduct } from "../../redux/actions/product";
-import { useDispatch } from "react-redux";
+import { AiOutlineClose } from "react-icons/ai"; // Importing the close icon
+import { server } from "../../server";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { getAllProductsSeller } from "../../redux/actions/product";
+import { useDispatch, useSelector } from "react-redux";
+
+
 
 const UpdateProduct = ({ product, onUpdate }) => {
-  // Add state to manage the form fields
-  const [images, setImages] = useState([]);
+  const { products: productsVariable } = useSelector((state) => state.products);
+  const [images, setImages] = useState(product.images);
+  const [imageLocals, setImageLocals] = useState([]);
   const [name, setName] = useState(product.name);
   const [description, setDescription] = useState(product.description);
   const [category, setCategory] = useState(product.category);
@@ -15,32 +23,79 @@ const UpdateProduct = ({ product, onUpdate }) => {
   const [originalPrice, setOriginalPrice] = useState(product.originalPrice);
   const [discountPrice, setDiscountPrice] = useState(product.discountPrice);
   const [stock, setStock] = useState(product.stock);
-
-  
-const handleImageChange = (e) => {
-  const newImages = Array.from(e.target.files);
-
-  setImages([...images, ...newImages]);
-};
-
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const { seller } = useSelector((state) => state.seller);
   const dispatch = useDispatch();
+  const handleImageChange = (e) => {
+    const newImages = Array.from(e.target.files);
+    setImageLocals([...imageLocals, ...newImages]);
+  };
+
+
+
+
+
+  const handleDeleteImageConfirmation = (imagePublicId) => {
+    setSelectedImage(imagePublicId);
+    setShowModal(true);
+  };
+
+  const handleDeleteImageLoacls = (image) => {
+    setImageLocals(imageLocals.filter((img) => img !== image));
+  };
+
+  const handleDeleteImage = async () => {
+    const imageIdentifier = selectedImage;
+    console.log(`${server}/user/product/${product._id}/delete-image/${imageIdentifier}`)
+
+    try {
+      const response = await axios.delete(`${server}/product/product/${product._id}/delete-image/${imageIdentifier}`, {
+        withCredentials: true,
+      });
+
+
+      if (response.status === 200) {
+        setImages(images.filter((img) => img.publicId !== imageIdentifier));
+        toast.success('Image deleted successfully!');
+      } else {
+        toast.error('Failed to delete image');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Error in deleting image');
+    }
+
+    setShowModal(false);
+  };
 
   const handleUpdate = (e) => {
     e.preventDefault();
 
+    const newForm = new FormData();
+    imageLocals.forEach((image) => {
+      newForm.append("images", image);
+    });
+
+
+    newForm.append("name", name);
+    newForm.append("description", description);
+    newForm.append("category", category);
+    newForm.append("tags", tags);
+    newForm.append("originalPrice", originalPrice);
+    newForm.append("discountPrice", discountPrice);
+    newForm.append("stock", stock);
+
     dispatch(
       updateProduct(
         product._id,
-        name,
-        description,
-        category,
-        tags,
-        originalPrice,
-        discountPrice,
-        stock
+        newForm
       )
     );
-    window.location.reload();
+    dispatch(getAllProductsSeller(seller._id));
+    
+    console.log("productsVariable : ", productsVariable )
+    onUpdate()
   };
 
   return (
@@ -181,15 +236,73 @@ const handleImageChange = (e) => {
                       color="#555"
                     />
                   </label>
-                  {images &&
-                    images.map((image, index) => (
+                  {imageLocals.map((image, index) => (
+                    <div key={index} className="relative m-2">
                       <img
                         src={URL.createObjectURL(image)}
-                        key={index}
-                        alt=""
-                        className="h-[120px] w-[120px] object-cover m-2"
+                        alt={`Image ${index}`}
+                        className="h-[120px] w-[120px] object-cover"
                       />
-                    ))}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteImageLoacls(image)}
+                        className="absolute top-0 right-0 bg-blue-700 rounded-full p-1"
+                      >
+                        <AiOutlineClose color="white" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {images.map((image, index) => (
+                    <div key={index} className="relative m-2">
+                      <img
+                        src={image.url}
+                        alt={`Product ${index}`}
+                        className="h-[120px] w-[120px] object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteImageConfirmation(image.publicId)}
+                        className="absolute top-0 right-0 bg-red-500 rounded-full p-1"
+                      >
+                        <AiOutlineClose color="white" />
+                      </button>
+                    </div>
+                  ))}
+                  {showModal && (
+                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+                      <div className="bg-white p-5 rounded-md shadow-xl relative">
+                        <button
+                          type="button"
+                          onClick={() => setShowModal(false)}
+                          className="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-900 transition ease-in-out duration-150"
+                        >
+                          <AiOutlineClose size={24} />
+                        </button>
+                        <div className="text-center">
+                          <h4 className="text-lg font-semibold text-gray-800">Are you sure?</h4>
+                          <p className="text-gray-600">Do you really want to delete these records? This process cannot be undone.</p>
+                        </div>
+                        <div className="mt-5 sm:mt-6 flex justify-center">
+                          <button
+                            type="button"
+                            onClick={() => setShowModal(false)}
+                            className="bg-gray-500 text-white rounded-md px-4 py-2 mr-2 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleDeleteImage}
+                            className="bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                 </div>
                 <br />
                 <div>
