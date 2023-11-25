@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Define a Subscriber Schema with firstname, lastname, and email
+// Define a Subscriber Schema with  email and createdAt
 const subscriberSchema = new mongoose.Schema({
    
     email: {

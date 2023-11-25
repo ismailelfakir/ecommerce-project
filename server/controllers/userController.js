@@ -506,7 +506,6 @@ router.get(
 );
 
 //Subscriber 
-
 router.post('/saveSubscriber', async (req, res) => {
   try {
     const { email } = req.body;
