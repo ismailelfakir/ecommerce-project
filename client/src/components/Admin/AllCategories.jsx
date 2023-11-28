@@ -9,6 +9,9 @@ import styles from "../../styles/styles";
 import Loader from "../Layout/Loader";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { AiOutlineClose } from "react-icons/ai"; // Importing the close icon
+import { deleteCategorie } from "../../redux/actions/categorie";
+
 
 const AllCategories = () => {
   const [open, setOpen] = useState(false);
@@ -19,6 +22,8 @@ const AllCategories = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [idCategoriesDelete, setIdCategoriesDelete] = useState(null);
 
   
   const [value, setValue] = useState(null);
@@ -34,7 +39,7 @@ const AllCategories = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`${server}/categories/admin-all-categories`, {
+      .get(`${server}/categories/admin-all-categories/`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -46,16 +51,28 @@ const AllCategories = () => {
       });
   }, [dispatch]);
 
-  const handleDelete = async (id) => {
-    axios
-      .delete(`${server}/categories/admin-delete-categories/${id}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        toast.success("Categorie code deleted succesfully!");
-      });
-    window.location.reload();
-  };
+ // Function to handle opening the Delete component
+
+ const handleDeleteCategories = () => {
+  dispatch(deleteCategorie(idCategoriesDelete));
+  window.location.reload();
+
+};
+const handleDelete = (id) => {
+  setShowModal(true)
+  setIdCategoriesDelete(id)
+};
+
+  // const handleDelete = async (id) => {
+  //   axios
+  //     .delete(`${server}/categories/admin-delete-categories/${id}`, {
+  //       withCredentials: true,
+  //     })
+  //     .then((res) => {
+  //       toast.success("Categorie code deleted succesfully!");
+  //     });
+  //   window.location.reload();
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -221,6 +238,39 @@ const AllCategories = () => {
             </div>
           )}
         </div>
+      )}
+      {showModal && (
+                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+                      <div className="bg-white p-5 rounded-md shadow-xl relative">
+                        <button
+                          type="button"
+                          onClick={() => setShowModal(false)}
+                          className="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-900 transition ease-in-out duration-150"
+                        >
+                          <AiOutlineClose size={24} />
+                        </button>
+                        <div className="text-center">
+                          <h4 className="text-lg font-semibold text-gray-800">Are you sure?</h4>
+                          <p className="text-gray-600">Do you really want to delete these records? This process cannot be undone.</p>
+                        </div>
+                        <div className="mt-5 sm:mt-6 flex justify-center">
+                          <button
+                            type="button"
+                            onClick={() => setShowModal(false)}
+                            className="bg-gray-500 text-white rounded-md px-4 py-2 mr-2 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleDeleteCategories}
+                            className="bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
       )}
     </>
   );

@@ -8,12 +8,17 @@ import { getAllProductsSeller } from "../../redux/actions/product";
 import { deleteProduct } from "../../redux/actions/product";
 import Loader from "../Layout/Loader";
 import UpdateProduct from './UpdateProduct';
+import { AiOutlineClose } from "react-icons/ai"; // Importing the close icon
+
 
 const AllProducts = () => {
   const { products, isLoading } = useSelector((state) => state.products);
   const { seller } = useSelector((state) => state.seller);
   const [openEdit, setOpenEdit] = useState(null);
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
+  const [idProductDelete, setIdProductDelete] = useState(null);
+
 
   // Function to handle opening the edit component
   const handleOpenEdit = (productId) => {
@@ -21,6 +26,18 @@ const AllProducts = () => {
     const updatedProduct = products.find(product => product._id === productId);
 
     setOpenEdit(updatedProduct);
+  };
+
+  // Function to handle opening the Delete component
+
+  const handleDeleteProduct = () => {
+    dispatch(deleteProduct(idProductDelete));
+    window.location.reload();
+
+  };
+  const handleDelete = (id) => {
+    setShowModal(true)
+    setIdProductDelete(id)
   };
 
   // Function to handle closing the edit component
@@ -33,11 +50,9 @@ const AllProducts = () => {
   useEffect(() => {
     dispatch(getAllProductsSeller(seller._id));
   }, [dispatch]);
+    // Function to handle opening the Delete component
 
-  const handleDelete = (id) => {
-    dispatch(deleteProduct(id));
-    
-  };
+
 
   const columns = [
     {
@@ -157,8 +172,42 @@ const AllProducts = () => {
           handleOpenEdit(updatedProduct);
           handleCloseEdit(); // Close the edit dialog when the update is successful
         }}
+        
       />
       )}
+       {showModal && (
+                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+                      <div className="bg-white p-5 rounded-md shadow-xl relative">
+                        <button
+                          type="button"
+                          onClick={() => setShowModal(false)}
+                          className="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-900 transition ease-in-out duration-150"
+                        >
+                          <AiOutlineClose size={24} />
+                        </button>
+                        <div className="text-center">
+                          <h4 className="text-lg font-semibold text-gray-800">Are you sure?</h4>
+                          <p className="text-gray-600">Do you really want to delete these records? This process cannot be undone.</p>
+                        </div>
+                        <div className="mt-5 sm:mt-6 flex justify-center">
+                          <button
+                            type="button"
+                            onClick={() => setShowModal(false)}
+                            className="bg-gray-500 text-white rounded-md px-4 py-2 mr-2 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleDeleteProduct}
+                            className="bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
     </>
   );
 };

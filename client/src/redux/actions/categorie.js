@@ -1,7 +1,7 @@
 import axios from "axios";
 import { server } from "../../server";
 
-// delete product of a Seller
+// delete Categories of a Seller
 export const deleteCategorie = (id) => async (dispatch) => {
     try {
       dispatch({
@@ -9,7 +9,7 @@ export const deleteCategorie = (id) => async (dispatch) => {
       });
   
       const { data } = await axios.delete(
-        `${server}/categorie/delete-categorie/${id}`,
+        `${server}/categories/admin-delete-categories/${id}`,
         {
           withCredentials: true,
         }
