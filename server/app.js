@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 // config
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({
-    path: "config/.env",
+    path: "./.env",
   });
 }
 
@@ -34,7 +34,7 @@ const conversationController = require("./controllers/conversationController");
 const messagesController = require("./controllers/messagesController");
 const orderController = require("./controllers/orderController");
 const paymentController = require("./controllers/paymentController");
-const categoriesController = require("./controllers/categorie");
+const categoriesController = require("./controllers/categorieController");
 
 
 

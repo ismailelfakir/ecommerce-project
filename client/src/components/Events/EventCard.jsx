@@ -26,22 +26,22 @@ const EventCard = ({ active, data }) => {
   }
   return (
     <div
-      className={`w-full block bg-white rounded-lg ${
+      className={`w-full block bg-gray-50 rounded-lg ${
         active ? "unset" : "mb-12"
-      } lg:flex p-2`}
+      } lg:flex p-2 dark:bg-gray-700 mt-12`}
     >
-      <div className="w-full lg:-w[50%] m-auto">
-        <img src={`${data.images[0].url}`} alt="" />
+      <div className="w-full lg:-w[50%] m-2">
+        <img src={`${data.images[0].url}`} alt="" className="rounded-lg" />
       </div>
-      <div className="w-full lg:[w-50%] flex flex-col justify-center">
+      <div className="w-full lg:[w-50%] m-2 flex flex-col justify-center">
         <h2 className={`${styles.productTitle}`}>{data?.name}</h2>
-        <p>{data?.description}</p>
+        <p className="text-gray-700 dark:text-gray-300 ">{data?.description}</p>
         <div className="flex py-2 justify-between">
           <div className="flex">
             <h5 className="font-[500] text-[18px] text-[#d55b45] pr-3 line-through">
               {data?.originalPrice} DH
             </h5>
-            <h5 className="font-bold text-[20px] text-[#333] font-Roboto">
+            <h5 className="font-bold text-[20px] text-gray-900 dark:text-gray-100 font-Roboto">
               {data?.discountPrice} DH
             </h5>
           </div>

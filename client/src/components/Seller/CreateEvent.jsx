@@ -91,27 +91,27 @@ const CreateEvent = () => {
     dispatch(createevent(newForm));
   }
   return (
-    <div className="w-[90%] 800px:w-[50%] bg-white  shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
-      <h5 className="text-[30px] font-Poppins text-center">Create Event</h5>
+    <div className="w-[90%] 800px:w-[50%] bg-gray-200 dark:bg-gray-800  shadow h-[80vh] rounded-lg p-3 overflow-y-scroll">
+      <h5 className="text-[30px] font-Poppins text-center dark:text-gray-100 text-gray-900">Create Event</h5>
       {/* create event form */}
       <form onSubmit={handleSubmit}>
         <br />
         <div>
-          <label className="pb-2">
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
             Name <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             name="name"
             value={name}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="mt-2 appearance-none block w-full px-3 h-[35px] bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your event product name..."
           />
         </div>
         <br />
         <div>
-          <label className="pb-2">
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
             Description <span className="text-red-500">*</span>
           </label>
           <textarea
@@ -121,25 +121,25 @@ const CreateEvent = () => {
             type="text"
             name="description"
             value={description}
-            className="mt-2 appearance-none block w-full pt-2 px-3 border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="mt-2 appearance-none block w-full pt-2 px-3 bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter your event product description..."
           ></textarea>
         </div>
         <br />
         <div>
-          <label className="pb-2">
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
             Category <span className="text-red-500">*</span>
           </label>
           <select
-            className="w-full mt-2 border h-[35px] rounded-[5px]"
+            className="w-full mt-2 bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-lg h-[35px]"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="Choose a category">Choose a category</option>
+            <option value="Choose a category" className="text-gray-300 dark:text-gray-700" >Choose a category</option>
             {categoriesData &&
               categoriesData.map((i) => (
-                <option value={i.title} key={i.title}>
+                <option value={i.title} key={i.title} className="text-gray-300 dark:text-gray-700">
                   {i.title}
                 </option>
               ))}
@@ -147,59 +147,63 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">Tags</label>
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
+            Tags
+          </label>
           <input
             type="text"
             name="tags"
             value={tags}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="mt-2 appearance-none block w-full px-3 h-[35px] bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setTags(e.target.value)}
             placeholder="Enter your event product tags..."
           />
         </div>
         <br />
         <div>
-          <label className="pb-2">Original Price</label>
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
+            Original Price
+          </label>
           <input
             type="number"
             name="price"
             value={originalPrice}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="mt-2 appearance-none block w-full px-3 h-[35px] bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setOriginalPrice(e.target.value)}
             placeholder="Enter your event product price..."
           />
         </div>
         <br />
         <div>
-          <label className="pb-2">
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
             Price (With Discount) <span className="text-red-500">*</span>
           </label>
           <input
             type="number"
             name="price"
             value={discountPrice}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="mt-2 appearance-none block w-full px-3 h-[35px] bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-lg rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setDiscountPrice(e.target.value)}
             placeholder="Enter your event product price with discount..."
           />
         </div>
         <br />
         <div>
-          <label className="pb-2">
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
             Product Stock <span className="text-red-500">*</span>
           </label>
           <input
             type="number"
             name="price"
             value={stock}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="mt-2 appearance-none block w-full px-3 h-[35px] bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setStock(e.target.value)}
             placeholder="Enter your event product stock..."
           />
         </div>
         <br />
         <div>
-          <label className="pb-2">
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
             Event Start Date <span className="text-red-500">*</span>
           </label>
           <input
@@ -207,7 +211,7 @@ const CreateEvent = () => {
             name="price"
             id="start-date"
             value={startDate ? startDate.toISOString().slice(0, 10) : ""}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="mt-2 appearance-none block w-full px-3 h-[35px] bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={handleStartDateChange}
             min={today}
             placeholder="Enter your event product stock..."
@@ -215,7 +219,7 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
             Event End Date <span className="text-red-500">*</span>
           </label>
           <input
@@ -223,7 +227,7 @@ const CreateEvent = () => {
             name="price"
             id="start-date"
             value={endDate ? endDate.toISOString().slice(0, 10) : ""}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="mt-2 appearance-none block w-full px-3 h-[35px] bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={handleEndDateChange}
             min={minEndDate}
             placeholder="Enter your event product stock..."
@@ -231,7 +235,7 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
+        <label className="pb-2 text-gray-700 dark:text-gray-300">
             Upload Images <span className="text-red-500">*</span>
           </label>
           <input
@@ -244,7 +248,9 @@ const CreateEvent = () => {
           />
           <div className="w-full flex items-center flex-wrap">
             <label htmlFor="upload">
-              <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
+              <AiOutlinePlusCircle size={35} 
+               className="mt-3 dark:text-gray-300 text-gray-700" 
+               />
             </label>
             {images &&
               images.map((i) => (
@@ -261,7 +267,7 @@ const CreateEvent = () => {
             <input
               type="submit"
               value="Create"
-              className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-2 cursor-pointer appearance-none text-center text-gray-900 dark:text-gray-50 hover:dark:bg-gray-500 hover:bg-gray-300 block w-full px-3 h-[35px] bg-gray-50 dark:bg-gray-900 border dark:border-gray-600 border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
         </div>

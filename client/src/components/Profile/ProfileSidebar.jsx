@@ -17,7 +17,17 @@ import { useSelector } from "react-redux";
 
 const ProfileSidebar = ({ setActive, active }) => {
   const navigate = useNavigate();
- const {user} = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
+
+  const sidebarItems = [
+    { id: 1, icon: <RxPerson size={20} className={`text-gray-800 dark:text-gray-200 ${active === 1 ? "text-[#1900ff] dark:text-[#1900ff] " : ""}`} />, text: "Profile" },
+    { id: 2, icon: <HiOutlineShoppingBag size={20} className={`text-gray-800 dark:text-gray-200 ${active === 2 ? "text-[#1900ff] dark:text-[#1900ff] " : ""}`} />, text: "Orders" },
+    { id: 3, icon: <HiOutlineReceiptRefund size={20} className={`text-gray-800 dark:text-gray-200 ${active === 3 ? "text-[#1900ff] dark:text-[#1900ff] " : ""}`} />, text: "Refunds" },
+    { id: 4, icon: <AiOutlineMessage size={20} className={`text-gray-800 dark:text-gray-200 ${active === 4 ? "text-[#1900ff] dark:text-[#1900ff] " : ""}`} />, text: "Inbox" },
+    { id: 5, icon: <MdOutlineTrackChanges size={20} className={`text-gray-800 dark:text-gray-200 ${active === 5 ? "text-[#1900ff] dark:text-[#1900ff] " : ""}`} />, text: "Track Order" },
+    { id: 6, icon: <RiLockPasswordLine size={20} className={`text-gray-800 dark:text-gray-200 ${active === 6 ? "text-[#1900ff] dark:text-[#1900ff] " : ""}`} />, text: "Change Password" },
+    { id: 7, icon: <TbAddressBook size={20} className={`text-gray-800 dark:text-gray-200 ${active === 7 ? "text-[#1900ff] dark:text-[#1900ff] " : ""}`} />, text: "Address" },
+  ];
 
   const logoutHandler = () => {
     axios
@@ -31,141 +41,67 @@ const ProfileSidebar = ({ setActive, active }) => {
         console.log(error.response.data.message);
       });
   };
- 
   return (
-    <div className="w-full bg-white shadow-sm rounded-[10px] p-4 pt-8">
-      <div
-        className= {`flex items-center cursor-pointer w-full mb-8 p-1 rounded-lg hover:bg-[#F6F6F5] 
-        ${active === 1 ? "bg-[#F6F6F5] " : "" }`}
-        onClick={() => setActive(1)}
-      >
-        <RxPerson size={20} color={active === 1 ? "#1900ff" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 1 ? "text-[#1900ff]" : ""
-          } 800px:block hidden`}
+    <div className="w-full bg-gray-50 dark:bg-gray-950 shadow-sm rounded-[10px] p-4 pt-8">
+      {sidebarItems.map((item) => (
+        <div
+          key={item.id}
+          className={`flex items-center cursor-pointer w-full mb-6 p-2 rounded-lg 
+            hover:bg-[#F6F6F5] dark:hover:bg-gray-800 ${
+              active === item.id ? "bg-[#F6F6F5] dark:bg-gray-800 " : ""
+            }`}
+          onClick={() => {
+            setActive(item.id);
+          }}
         >
-          Profile
-        </span>
-      </div>
-      <div
-        className= {`flex items-center cursor-pointer w-full mb-8 p-1 rounded-lg hover:bg-[#F6F6F5] 
-        ${active === 2 ? "bg-[#F6F6F5] " : "" }`}
-        onClick={() => setActive(2)}
-      >
-        <HiOutlineShoppingBag size={20} color={active === 2 ? "#1900ff" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 2 ? "text-[#1900ff] " : ""
-          } 800px:block hidden`}
-        >
-          Orders
-        </span>
-      </div>
-      <div
-        className= {`flex items-center cursor-pointer w-full mb-8 p-1 rounded-lg hover:bg-[#F6F6F5] 
-        ${active === 3 ? "bg-[#F6F6F5] " : "" }`}
-        onClick={() => setActive(3)}
-      >
-        <HiOutlineReceiptRefund size={20} color={active === 3 ? "#1900ff" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 3 ? "text-[#1900ff]" : ""
-          } 800px:block hidden`}
-        >
-          Refunds
-        </span>
-      </div>
-
-      <div
-        className= {`flex items-center cursor-pointer w-full mb-8 p-1 rounded-lg hover:bg-[#F6F6F5] 
-        ${active === 4 ? "bg-[#F6F6F5] " : "" }`}
-        onClick={() => setActive(4) || navigate("/inbox")}
-      >
-        <AiOutlineMessage size={20} color={active === 4 ? "#1900ff" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 4 ? "text-[#1900ff]" : ""
-          } 800px:block hidden`}
-        >
-          Inbox
-        </span>
-      </div>
-
-      <div
-        className= {`flex items-center cursor-pointer w-full mb-8 p-1 rounded-lg hover:bg-[#F6F6F5] 
-        ${active === 5 ? "bg-[#F6F6F5] " : "" }`}
-        onClick={() => setActive(5)}
-      >
-        <MdOutlineTrackChanges size={20} color={active === 5 ? "#1900ff" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 5 ? "text-[#1900ff]" : ""
-          } 800px:block hidden`}
-        >
-          Track Order
-        </span>
-      </div>
-
-      <div
-        className= {`flex items-center cursor-pointer w-full mb-8 p-1 rounded-lg hover:bg-[#F6F6F5] 
-        ${active === 6 ? "bg-[#F6F6F5] " : "" }`}
-        onClick={() => setActive(6)}
-      >
-        <RiLockPasswordLine size={20} color={active === 6 ? "#1900ff" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 6 ? "text-[#1900ff]" : ""
-          } 800px:block hidden`}
-        >
-          Change Password
-        </span>
-      </div>
-
-      <div
-        className= {`flex items-center cursor-pointer w-full mb-8 p-1 rounded-lg hover:bg-[#F6F6F5] 
-        ${active === 7 ? "bg-[#F6F6F5] " : "" }`}
-        onClick={() => setActive(7)}
-      >
-        <TbAddressBook size={20} color={active === 7 ? "#1900ff" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 7 ? "text-[#1900ff]" : ""
-          } 800px:block hidden`}
-        >
-          Address
-        </span>
-      </div>
-
-      {user && user?.role === "Admin" && (
-        <Link to="/admin/dashboard">
-          <div
-            className="flex items-center cursor-pointer w-full mb-8"
-            onClick={() => setActive(8)}
+          {item.icon}
+          <span
+            className={`pl-3 ${
+              active === item.id ? " text-[#1900ff] dark:text-[#1900ff]" : ""
+            } 800px:block hidden dark:text-gray-300`}
           >
-            <MdOutlineAdminPanelSettings
-              size={20}
-              color={active === 7 ? "#1900ff" : ""}
-            />
-            <span
-              className={`pl-3 ${
-                active === 8 ? "text-[#1900ff]" : ""
-              } 800px:block hidden`}
-            >
-              Admin Dashboard
-            </span>
-          </div>
-        </Link>
+            {item.text}
+          </span>
+        </div>
+      ))}
+
+      {user && user.role === "Admin" && (
+        <div
+        className={`flex items-center cursor-pointer w-full mb-6 p-2 rounded-lg 
+        hover:bg-[#F6F6F5] dark:hover:bg-gray-800 ${
+          active === 8 ? "bg-[#F6F6F5] dark:bg-gray-800" : ""
+        }`}          
+        onClick={() => navigate("/admin/dashboard")}
+        >
+          <MdOutlineAdminPanelSettings
+            size={20}
+            className={`text-gray-800 dark:text-gray-200 ${active === 8 ? "text-[#1900ff] dark:text-[#1900ff] " : ""}`}
+          />
+          <span
+            className={`pl-3 ${
+              active === 8 ? "text-[#1900ff] dark:text-[#1900ff]" : ""
+            } 800px:block hidden dark:text-gray-300`}
+          >
+            Admin Dashboard
+          </span>
+        </div>
       )}
+
       <div
-        className="single_item flex items-center cursor-pointer w-full mb-8"
+        className={`flex items-center cursor-pointer w-full mb-6 p-2 rounded-lg 
+          hover:bg-[#F6F6F5] dark:hover:bg-gray-800 ${
+            active === 9 ? "bg-[#F6F6F5] dark:bg-gray-800" : ""
+          }`}
         onClick={logoutHandler}
       >
-        <AiOutlineLogin size={20} color={active === 8 ? "#1900ff" : ""} />
+        <AiOutlineLogin 
+        size={20} 
+        className={`text-gray-800 dark:text-gray-200 ${active === 9 ? "text-[#1900ff] dark:text-[#1900ff] " : ""}`}
+        />
         <span
           className={`pl-3 ${
-            active === 8 ? "text-[#1900ff]" : ""
-          } 800px:block hidden`}
+            active === 9 ? "text-[#1900ff] dark:text-[#1900ff]" : ""
+          } 800px:block hidden dark:text-gray-300`}
         >
           Log out
         </span>

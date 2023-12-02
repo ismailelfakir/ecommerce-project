@@ -5,7 +5,7 @@ import AllOrders from "../../components/Seller/AllOrders";
 
 const ShopAllOrders = () => {
   return (
-        <div>
+    <div className="bg-gray-300 dark:bg-gray-900">
             <DashboardHeader />
             <div className="flex justify-between w-full">
                 <div className="w-[80px] 800px:w-[330px]">

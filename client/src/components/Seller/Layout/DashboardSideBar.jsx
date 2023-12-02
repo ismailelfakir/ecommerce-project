@@ -11,20 +11,26 @@ import { HiOutlineReceiptRefund } from "react-icons/hi";
 
 const DashboardSideBar = ({ active }) => {
   return (
-    <div className="w-full h-[90vh] bg-white shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
+    <div className="w-full h-[90vh] bg-gray-100 dark:bg-gray-950 shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
       {/* single item */}
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 1 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-lg hover:bg-gray-200 dark:hover:bg-gray-800
+      ${active === 1 ? "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link to="/dashboard" className="w-full flex items-center">
           <RxDashboard
             size={30}
-            color={`${active === 1 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 1
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 1 ? "text-[#1900ff]" : "text-[#555]"
+              active === 1
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
             }`}
           >
             Dashboard
@@ -33,17 +39,23 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 2 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 2 ? "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link to="/dashboard-orders" className="w-full flex items-center">
           <FiShoppingBag
             size={30}
-            color={`${active === 2 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 2
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 2 ? "text-[#1900ff]" : "text-[#555]"
+              active === 2
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
             }`}
           >
             All Orders
@@ -52,14 +64,23 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 3 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 3 ? "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link to="/dashboard-products" className="w-full flex items-center">
-          <FiPackage size={30} color={`${active === 3 ? "#1900ff" : "#555"}`} />
+          <FiPackage
+            size={30}
+            className={`${
+              active === 3
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
+          />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 3 ? "text-[#1900ff]" : "text-[#555]"
+              active === 3
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
             }`}
           >
             All Products
@@ -68,8 +89,8 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 4 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 4 ? "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link
           to="/dashboard-create-product"
@@ -77,11 +98,17 @@ const DashboardSideBar = ({ active }) => {
         >
           <AiOutlineFolderAdd
             size={30}
-            color={`${active === 4 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 4
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 4 ? "text-[#1900ff]" : "text-[#555]"
+              active === 4 
+              ? "text-[#1900ff]"
+              : "text-gray-700 dark:text-gray-300"
             }`}
           >
             Create Product
@@ -90,17 +117,23 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 5 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 5 ? "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link to="/dashboard-events" className="w-full flex items-center">
           <MdOutlineLocalOffer
             size={30}
-            color={`${active === 5 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 5
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 5 ? "text-[#1900ff]" : "text-[#555]"
+              active === 5 
+              ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
             }`}
           >
             All Events
@@ -109,17 +142,23 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 6 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 6 ? "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link to="/dashboard-create-event" className="w-full flex items-center">
           <VscNewFile
             size={30}
-            color={`${active === 6 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 6
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 6 ? "text-[#1900ff]" : "text-[#555]"
+              active === 6
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
             }`}
           >
             Create Event
@@ -128,8 +167,8 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 7 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 7 ? "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link
           to="/dashboard-withdraw-money"
@@ -137,11 +176,17 @@ const DashboardSideBar = ({ active }) => {
         >
           <CiMoneyBill
             size={30}
-            color={`${active === 7 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 7
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 7 ? "text-[#1900ff]" : "text-[#555]"
+              active === 7
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
             }`}
           >
             Withdraw Money
@@ -150,17 +195,23 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 8 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 8 ? "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link to="/dashboard-messages" className="w-full flex items-center">
           <BiMessageSquareDetail
             size={30}
-            color={`${active === 8 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 8
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 8 ? "text-[#1900ff]" : "text-[#555]"
+              active === 8
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
             }`}
           >
             Inbox
@@ -169,17 +220,23 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 9 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 9 ?  "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link to="/dashboard-coupons" className="w-full flex items-center">
           <AiOutlineGift
             size={30}
-            color={`${active === 9 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 9
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 9 ? "text-[#1900ff]" : "text-[#555]"
+              active === 9
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
             }`}
           >
             Discount Codes
@@ -188,17 +245,23 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 10 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 10 ?  "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link to="/dashboard-refunds" className="w-full flex items-center">
           <HiOutlineReceiptRefund
             size={30}
-            color={`${active === 10 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 10
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 10 ? "text-[#1900ff]" : "text-[#555]"
+              active === 10
+              ? "text-[#1900ff]"
+              : "text-gray-700 dark:text-gray-300"
             }`}
           >
             Refunds
@@ -207,18 +270,23 @@ const DashboardSideBar = ({ active }) => {
       </div>
 
       <div
-      className= {`w-full flex items-center p-4 rounded-lg hover:bg-[#F6F6F5] 
-      ${active === 11 ? "bg-[#F6F6F5] " : "" }`}
+        className={`w-full flex items-center p-4 rounded-l-2xl hover:bg-gray-200 dark:hover:bg-gray-800
+        ${active === 11 ? "bg-gray-200 dark:bg-gray-800 " : ""}`}
       >
         <Link to="/settings" className="w-full flex items-center">
           <CiSettings
             size={30}
-            color={`${active === 11 ? "#1900ff" : "#555"}`}
+            className={`${
+              active === 11
+                ? "text-[#1900ff]"
+                : "text-gray-700 dark:text-gray-300"
+            }`}
           />
           <h5
             className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 11 ? "text-[#1900ff]" : "text-[#555]"
-            }`}
+              active === 11
+              ? "text-[#1900ff]"
+              : "text-gray-700 dark:text-gray-300"            }`}
           >
             Settings
           </h5>

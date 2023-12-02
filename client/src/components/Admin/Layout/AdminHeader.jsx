@@ -10,14 +10,14 @@ const AdminHeader = () => {
     const {user} = useSelector((state) => state.user);
 
   return (
-         <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
+    <div className="w-full h-[80px] bg-gray-50 dark:bg-gray-800  shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
         <Link to="/">
           {/* <img
             src=""
             alt=""
           /> */}
-     <h1 className="text-4xl font-bold">LOGO</h1>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">LOGO</h1>
         </Link>
       </div>
       <div className="flex items-center">
@@ -31,26 +31,27 @@ const AdminHeader = () => {
           </Link> */}
           <Link to="/admin/dashboard-events" className="800px:block hidden">
             <MdOutlineLocalOffer
-              color="#555"
               size={30}
-              className="mx-5 cursor-pointer"
+              className="mx-5 cursor-pointer text-gray-900 dark:text-gray-100"
+           
             />
           </Link>
           <Link to="/admin/dashboard-products" className="800px:block hidden">
             <FiShoppingBag
-              color="#555"
               size={30}
-              className="mx-5 cursor-pointer"
+              className="mx-5 cursor-pointer text-gray-900 dark:text-gray-100"
             />
           </Link>
           <Link to="/admin/dashboard-orders" className="800px:block hidden">
-            <FiPackage color="#555" size={30} className="mx-5 cursor-pointer" />
+            <FiPackage  size={30}
+              className="mx-5 cursor-pointer text-gray-900 dark:text-gray-100"
+           />
           </Link>
           <Link to="/admin-all-conversation" className="800px:block hidden">
             <BiMessageSquareDetail
-              color="#555"
               size={30}
-              className="mx-5 cursor-pointer"
+              className="mx-5 cursor-pointer text-gray-900 dark:text-gray-100"
+           
             />
           </Link>
             <img

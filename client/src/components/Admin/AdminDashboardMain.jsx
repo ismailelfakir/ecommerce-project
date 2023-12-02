@@ -70,7 +70,7 @@ const AdminDashboardMain = () => {
       row.push({
         id: item._id,
         itemsQty: item?.cart?.reduce((acc, item) => acc + item.qty, 0),
-        total: item?.totalPrice + " $",
+        total: item?.totalPrice + " DH",
         status: item?.status,
         createdAt: item?.createdAt.slice(0,10),
       });
@@ -83,68 +83,72 @@ const AdminDashboardMain = () => {
         <Loader />
       ) : (
         <div className="w-full p-4">
-        <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
+        <h3 className="text-[22px] font-Poppins pb-2 text-gray-800 dark:text-gray-200">Overview</h3>
         <div className="w-full block 800px:flex items-center justify-between">
-          <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
+        <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-gray-50 dark:bg-gray-800 shadow rounded-lg px-2 py-5">
             <div className="flex items-center">
               <AiOutlineMoneyCollect
                 size={30}
-                className="mr-2"
-                fill="#00000085"
+                className="mr-2 dark:text-gray-300 text-gray-900"
               />
               <h3
-                className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
+              className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] dark:text-gray-300 text-gray-900`}
               >
                 Total Earning
               </h3>
             </div>
-            <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">$ {adminBalance}</h5>
+            <h5 className="pt-2 pl-[36px] text-[22px] font-[500] dark:text-gray-100 text-gray-900"> {adminBalance} DH</h5>
           </div>
   
-          <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
+          <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-gray-50 dark:bg-gray-800 shadow rounded-lg px-2 py-5">
             <div className="flex items-center">
-              <MdBorderClear size={30} className="mr-2" fill="#00000085" />
+              <MdBorderClear
+               size={30}
+               className="mr-2 dark:text-gray-300 text-gray-900"
+              />
               <h3
-                className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
+              className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] dark:text-gray-300 text-gray-900`}
               >
                 All Sellers
               </h3>
             </div>
-            <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{sellers && sellers.length}</h5>
+            <h5 className="pt-2 pl-[36px] text-[22px] font-[500] dark:text-gray-100 text-gray-900">{sellers && sellers.length}</h5>
             <Link to="/admin-sellers">
-              <h5 className="pt-4 pl-2 text-[#077f9c]">View Sellers</h5>
+            <h5 className="pt-4 pl-2 text-[#31cfeb] ">View Sellers</h5>
             </Link>
           </div>
   
-          <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
+          <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-gray-50 dark:bg-gray-800 shadow rounded-lg px-2 py-5">
             <div className="flex items-center">
               <AiOutlineMoneyCollect
                 size={30}
-                className="mr-2"
-                fill="#00000085"
+                className="mr-2 dark:text-gray-300 text-gray-900"
+
               />
               <h3
-                className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
+              className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] dark:text-gray-300 text-gray-900`}
               >
                 All Orders
               </h3>
             </div>
-            <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{adminOrders && adminOrders.length}</h5>
+            <h5 className="pt-2 pl-[36px] text-[22px] font-[500] dark:text-gray-100 text-gray-900">{adminOrders && adminOrders.length}</h5>
             <Link to="/admin-orders">
-              <h5 className="pt-4 pl-2 text-[#077f9c]">View Orders</h5>
+            <h5 className="pt-4 pl-2 text-[#31cfeb] ">View Orders</h5>
             </Link>
           </div>
         </div>
   
         <br />
-        <h3 className="text-[22px] font-Poppins pb-2">Latest Orders</h3>
-        <div className="w-full min-h-[45vh] bg-white rounded">
+        <h3 className="text-[22px] font-Poppins pb-2 text-gray-800 dark:text-gray-200">Latest Orders</h3>        
+        <div className="w-full min-h-[45vh] rounded6LG">
           <DataGrid
             rows={row}
             columns={columns}
             pageSize={4}
             disableSelectionOnClick
             autoHeight
+            className="dark:bg-gray-800 bg-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-300"      
+
           />
         </div>
       </div>

@@ -90,8 +90,9 @@ const AllEvents = () => {
           <>
             <Link to={`/product/${params.id}`}>
               <Button>
-                <AiOutlineEye size={20} />
-              </Button>
+                <AiOutlineEye size={20} 
+                className="dark:text-gray-300 text-gray-800"/>
+                </Button>
             </Link>
           </>
         );
@@ -108,8 +109,9 @@ const AllEvents = () => {
         return (
           <>
             <Button onClick={() => handleOpenEdit(params.id)}>
-                <AiOutlineEdit size={20} />
-              </Button>
+                <AiOutlineEdit size={20}
+                className="dark:text-gray-300 text-gray-800"/>
+                </Button>
           </>
         );
       },
@@ -125,8 +127,9 @@ const AllEvents = () => {
         return (
           <>
             <Button onClick={() => handleDelete(params.id)}>
-              <AiOutlineDelete size={20} />
-            </Button>
+              <AiOutlineDelete size={20} 
+                className="dark:text-gray-300 text-gray-800"/>
+                </Button>
           </>
         );
       },
@@ -151,13 +154,14 @@ const AllEvents = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
+        <div className="w-full mx-8 pt-1 mt-10 rounded-lg">
           <DataGrid
             rows={row}
             columns={columns}
             pageSize={10}
             disableSelectionOnClick
             autoHeight
+            className="dark:bg-gray-800 bg-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-300"      
           />
         </div>
       )}

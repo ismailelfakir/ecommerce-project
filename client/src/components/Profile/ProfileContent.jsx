@@ -83,7 +83,7 @@ const ProfileContent = ({ active }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full rounded-[10px]">
       {/* profile */}
       {active === 1 && (
         <>
@@ -111,22 +111,22 @@ const ProfileContent = ({ active }) => {
           <br />
           <div className="w-full px-5">
             <form onSubmit={handleSubmit} aria-required={true}>
-              <div className="w-full 800px:flex block pb-3">
+            <div className="w-full 800px:flex block pb-3">
                 <div className=" w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">First Name</label>
+                <label className="block pb-2 dark:text-gray-300">First Name</label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-                    required
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 `}
+                     required
                     value={fname}
                     onChange={(e) => setFname(e.target.value)}
                   />
                 </div>
                 <div className=" w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Last Name</label>
+                <label className="block pb-2 dark:text-gray-300">Last Name</label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 dark:bg-gray-700 dark:text-gray-300`}
                     required
                     value={lname}
                     onChange={(e) => setLname(e.target.value)}
@@ -136,10 +136,10 @@ const ProfileContent = ({ active }) => {
 
               <div className="w-full 800px:flex block pb-3">
                 <div className=" w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Phone Number</label>
+                  <label className="block pb-2 dark:text-gray-300">Phone Number</label>
                   <input
                     type="number"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 dark:bg-gray-700 dark:text-gray-300`}
                     required
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
@@ -147,10 +147,10 @@ const ProfileContent = ({ active }) => {
                 </div>
 
                 <div className=" w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Email Address</label>
+                  <label className="block pb-2 dark:text-gray-300">Email Address</label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 dark:bg-gray-700 dark:text-gray-300`}
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -217,48 +217,45 @@ const AllOrders = () => {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
-
+    { field: 'id', headerName: 'Order ID', minWidth: 150, flex: 0.7 },
     {
-      field: "status",
-      headerName: "Status",
+      field: 'status',
+      headerName: 'Status',
       minWidth: 130,
       flex: 0.7,
       cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
+        return params.getValue(params.id, 'status') === 'Delivered'
+        ? 'text-green-500 dark:text-green-500'
+        : 'text-red-500 dark:text-red-500';
       },
     },
     {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
+      field: 'itemsQty',
+      headerName: 'Items Qty',
+      type: 'number',
       minWidth: 130,
       flex: 0.7,
     },
-
     {
-      field: "total",
-      headerName: "Total",
-      type: "number",
+      field: 'total',
+      headerName: 'Total',
+      type: 'number',
       minWidth: 130,
       flex: 0.8,
     },
-
     {
-      field: " ",
+      field: ' ',
       flex: 1,
       minWidth: 150,
-      headerName: "",
-      type: "number",
+      headerName: '',
+      type: 'number',
       sortable: false,
       renderCell: (params) => {
         return (
           <>
             <Link to={`/user/order/${params.id}`}>
               <Button>
-                <AiOutlineArrowRight size={20} />
+              <AiOutlineArrowRight size={20} className="dark:text-gray-300" />
               </Button>
             </Link>
           </>
@@ -274,7 +271,7 @@ const AllOrders = () => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,
-        total: item.totalPrice + " DH",
+        total: `${item.totalPrice} DH`,
         status: item.status,
       });
     });
@@ -287,7 +284,8 @@ const AllOrders = () => {
         pageSize={10}
         disableSelectionOnClick
         autoHeight
-      />
+        className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"      
+        />
     </div>
   );
 };
@@ -314,8 +312,8 @@ const AllRefundOrders = () => {
       flex: 0.7,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
+        ? 'text-green-500 dark:text-green-500'
+        : 'text-red-500 dark:text-red-500';
       },
     },
     {
@@ -346,7 +344,7 @@ const AllRefundOrders = () => {
           <>
             <Link to={`/user/order/${params.id}`}>
               <Button>
-                <AiOutlineArrowRight size={20} />
+                <AiOutlineArrowRight size={20} className="dark:text-gray-300" />
               </Button>
             </Link>
           </>
@@ -375,6 +373,7 @@ const AllRefundOrders = () => {
         pageSize={10}
         autoHeight
         disableSelectionOnClick
+        className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"      
       />
     </div>
   );
@@ -400,8 +399,8 @@ const TrackOrder = () => {
       flex: 0.7,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
+        ? 'text-green-500 dark:text-green-500'
+        : 'text-red-500 dark:text-red-500';
       },
     },
     {
@@ -432,7 +431,7 @@ const TrackOrder = () => {
           <>
             <Link to={`/user/track/order/${params.id}`}>
               <Button>
-                <MdTrackChanges size={20} />
+                <MdTrackChanges size={20} className="dark:text-gray-300" />
               </Button>
             </Link>
           </>
@@ -461,6 +460,7 @@ const TrackOrder = () => {
         pageSize={10}
         disableSelectionOnClick
         autoHeight
+        className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"      
       />
     </div>
   );
@@ -491,8 +491,8 @@ const ChangePassword = () => {
       });
   };
   return (
-    <div className="w-full px-5">
-      <h1 className="block text-[25px] text-center font-[600] text-[#000000ba] pb-2">
+    <div className="w-full px-5 dark:text-gray-300">
+    <h1 className="block text-[25px] text-center font-semibold text-opacity-80 pb-2">
         Change Password
       </h1>
       <div className="w-full">
@@ -502,7 +502,7 @@ const ChangePassword = () => {
           className="flex flex-col items-center"
         >
           <div className=" w-[100%] 800px:w-[50%] mt-5">
-            <label className="block pb-2">Enter your old password</label>
+          <label className="block pb-2 dark:text-gray-300">Enter your old password</label>
             <input
               type="password"
               className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
@@ -615,22 +615,22 @@ const Address = () => {
     <div className="w-full px-5">
       {open && (
         <div className="fixed w-full h-screen bg-[#0000004b] top-0 left-0 flex items-center justify-center ">
-          <div className="w-[35%] h-[80vh] bg-white rounded shadow relative overflow-y-scroll">
+          <div className="w-[35%] h-[80vh] bg-gray-200 dark:bg-gray-800 rounded-lg shadow relative overflow-y-scroll">
             <div className="w-full flex justify-end p-3">
               <RxCross1
                 size={30}
-                className="cursor-pointer"
+                className="cursor-pointer dark:text-gray-200 text-gray-200"
                 onClick={() => setOpen(false)}
               />
             </div>
-            <h1 className="text-center text-[25px] font-Poppins">
+            <h1 className="text-center text-[25px] font-Poppins dark:text-gray-200">
               Add New Address
             </h1>
             <div className="w-full">
               <form aria-required onSubmit={handleSubmit} className="w-full">
                 <div className="w-full block p-4">
                   <div className="w-full pb-2">
-                    <label className="block pb-2">Country</label>
+                    <label className="block pb-2 dark:text-gray-300 text-gray-700">Country</label>
                     <select
                       name=""
                       id=""
@@ -655,7 +655,7 @@ const Address = () => {
                   </div>
 
                   <div className="w-full pb-2">
-                    <label className="block pb-2">Choose your City</label>
+                    <label className="block pb-2 dark:text-gray-300 text-gray-700">Choose your City</label>
                     <select
                       name=""
                       id=""
@@ -680,7 +680,7 @@ const Address = () => {
                   </div>
 
                   <div className="w-full pb-2">
-                    <label className="block pb-2">Address 1</label>
+                    <label className="block pb-2 dark:text-gray-300 text-gray-700">Address 1</label>
                     <input
                       type="address"
                       className={`${styles.input}`}
@@ -690,7 +690,7 @@ const Address = () => {
                     />
                   </div>
                   <div className="w-full pb-2">
-                    <label className="block pb-2">Address 2</label>
+                    <label className="block pb-2 dark:text-gray-300 text-gray-700dark:text-gray-700 text-gray-300">Address 2</label>
                     <input
                       type="address"
                       className={`${styles.input}`}
@@ -701,7 +701,7 @@ const Address = () => {
                   </div>
 
                   <div className="w-full pb-2">
-                    <label className="block pb-2">Zip Code</label>
+                    <label className="block pb-2 dark:text-gray-300 text-gray-700">Zip Code</label>
                     <input
                       type="number"
                       className={`${styles.input}`}
@@ -712,7 +712,7 @@ const Address = () => {
                   </div>
 
                   <div className="w-full pb-2">
-                    <label className="block pb-2">Address Type</label>
+                    <label className="block pb-2 dark:text-gray-300 text-gray-700">Address Type</label>
                     <select
                       name=""
                       id=""
@@ -751,7 +751,7 @@ const Address = () => {
         </div>
       )}
       <div className="flex w-full items-center justify-between">
-        <h1 className="text-[25px] font-[600] text-[#000000ba] pb-2">
+        <h1 className="text-[25px] font-[600] dark:text-gray-200 text-gray-800 pb-2">
           My Addresses
         </h1>
         <div
@@ -765,19 +765,19 @@ const Address = () => {
       {user &&
         user.addresses.map((item, index) => (
           <div
-            className="w-full bg-white h-min 800px:h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10 mb-5"
+            className="w-full bg-gray-50 dark:bg-gray-700 h-min 800px:h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10 mb-5"
             key={index}
           >
             <div className="flex items-center">
-              <h5 className="pl-5 font-[600]">{item.addressType}</h5>
+              <h5 className="pl-5 font-[600] dark:text-gray-300 text-gray-700">{item.addressType}</h5>
             </div>
             <div className="pl-8 flex items-center">
-              <h6 className="text-[12px] 800px:text-[unset]">
+              <h6 className="text-[14px] 800px:text-[unset] dark:text-gray-400 text-gray-600">
                 {item.address1} {item.address2}
               </h6>
             </div>
             <div className="pl-8 flex items-center">
-              <h6 className="text-[12px] 800px:text-[unset]">
+              <h6 className="text-[14px] 800px:text-[unset] dark:text-gray-400 text-gray-600">
                 {user && user.phoneNumber}
               </h6>
             </div>

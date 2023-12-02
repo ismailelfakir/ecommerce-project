@@ -99,107 +99,99 @@ const SellerSettings = () => {
             </div>
           </div>
         </div>
-
+        <br/><br/>
         {/* Seller info */}
-        <form
-          aria-aria-required={true}
-          className="flex flex-col items-center"
-          onSubmit={updateHandler}
-        >
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">First name</label>
-            </div>
-            <input
-              type="name"
-              placeholder={`${seller.fname}`}
-              value={fname}
-              onChange={(e) => setFname(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Last name</label>
-            </div>
-            <input
-              type="name"
-              placeholder={`${seller.lname}`}
-              value={lname}
-              onChange={(e) => setLname(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Description</label>
-            </div>
-            <input
-              type="name"
-              placeholder={`${
-                seller?.description
-                  ? seller.description
-                  : "Enter your description"
-              }`}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-            />
-          </div>
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Address</label>
-            </div>
-            <input
-              type="name"
-              placeholder={seller?.address}
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
+        <div className="w-full px-5">
+            <form onSubmit={updateHandler} aria-required={true}>
+            <div className="w-full 800px:flex block pb-3">
+                <div className=" w-[100%] 800px:w-[50%]">
+                <label className="block pb-2 dark:text-gray-300">First Name</label>
+                  <input
+                    type="name"
+                    placeholder={`${seller.fname}`}
+                    value={fname}
+                    onChange={(e) => setFname(e.target.value)}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 `}
+                     required
+                  />
+                </div>
+                <div className=" w-[100%] 800px:w-[50%]">
+                <label className="block pb-2 dark:text-gray-300">Last Name</label>
+                  <input
+                    type="name"
+                    placeholder={`${seller.lname}`}
+                    value={lname}
+                    onChange={(e) => setLname(e.target.value)}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 dark:bg-gray-700 dark:text-gray-300`}
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Phone Number</label>
-            </div>
-            <input
-              type="number"
-              placeholder={seller?.phoneNumber}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
+              <div className="w-full 800px:flex block pb-3">
+                <div className=" w-[100%] 800px:w-[50%]">
+                <label className="block pb-2 dark:text-gray-300">Description</label>
+                  <input
+                    type="name"
+                    placeholder={`${
+                      seller?.description
+                        ? seller.description
+                        : "Enter your description"
+                    }`}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 `}
+                     required
+                  />
+                </div>
+                <div className=" w-[100%] 800px:w-[50%]">
+                <label className="block pb-2 dark:text-gray-300">Adress</label>
+                  <input
+                    type="name"
+                    placeholder={seller?.address}
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 dark:bg-gray-700 dark:text-gray-300`}
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Zip Code</label>
-            </div>
-            <input
-              type="number"
-              placeholder={seller?.zipCode}
-              value={zipCode}
-              onChange={(e) => setZipcode(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
+              <div className="w-full 800px:flex block pb-3">
+                <div className=" w-[100%] 800px:w-[50%]">
+                  <label className="block pb-2 dark:text-gray-300">Phone Number</label>
+                  <input
+                    type="number"
+                    placeholder={seller?.phoneNumber}
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 dark:bg-gray-700 dark:text-gray-300`}
+                    required
+                  />
+                </div>
 
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <input
-              type="submit"
-              value="Update Informations"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-              readOnly
-            />
+                <div className=" w-[100%] 800px:w-[50%]">
+                  <label className="block pb-2 dark:text-gray-300">Zip Code</label>
+                  <input
+                    type="number"
+                    placeholder={seller?.zipCode}
+                    value={zipCode}
+                    onChange={(e) => setZipcode(e.target.value)}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 dark:bg-gray-700 dark:text-gray-300`}
+                    required
+                  />
+                </div>
+              </div>
+
+              <input
+                className={`w-[250px] h-[40px] hover:dark:bg-gray-950 bg-gray-200 hover:bg-blue-200 dark:bg-gray-800 border border-[#3a24db] text-center text-[#3a24db] rounded-lg mt-8 cursor-pointer`}
+                required
+                value="Update Informations"
+                type="submit"
+                readOnly
+              />
+            </form>
           </div>
-        </form>
       </div>
     </div>
   );

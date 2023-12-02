@@ -71,13 +71,15 @@ const AllOrders = () => {
       {adminOrderLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
+        <div className="w-full mx-8 pt-1 mt-10 rounded-lg">
           <DataGrid
             rows={row}
             columns={columns}
             pageSize={10}
             disableSelectionOnClick
             autoHeight
+            className="dark:bg-gray-800 rounded-lg dark:border-gray-700 dark:text-gray-300"      
+
           />
         </div>
       )}

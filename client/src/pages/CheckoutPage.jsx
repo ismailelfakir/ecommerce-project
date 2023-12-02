@@ -6,7 +6,7 @@ import Footer from '../components/Layout/Footer';
 
 const CheckoutPage = () => {
   return (
-    <div>
+    <div className='dark:bg-gray-900 '>
         <Header />
         <br />
         <br />

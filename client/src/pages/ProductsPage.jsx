@@ -31,7 +31,7 @@ const ProductsPage = () => {
       isLoading ? (
         <Loader />
       ) : (
-        <div>
+        <div className="dark:bg-gray-900">
         <Header activeHeading={3} />
         <br />
         <br />

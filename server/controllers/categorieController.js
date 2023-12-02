@@ -8,7 +8,7 @@ const Categories = require("../models/Categories");
 const fs = require("fs");
 const cloudinary = require("cloudinary");
 
-// // all categories --- for admin
+// all categories --- for admin
 
 router.get(
   "/admin-all-categories",

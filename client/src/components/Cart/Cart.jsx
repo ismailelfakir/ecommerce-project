@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addTocart, removeFromCart } from "../../redux/actions/cart";
 import { toast } from "react-toastify";
-import { backend_url } from "../../server";
 
 const Cart = ({ setOpenCart }) => {
   const { cart } = useSelector((state) => state.cart);
@@ -28,17 +27,17 @@ const Cart = ({ setOpenCart }) => {
 
   return (
     <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-      <div className="fixed top-0 right-0 h-full w-[80%] 800px:w-[40%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
+      <div className="fixed top-0 right-0 h-full w-[80%] 800px:w-[40%] bg-gray-50 dark:bg-gray-900 flex flex-col overflow-y-scroll justify-between shadow-sm">
          {cart && cart.length === 0 ? (
           <div className="w-full h-screen flex items-center justify-center">
             <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">
               <RxCross1
                 size={25}
-                className="cursor-pointer"
+                className="cursor-pointer text-gray-900 dark:text-gray-100"
                 onClick={() => setOpenCart(false)}
               />
             </div>
-            <h5>Cart Items is empty!</h5>
+            <h5 className="text-gray-900 dark:text-gray-100">Cart Items is empty!</h5>
           </div>
         ) : (
           <>
@@ -46,14 +45,14 @@ const Cart = ({ setOpenCart }) => {
               <div className="flex w-full justify-end pt-5 pr-5">
                 <RxCross1
                   size={25}
-                  className="cursor-pointer"
+                  className="cursor-pointer text-gray-900 dark:text-gray-100"
                   onClick={() => setOpenCart(false)}
                 />
               </div>
               {/* Item length */}
               <div className={`${styles.noramlFlex} p-4`}>
-                <IoBagHandleOutline size={25} />
-                <h5 className="pl-2 text-[20px] font-[500]">
+                <IoBagHandleOutline size={25} className="text-gray-900 dark:text-gray-100" />
+                <h5 className="pl-2 text-[20px] font-[500] text-gray-900 dark:text-gray-100">
                    {cart && cart.length} items
                 </h5>
               </div>
@@ -118,12 +117,12 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
       <div className="flex items-center">
         <div>
         <div
-            className={`bg-[#e44343] border border-[#e4434373] rounded-full w-[25px] h-[25px] ${styles.noramlFlex} justify-center cursor-pointer`}
+            className={`bg-[#ff9900] border border-[#e4434373] rounded-full w-[25px] h-[25px] ${styles.noramlFlex} justify-center cursor-pointer`}
             onClick={() => increment(data)}
           >
             <HiPlus size={18} color="#fff" />
           </div>
-          <span className="pl-[10px]">{data.qty}</span>
+          <span className="pl-[10px] text-gray-900 dark:text-gray-100">{data.qty}</span>
           <div
             className="bg-[#a7abb14f] rounded-full w-[25px] h-[25px] flex items-center justify-center cursor-pointer"
             onClick={() => decrement(data)}
@@ -137,8 +136,8 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
           className="w-[80px] h-[80px] ml-2 mr-2 rounded-[5px]"
         />
         <div className="pl-[5px]">
-          <h1>{data.name}</h1>
-          <h4 className="font-[400] text-[15px] text-[#00000082]">
+          <h1 className="text-gray-900 dark:text-gray-100">{data.name}</h1>
+          <h4 className="font-[400] text-[15px] text-gray-700 dark:text-gray-300">
             {data.discountPrice} * {value}
           </h4>
           <h4 className="font-[600] text-[17px] pt-[3px] text-[#d02222] font-Roboto">
@@ -148,7 +147,8 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
         </div>
         <div className="flex items-center">
         <RxCross1
-          className="cursor-pointer"
+          size={25}
+          className="cursor-pointer text-gray-900 dark:text-gray-100"
           onClick={() => removeFromCartHandler(data)}
         />
         </div>

@@ -47,10 +47,10 @@ const Footer = () => {
     }
   };
   return (
-    <div className="bg-[#000] text-white">
-      <div className="md:flex md:justify-between md:items-center sm:px-12 px-4 bg-[#4d4d4f] py-7">
+    <div className="dark:bg-gray-800 bg-gray-200 text-gray-900 dark:text-gray-50">
+      <div className="md:flex md:justify-between md:items-center sm:px-12 px-4 dark:bg-gray-700 bg-gray-300 py-7">
         <h1 className="lg:text-4xl text-3xl md:mb-0 mb-6 lg:leading-normal font-semibold md:w-2/5">
-          <span className="text-[#37f76a]">Subscribe</span> us for get news{" "}
+          <span className="text-red-500">Subscribe</span> us for get news{" "}
           <br />
           events and offers
         </h1>
@@ -59,7 +59,7 @@ const Footer = () => {
             type="text"
             required
             placeholder="Enter your email..."
-            className="text-gray-800
+            className="text-gray-800 bg-gray-50 dark:bg-gray-600
                 sm:w-72 w-full sm:mr-5 mr-1 lg:mb-0 mb-4 py-2.5 rounded px-2 focus:outline-none"
                 onChange={handleEmailChange}
                 />
@@ -95,7 +95,7 @@ const Footer = () => {
           {footerProductLinks.map((link,index) => (
             <li key={index}>
               <Link
-                className="text-gray-400 hover:text-teal-400 duration-300
+                className="dark:text-gray-400 text-gray-600 hover:text-teal-400 duration-300
                    text-sm cursor-pointer leading-6"
                 to={link.link}
               >
@@ -110,7 +110,7 @@ const Footer = () => {
           {footercompanyLinks.map((link,index) => (
             <li key={index}>
               <Link
-                className="text-gray-400 hover:text-teal-400 duration-300
+                className="dark:text-gray-400 text-gray-600 hover:text-teal-400 duration-300
                    text-sm cursor-pointer leading-6"
                 to={link.link}
               >
@@ -125,7 +125,7 @@ const Footer = () => {
           {footerSupportLinks.map((link,index) => (
             <li key={index}>
               <Link
-                className="text-gray-400 hover:text-teal-400 duration-300
+                className="dark:text-gray-400 text-gray-600 hover:text-teal-400 duration-300
                    text-sm cursor-pointer leading-6"
                 to={link.link}
               >
