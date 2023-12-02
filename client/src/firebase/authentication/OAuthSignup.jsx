@@ -19,16 +19,14 @@ export default function OAuth() {
       const [firstName, lastName] = displayName.split(' ');
 
       // Send a POST request using Axios
-      await axios.post(`${server}/user/signup-google`, {
+      localStorage.setItem('userDetails', JSON.stringify({
         fname: firstName,
         lname: lastName,
         email: email,
         photo: photoURL,
-      }, {
-        withCredentials: true // Include credentials in the request
-      });
-      toast.success("User signed in successfully");
-      navigate('/login');
+      }));
+      toast.success("User signed in with google successfully");
+      window.location.reload();
     } catch (error) {
       console.error('Could not sign in with Google:', error);
       toast.error("Error signing in with Google");

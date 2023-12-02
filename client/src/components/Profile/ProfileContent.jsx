@@ -23,6 +23,9 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { getAllOrdersOfUser } from "../../redux/actions/order";
+import { AiOutlineClose } from "react-icons/ai"; // Importing the close icon
+
+
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -548,6 +551,8 @@ const Address = () => {
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [addressType, setAddressType] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [idAddressDelete, setIdAddressDelete] = useState(null);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -589,10 +594,22 @@ const Address = () => {
     }
   };
 
-  const handleDelete = (item) => {
-    const id = item._id;
-    dispatch(deleteUserAddress(id));
-  };
+     // Function to handle opening the Delete component
+
+     const handleDeleteAddress = () => {
+      dispatch(deleteUserAddress(idAddressDelete));
+      window.location.reload();
+  
+    };
+    const handleDelete = (id) => {
+      setShowModal(true)
+      setIdAddressDelete(id)
+    };
+
+  // const handleDelete = (item) => {
+  //   const id = item._id;
+  //   dispatch(deleteUserAddress(id));
+  // };
 
   return (
     <div className="w-full px-5">
@@ -767,8 +784,8 @@ const Address = () => {
             <div className="min-w-[10%] flex items-center justify-between pl-8">
               <AiOutlineDelete
                 size={25}
-                className="cursor-pointer dark:text-gray-300 text-gray-700 "
-                onClick={() => handleDelete(item)}
+                className="cursor-pointer"
+                onClick={() => handleDelete(item._id)}
               />
             </div>
           </div>
@@ -779,6 +796,41 @@ const Address = () => {
           You not have any saved address!
         </h5>
       )}
+
+{showModal && (
+                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+                      <div className="bg-white p-5 rounded-md shadow-xl relative">
+                        <button
+                          type="button"
+                          onClick={() => setShowModal(false)}
+                          className="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-900 transition ease-in-out duration-150"
+                        >
+                          <AiOutlineClose size={24} />
+                        </button>
+                        <div className="text-center">
+                          <h4 className="text-lg font-semibold text-gray-800">Are you sure?</h4>
+                          <p className="text-gray-600">Do you really want to delete these records? This process cannot be undone.</p>
+                        </div>
+                        <div className="mt-5 sm:mt-6 flex justify-center">
+                          <button
+                            type="button"
+                            onClick={() => setShowModal(false)}
+                            className="bg-gray-500 text-white rounded-md px-4 py-2 mr-2 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleDeleteAddress}
+                            className="bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
     </div>
   );
 };
