@@ -130,7 +130,7 @@ const SellerLogin = () => {
             </div>
             <div className={`${styles.noramlFlex} w-full`}>
               <h4>Not have any account?</h4>
-              <Link to="/seller-create" className="text-blue-600 pl-2">
+              <Link to="/seller-sign-up-new" className="text-blue-600 pl-2">
                 Sign Up
               </Link>
             </div>
