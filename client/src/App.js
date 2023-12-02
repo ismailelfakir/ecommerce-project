@@ -71,6 +71,10 @@ import { useState } from "react";
 import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
 import DarkModeToggle from "./darkmode/darkModeToggle";
 
+import Test from './components/Test.jsx';
+import SingUpSellerLV from './components/Singup/SingUpSellerLV.jsx';
+
+
 const App = () => {
   const [stripeApikey, setStripeApiKey] = useState("");
 
@@ -372,7 +376,20 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
+        <Route
+          path="/test"
+          element={
+              <Test />
+          }
+        />
+        <Route
+          path="/seller-sign-up-new"
+          element={
+              <SingUpSellerLV />
+          }
+        />
       </Routes>
+      
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -385,6 +402,7 @@ const App = () => {
         pauseOnHover
         theme="dark"
       />
+
       <DarkModeToggle />
     </BrowserRouter>
   );
