@@ -66,7 +66,8 @@ export default function OAuth() {
     <div>
       <button
         onClick={handleGoogleClick}
-        className="px-4 py-2 w-full border flex justify-center gap-3 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
+        className="px-4 py-2 w-full border flex justify-center gap-3 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-100 dark:hover:shadow-md"
+        >
         <img className="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />
         <span>Sign up with Google</span>
       </button>

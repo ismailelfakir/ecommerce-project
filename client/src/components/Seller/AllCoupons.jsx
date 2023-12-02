@@ -131,7 +131,8 @@ const AllCoupons = () => {
         return (
           <>
             <Button onClick={() => handleDelete(params.id)}>
-              <AiOutlineDelete size={20} />
+              <AiOutlineDelete size={20} 
+              />
             </Button>
           </>
         );
@@ -156,7 +157,7 @@ const AllCoupons = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
+        <div className="w-full mx-8 pt-1 mt-10 ">
           <div className="w-full flex justify-end">
             <div
               className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3`}
@@ -171,10 +172,12 @@ const AllCoupons = () => {
             pageSize={10}
             disableSelectionOnClick
             autoHeight
+            className="dark:bg-gray-800 bg-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-300"      
+
           />
           {open && (
             <div className="fixed top-0 left-0 w-full h-screen bg-[#00000062] z-[20000] flex items-center justify-center">
-              <div className="w-[90%] 800px:w-[40%] h-[80vh] bg-white rounded-md shadow p-4">
+              <div className="w-[90%] 800px:w-[40%] h-[80vh] bg-gray-100 dark:bg-gray-700 rounded-md shadow p-4">
                 <div className="w-full flex justify-end">
                   <RxCross1
                     size={30}

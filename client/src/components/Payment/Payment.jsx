@@ -204,19 +204,19 @@ const PaymentInfo = ({
   const [select, setSelect] = useState(1);
 
   return (
-    <div className="w-full 800px:w-[95%] bg-[#fff] rounded-md p-5 pb-8">
+    <div className="w-full 800px:w-[95%] bg-gray-100 dark:bg-gray-800 shadow rounded-lg p-5 pb-8">
       {/* select buttons */}
       <div>
         <div className="flex w-full pb-5 border-b mb-2">
           <div
-            className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
+            className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-gray-800 dark:border-gray-200 relative flex items-center justify-center"
             onClick={() => setSelect(1)}
           >
             {select === 1 ? (
-              <div className="w-[13px] h-[13px] bg-[#1d1a1acb] rounded-full" />
+              <div className="w-[13px] h-[13px]  bg-gray-800 dark:bg-gray-200 rounded-full" />
             ) : null}
           </div>
-          <h4 className="text-[18px] pl-2 font-[600] text-[#000000b1]">
+          <h4 className="text-[18px] pl-2 font-[600] text-gray-800 dark:text-gray-200">
             Pay with Debit/credit card
           </h4>
         </div>
@@ -227,7 +227,7 @@ const PaymentInfo = ({
             <form className="w-full" onSubmit={paymentHandler}>
               <div className="w-full flex pb-3">
                 <div className="w-[50%]">
-                  <label className="block pb-2">Name On Card</label>
+                  <label className="block pb-2 text-gray-700 dark:text-gray-300">Name On Card</label>
                   <input
                     required
                     placeholder={user && user.fname}
@@ -236,7 +236,7 @@ const PaymentInfo = ({
                   />
                 </div>
                 <div className="w-[50%]">
-                  <label className="block pb-2">Exp Date</label>
+                  <label className="block pb-2 text-gray-700 dark:text-gray-300">Exp Date</label>
                   <CardExpiryElement
                     className={`${styles.input}`}
                     options={{
@@ -261,7 +261,7 @@ const PaymentInfo = ({
 
               <div className="w-full flex pb-3">
                 <div className="w-[50%]">
-                  <label className="block pb-2">Card Number</label>
+                  <label className="block pb-2 text-gray-700 dark:text-gray-300">Card Number</label>
                   <CardNumberElement
                     className={`${styles.input} !h-[35px] !w-[95%]`}
                     options={{
@@ -283,7 +283,7 @@ const PaymentInfo = ({
                   />
                 </div>
                 <div className="w-[50%]">
-                  <label className="block pb-2">CVC</label>
+                  <label className="block pb-2 text-gray-700 dark:text-gray-300">CVC</label>
                   <CardCvcElement
                     className={`${styles.input} !h-[35px]`}
                     options={{
@@ -308,7 +308,7 @@ const PaymentInfo = ({
               <input
                 type="submit"
                 value="Submit"
-                className={`${styles.button} !bg-[#f63b60] text-[#fff] h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
+                className={`${styles.button} text-[#fff] h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
               />
             </form>
           </div>
@@ -320,14 +320,14 @@ const PaymentInfo = ({
       <div>
         <div className="flex w-full pb-5 border-b mb-2">
           <div
-            className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
+            className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-gray-800 dark:border-gray-200 relative flex items-center justify-center"
             onClick={() => setSelect(2)}
           >
             {select === 2 ? (
-              <div className="w-[13px] h-[13px] bg-[#1d1a1acb] rounded-full" />
+              <div className="w-[13px] h-[13px] bg-gray-800 dark:bg-gray-200  rounded-full" />
             ) : null}
           </div>
-          <h4 className="text-[18px] pl-2 font-[600] text-[#000000b1]">
+          <h4 className="text-[18px] pl-2 font-[600] text-gray-800 dark:text-gray-200">
             Pay with Paypal
           </h4>
         </div>
@@ -336,7 +336,7 @@ const PaymentInfo = ({
         {select === 2 ? (
           <div className="w-full flex border-b">
             <div
-              className={`${styles.button} !bg-[#f63b60] text-white h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
+              className={`${styles.button} text-white h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
               onClick={() => setOpen(true)}
             >
               Pay Now
@@ -375,14 +375,14 @@ const PaymentInfo = ({
       <div>
         <div className="flex w-full pb-5 border-b mb-2">
           <div
-            className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
+            className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-gray-800 dark:border-gray-200 relative flex items-center justify-center"
             onClick={() => setSelect(3)}
           >
             {select === 3 ? (
-              <div className="w-[13px] h-[13px] bg-[#1d1a1acb] rounded-full" />
+              <div className="w-[13px] h-[13px] bg-gray-800 dark:bg-gray-200  rounded-full" />
             ) : null}
           </div>
-          <h4 className="text-[18px] pl-2 font-[600] text-[#000000b1]">
+          <h4 className="text-[18px] pl-2 font-[600] text-gray-800 dark:text-gray-200">
             Cash on Delivery
           </h4>
         </div>
@@ -394,7 +394,7 @@ const PaymentInfo = ({
               <input
                 type="submit"
                 value="Confirm"
-                className={`${styles.button} !bg-[#f63b60] text-[#fff] h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
+                className={`${styles.button} text-[#fff] h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
               />
             </form>
           </div>
@@ -407,23 +407,23 @@ const PaymentInfo = ({
 const CartData = ({ orderData }) => {
   const shipping = orderData?.shipping?.toFixed(2);
   return (
-    <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
+    <div className="w-full bg-gray-200 dark:bg-gray-800 shadow rounded-lg p-5 pb-8">
       <div className="flex justify-between">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">subtotal:</h3>
-        <h5 className="text-[18px] font-[600]">${orderData?.subTotalPrice}</h5>
+        <h3 className="text-[16px] font-[400] text-gray-600 dark:text-gray-400">subtotal:</h3>
+        <h5 className="text-[18px] font-[600] text-gray-700 dark:text-gray-300">{orderData?.subTotalPrice}DH</h5>
       </div>
       <br />
       <div className="flex justify-between">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">shipping:</h3>
-        <h5 className="text-[18px] font-[600]">${shipping}</h5>
+        <h3 className="text-[16px] font-[400] text-gray-600 dark:text-gray-400">shipping:</h3>
+        <h5 className="text-[18px] font-[600] text-gray-700 dark:text-gray-300">{shipping}DH</h5>
       </div>
       <br />
       <div className="flex justify-between border-b pb-3">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
-        <h5 className="text-[18px] font-[600]">{orderData?.discountPrice? "$" + orderData.discountPrice : "-"}</h5>
+        <h3 className="text-[16px] font-[400] text-gray-600 dark:text-gray-400">Discount:</h3>
+        <h5 className="text-[18px] font-[600] text-gray-700 dark:text-gray-300">{orderData?.discountPrice? "DH" + orderData.discountPrice : "-"}</h5>
       </div>
-      <h5 className="text-[18px] font-[600] text-end pt-3">
-        ${orderData?.totalPrice}
+      <h5 className="text-[18px] font-[600] text-gray-700 dark:text-gray-300 text-end pt-3">
+        {orderData?.totalPrice}DH
       </h5>
       <br />
     </div>

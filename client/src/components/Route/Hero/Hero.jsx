@@ -1,34 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/styles";
 
 const Hero = () => {
+  const [backgroundIndex, setBackgroundIndex] = useState(0);
+  const [contentIndex, setContentIndex] = useState(0);
+  const [linkIndex, setLinkIndex] = useState(0);
+
+  const backgrounds = [
+    "./background0.png",
+    "./background00.png",
+    "./background.png",
+  ];
+
+  const titles = [
+    "Explore Our Collection for Moroccan Products",
+    "Explore Our Unique Moroccan Events",
+    "Discover the Beauty of Moroccan Crafts",
+  ];
+
+  const descriptions = [
+    "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae, assumenda? Quisquam itaque exercitationem labore vel, dolore quidem asperiores, laudantium temporibus soluta optio consequatur aliquam deserunt officia. Dolorum saepe nulla provident.",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla maximus lorem ut odio luctus, non tincidunt libero feugiat. Duis ac odio sit amet erat molestie ultrices.",
+    "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur varius turpis sed est interdum, ut molestie ex feugiat.",
+  ];
+
+  const links = ["/products", "/events", "/seller-create"];
+  const linkTexts = ["Shop Now", "Explore Now", "Become Seller"];
+
+  
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBackgroundIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
+      setContentIndex((prevIndex) => (prevIndex + 1) % titles.length);
+      setLinkIndex((prevIndex) => (prevIndex + 1) % links.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div
-       className={`relative w-full h-[100vh] bg-cover ${styles.noramlFlex}`}
+      className={`relative w-full h-[100vh] bg-cover dark:bg-gray-900 ${styles.noramlFlex}`}
       style={{
-        backgroundImage:
-          "url(./background.jpg)",
+        backgroundImage: `url(${backgrounds[backgroundIndex]})`,
       }}
     >
       <div className={`${styles.section} w-[90%] 800px:w-[60%]`}>
         <h1
-          className={`text-[35px] leading-[1.2] 800px:text-[60px] text-[#3d3a3a] font-[600] capitalize`}
+          className={`text-[35px] leading-[1.2] 800px:text-[60px] dark:text-gray-100 font-[600] capitalize`}
         >
-          Best Collection for <br /> MOROCCAN PRODUCTS
+          {titles[contentIndex]}
         </h1>
-        <p className="pt-5 text-[16px] font-[Poppins] font-[400] text-[#000000ba]">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae,
-          assumenda? Quisquam itaque <br /> exercitationem labore vel, dolore
-          quidem asperiores, laudantium temporibus soluta optio consequatur{" "}
-          <br /> aliquam deserunt officia. Dolorum saepe nulla provident.
+        <p className="pt-5 text-[16px] font-[Poppins] font-[400] dark:text-gray-300">
+          {descriptions[contentIndex]}
         </p>
-        <Link to="/products" className="inline-block">
-            <div className={`${styles.button} mt-5`}>
-                 <span className="text-[#fff] font-[Poppins] text-[18px]">
-                    Shop Now
-                 </span>
-            </div>
+        <Link to={links[linkIndex]} className="inline-block">
+          <div className={`${styles.button} mt-5`}>
+            <span className="text-[#fff] font-[Poppins] text-[18px]">
+              {linkTexts[linkIndex]}
+            </span>
+          </div>
         </Link>
       </div>
     </div>

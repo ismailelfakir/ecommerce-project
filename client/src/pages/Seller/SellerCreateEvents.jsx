@@ -5,8 +5,8 @@ import DashboardSideBar from '../../components/Seller/Layout/DashboardSideBar';
 
 const SellerCreateEvents = () => {
     return (
-        <div>
-            <DashboardHeader />
+      <div className="bg-gray-300 dark:bg-gray-900">
+      <DashboardHeader />
             <div className="flex items-center justify-between w-full">
           <div className="w-[330px]">
             <DashboardSideBar active={6} />

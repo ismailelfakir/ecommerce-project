@@ -206,10 +206,10 @@ const DashboardMessages = () => {
   }, [messages]);
 
   return (
-    <div className="w-[90%] bg-white m-5 h-[85vh] overflow-y-scroll rounded">
+    <div className="w-[90%] bg-gray-200 dark:bg-gray-800 m-5 h-[85vh] overflow-y-scroll rounded">
       {!open && (
         <>
-          <h1 className="text-center text-[30px] py-3 font-Poppins">
+          <h1 className="text-center text-[30px] py-3 font-Poppins text-gray-900 dark:text-gray-100">
             All Messages
           </h1>
           {/* All messages list */}

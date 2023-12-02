@@ -33,7 +33,7 @@ const [data, setData] = useState([]);
           <div className="flex items-center" onClick={() => setActive(1)}>
             <h5
               className={`font-[600] text-[20px] ${
-                active === 1 ? "text-[#1900ff]" : "text-[#333]"
+                active === 1 ? "text-[#1900ff]" : "text-gray-700 dark:text-gray-300"
               } cursor-pointer pr-[20px]`}
             >
               Seller Products
@@ -42,7 +42,7 @@ const [data, setData] = useState([]);
           <div className="flex items-center" onClick={() => setActive(2)}>
             <h5
               className={`font-[600] text-[20px] ${
-                active === 2 ? "text-[#1900ff]" : "text-[#333]"
+                active === 2 ? "text-[#1900ff]" : "text-gray-700 dark:text-gray-300"
               } cursor-pointer pr-[20px]`}
             >
               Running Events
@@ -52,7 +52,7 @@ const [data, setData] = useState([]);
           <div className="flex items-center" onClick={() => setActive(3)}>
             <h5
               className={`font-[600] text-[20px] ${
-                active === 3 ? "text-[#1900ff]" : "text-[#333]"
+                active === 3 ? "text-[#1900ff]" : "text-gray-700 dark:text-gray-300"
               } cursor-pointer pr-[20px]`}
             >
               Seller Reviews
@@ -88,8 +88,8 @@ const [data, setData] = useState([]);
           {events && events.map((i, index) => <ProductCard data={i} key={index} isEvent={true} />)}
           </div>
           {events && events.length === 0 && (
-            <h5 className="w-full text-center py-5 text-[18px]">
-              No Events have for this shop!
+            <h5 className="w-full text-center py-5 text-[18px] dark:text-gray-200">
+              No Events have for this seller!
             </h5>
           )}
         </div>

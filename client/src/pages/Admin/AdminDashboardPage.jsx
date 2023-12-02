@@ -5,7 +5,7 @@ import AdminDashboardMain from "../../components/Admin/AdminDashboardMain";
 
 const AdminDashboardPage = () => {
   return (
-    <div>
+    <div className="bg-gray-300 dark:bg-gray-900">
       <AdminHeader />
       <div className="w-full flex">
         <div className="flex items-start justify-between w-full">

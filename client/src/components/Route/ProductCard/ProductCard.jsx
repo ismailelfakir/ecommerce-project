@@ -62,7 +62,7 @@ const ProductCard = ({ data , isEvent }) => {
 
   return (
     <>
-      <div className="w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer">
+      <div className="w-full h-[370px] bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm p-3 relative cursor-pointer">
         <div className="flex justify-end"></div>
         <Link to={`${isEvent === true ? `/product/${data._id}?isEvent=true` : `/product/${data._id}`}`}>
           <img
@@ -76,7 +76,7 @@ const ProductCard = ({ data , isEvent }) => {
           <h5 className={`${styles.shop_name}`}>{data?.seller?.fname}</h5>
         </Link>
         <Link to={`${isEvent === true ? `/product/${data._id}?isEvent=true` : `/product/${data._id}`}`}>
-          <h4 className="pb-3 font-[500]">
+          <h4 className="pb-3 font-[500] dark:text-gray-100">
             {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
           </h4>
 
@@ -86,7 +86,7 @@ const ProductCard = ({ data , isEvent }) => {
 
           <div className="py-2 flex items-center justify-between">
             <div className="flex">
-              <h5 className={`${styles.productDiscountPrice}`}>
+              <h5 className={`${styles.productDiscountPrice} dark:text-gray-300`}>
                 {data.originalPrice === 0
                   ? data.originalPrice
                   : data.discountPrice} 

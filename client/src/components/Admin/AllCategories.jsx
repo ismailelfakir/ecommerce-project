@@ -20,7 +20,6 @@ const AllCategories = () => {
   const [selectedCategories, setSelectedCategories] = useState(null);
   const [avatar, setAvatar] = useState(null);
 
-  
   const [value, setValue] = useState(null);
   const { seller } = useSelector((state) => state.seller);
 
@@ -65,11 +64,11 @@ const AllCategories = () => {
     newForm.append("title", title);
     newForm.append("subTitle", subTitle);
 
-
     await axios
       .post(
-        `${server}/categories/admin-create-categories`,newForm,
-        
+        `${server}/categories/admin-create-categories`,
+        newForm,
+
         { withCredentials: true }
       )
       .then((res) => {
@@ -107,7 +106,10 @@ const AllCategories = () => {
         return (
           <>
             <Button onClick={() => handleDelete(params.id)}>
-              <AiOutlineDelete size={20} />
+              <AiOutlineDelete
+                size={20}
+                className="dark:text-gray-300 text-gray-800"
+              />
             </Button>
           </>
         );
@@ -118,7 +120,7 @@ const AllCategories = () => {
   const row = [];
 
   categories &&
-  categories.forEach((item) => {
+    categories.forEach((item) => {
       row.push({
         id: item._id,
         title: item.title,
@@ -131,7 +133,7 @@ const AllCategories = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
+        <div className="w-full mx-8 pt-1 mt-10 rounded-lg">
           <div className="w-full flex justify-end">
             <div
               className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3`}
@@ -146,6 +148,7 @@ const AllCategories = () => {
             pageSize={10}
             disableSelectionOnClick
             autoHeight
+            className="dark:bg-gray-800 rounded-lg dark:border-gray-700 dark:text-gray-300"
           />
           {open && (
             <div className="fixed top-0 left-0 w-full h-screen bg-[#00000062] z-[20000] flex items-center justify-center">
@@ -158,7 +161,7 @@ const AllCategories = () => {
                   />
                 </div>
                 <h5 className="text-[30px] font-Poppins text-center">
-                  Create Categorie 
+                  Create Categorie
                 </h5>
                 {/* create categories */}
                 <form onSubmit={handleSubmit}>
@@ -179,7 +182,7 @@ const AllCategories = () => {
                   <br />
                   <div>
                     <label className="pb-2">
-                    SubTitle <span className="text-red-500">*</span>
+                      SubTitle <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -191,23 +194,22 @@ const AllCategories = () => {
                   </div>
                   <br />
                   <div>
-                  <label
-                  htmlFor="file-input"
-                  className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                >
-                  <span>Upload a file</span>
-                  <input
-                    type="file"
-                    name="avatar"
-                    id="file-input"
-                    accept=".jpg,.jpeg,.png"
-                    onChange={handleFileInputChange}
-                    className="sr-only"
-                  />
-                </label>
+                    <label
+                      htmlFor="file-input"
+                      className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                    >
+                      <span>Upload a file</span>
+                      <input
+                        type="file"
+                        name="avatar"
+                        id="file-input"
+                        accept=".jpg,.jpeg,.png"
+                        onChange={handleFileInputChange}
+                        className="sr-only"
+                      />
+                    </label>
                   </div>
-                
-                
+
                   <br />
                   <div>
                     <input

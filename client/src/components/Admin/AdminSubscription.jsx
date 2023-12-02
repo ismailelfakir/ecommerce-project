@@ -71,7 +71,10 @@ const AllSubscribers = () => {
         return (
           <>
             <Button onClick={() => setUserId(params.id) || setOpen(true)}>
-              <AiOutlineDelete size={20} />
+              <AiOutlineDelete 
+              size={20} 
+              className="dark:text-gray-300 text-gray-800"
+              />
             </Button>
           </>
         );
@@ -93,13 +96,15 @@ const AllSubscribers = () => {
     <div className="w-full flex justify-center pt-5">
       <div className="w-[97%]">
         <h3 className="text-[22px] font-Poppins pb-2">All Subscribers</h3>
-        <div className="w-full min-h-[45vh] bg-white rounded">
+        <div className="w-full mx-8 pt-1 mt-10 rounded-lg">
           <DataGrid
             rows={row}
             columns={columns}
             pageSize={10}
             disableSelectionOnClick
             autoHeight
+            className="dark:bg-gray-800 rounded-lg dark:border-gray-700 dark:text-gray-300"      
+
           />
         </div>
         {open && (

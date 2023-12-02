@@ -10,8 +10,8 @@ const Events = () => {
      {
       !isLoading && (
         <div className={`${styles.section}`}>
-      <div className={`${styles.heading}`}>
-        <h1>Popular Events</h1>
+      <div className={`${styles.heading} `}>
+      <h1 className="text-gray-900 dark:text-gray-100">Popular Events</h1>
       </div>
 
       <div className="w-full grid">

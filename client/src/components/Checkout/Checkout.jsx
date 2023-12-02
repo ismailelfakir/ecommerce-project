@@ -160,13 +160,13 @@ const ShippingInfo = ({
   setZipCode,
 }) => {
   return (
-    <div className="w-full 800px:w-[95%] bg-white rounded-md p-5 pb-8">
-      <h5 className="text-[18px] font-[500]">Shipping Address</h5>
+    <div className="w-full 800px:w-[95%] bg-gray-100 dark:bg-gray-800 shadow rounded-lg p-5 pb-8">
+      <h5 className="text-[18px] font-[500] text-gray-800 dark:text-gray-200">Shipping Address</h5>
       <br />
       <form>
         <div className="w-full flex pb-3">
           <div className="w-[50%]">
-            <label className="block pb-2">Full Name</label>
+            <label className="block pb-2 dark:text-gray-400 text-gray-700">Full Name</label>
             <input
               type="text"
               value={user && user.fname +" "+user.lname}
@@ -175,7 +175,7 @@ const ShippingInfo = ({
             />
           </div>
           <div className="w-[50%]">
-            <label className="block pb-2">Email Address</label>
+            <label className="block pb-2 dark:text-gray-400 text-gray-700">Email Address</label>
             <input
               type="email"
               value={user && user.email}
@@ -187,7 +187,7 @@ const ShippingInfo = ({
 
         <div className="w-full flex pb-3">
           <div className="w-[50%]">
-            <label className="block pb-2">Phone Number</label>
+            <label className="block pb-2 dark:text-gray-400 text-gray-700">Phone Number</label>
             <input
               type="number"
               required
@@ -196,7 +196,7 @@ const ShippingInfo = ({
             />
           </div>
           <div className="w-[50%]">
-            <label className="block pb-2">Zip Code</label>
+            <label className="block pb-2 dark:text-gray-400 text-gray-700">Zip Code</label>
             <input
               type="number"
               value={zipCode}
@@ -209,9 +209,9 @@ const ShippingInfo = ({
 
         <div className="w-full flex pb-3">
           <div className="w-[50%]">
-            <label className="block pb-2">Country</label>
+            <label className="block pb-2 dark:text-gray-400 text-gray-700">Country</label>
             <select
-              className="w-[95%] border h-[40px] rounded-[5px]"
+              className="w-[95%] border border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-300  h-[40px] rounded-lg "
               value={country}
               onChange={(e) => setCountry(e.target.value)}
             >
@@ -227,9 +227,9 @@ const ShippingInfo = ({
             </select>
           </div>
           <div className="w-[50%]">
-            <label className="block pb-2">City</label>
+          <label className="block pb-2 dark:text-gray-400 text-gray-700">City</label>
             <select
-              className="w-[95%] border h-[40px] rounded-[5px]"
+              className="w-full border border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-300  h-[40px] rounded-lg "
               value={city}
               onChange={(e) => setCity(e.target.value)}
             >
@@ -248,7 +248,7 @@ const ShippingInfo = ({
 
         <div className="w-full flex pb-3">
           <div className="w-[50%]">
-            <label className="block pb-2">Address1</label>
+          <label className="block pb-2 dark:text-gray-400 text-gray-700">Address1</label>
             <input
               type="address"
               required
@@ -258,7 +258,7 @@ const ShippingInfo = ({
             />
           </div>
           <div className="w-[50%]">
-            <label className="block pb-2">Address2</label>
+          <label className="block pb-2 dark:text-gray-400 text-gray-700">Address2</label>
             <input
               type="address"
               value={address2}
@@ -272,7 +272,7 @@ const ShippingInfo = ({
         <div></div>
       </form>
       <h5
-        className="text-[18px] cursor-pointer inline-block"
+        className="text-[18px] cursor-pointer inline-block text-gray-600 dark:text-gray-400"
         onClick={() => setUserInfo(!userInfo)}
       >
         Choose From saved address
@@ -313,24 +313,24 @@ const CartData = ({
   discountPercentenge,
 }) => {
   return (
-    <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
+    <div className="w-full bg-gray-200 dark:bg-gray-800 shadow rounded-lg p-5 pb-8">
       <div className="flex justify-between">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">subtotal:</h3>
-        <h5 className="text-[18px] font-[600]">{subTotalPrice} DH</h5>
+        <h3 className="text-[16px] font-[400] text-gray-600 dark:text-gray-400">Subtotal:</h3>
+        <h5 className="text-[18px] font-[600] text-gray-700 dark:text-gray-300">{subTotalPrice} DH</h5>
       </div>
       <br />
       <div className="flex justify-between">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">shipping:</h3>
-        <h5 className="text-[18px] font-[600]">{shipping.toFixed(2)} DH</h5>
+        <h3 className="text-[16px] font-[400] text-gray-600 dark:text-gray-400">Shipping:</h3>
+        <h5 className="text-[18px] font-[600] text-gray-700 dark:text-gray-300">{shipping.toFixed(2)} DH</h5>
       </div>
       <br />
       <div className="flex justify-between border-b pb-3">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
-        <h5 className="text-[18px] font-[600]">
+        <h3 className="text-[16px] font-[400] text-gray-600 dark:text-gray-400">Discount:</h3>
+        <h5 className="text-[18px] font-[600] text-gray-700 dark:text-gray-300">
           - {discountPercentenge ?  discountPercentenge.toString()+ " DH" : null}
         </h5>
       </div>
-      <h5 className="text-[18px] font-[600] text-end pt-3">{totalPrice} DH</h5>
+      <h5 className="text-[18px] font-[600] text-end pt-3 text-gray-700 dark:text-gray-300">{totalPrice} DH</h5>
       <br />
       <form onSubmit={handleSubmit}>
         <input
@@ -342,7 +342,7 @@ const CartData = ({
           required
         />
         <input
-          className={`w-full h-[40px] border border-[#f63b60] text-center text-[#f63b60] rounded-[3px] mt-8 cursor-pointer`}
+          className={`w-full h-[40px] border border-red-600 text-center text-red-600 hover:text-gray-100 hover:bg-red-600 rounded-lg mt-8 cursor-pointer`}
           required
           value="Apply code"
           type="submit"
