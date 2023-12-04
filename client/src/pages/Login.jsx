@@ -8,13 +8,13 @@ import Login from "../components/Login/Login";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { isSeller, isLoading } = useSelector((state) => state.seller);
+  const { isAuthenticated } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (isSeller === true) {
-      navigate(`/dashboard`);
+    if(isAuthenticated === true){
+      navigate("/");
     }
-  }, [isLoading, isSeller])
+  }, [])
   return (
     <div className='flex w-full h-full'>
       <div className='w-full md:w-[60%] h-full'><Login /></div>

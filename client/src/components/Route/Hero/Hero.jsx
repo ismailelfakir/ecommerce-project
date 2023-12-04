@@ -28,7 +28,7 @@ const Hero = () => {
   const links = ["/products", "/events", "/seller-create"];
   const linkTexts = ["Shop Now", "Explore Now", "Become Seller"];
 
-  
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,11 +43,14 @@ const Hero = () => {
   return (
     <div
       className={`relative w-full h-[100vh] bg-cover dark:bg-gray-900 ${styles.noramlFlex}`}
-      style={{
-        backgroundImage: `url(${backgrounds[backgroundIndex]})`,
-      }}
+
     >
-      <div className={`${styles.section} w-[90%] 800px:w-[60%]`}>
+
+      <div className="absolute bg-cover inset-0 w-full h-full z-0" style={{
+        backgroundImage: `url(${backgrounds[backgroundIndex]})`,
+      }}></div>
+      <div className="absolute inset-0 w-full h-full backdrop-blur-[2px]"></div>
+      <div className={`${styles.section} relative w-[90%] 800px:w-[60%]`}>
         <h1
           className={`text-[35px] leading-[1.2] 800px:text-[60px] dark:text-gray-100 font-[600] capitalize`}
         >
