@@ -96,10 +96,10 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     <div className="bg-[#fff]">
       {data ? (
         <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
-          <div className="w-[90%] 800px:w-[60%] h-[90vh] overflow-y-scroll 800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
+          <div className="w-[90%] 800px:w-[60%] h-[90vh] overflow-y-scroll 800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4 dark:bg-gray-800">
             <RxCross1
               size={30}
-              className="absolute right-3 top-3 z-50"
+              className="absolute right-3 top-3 z-50 dark:text-white"
               onClick={() => setOpen(false)}
             />
 
@@ -135,13 +135,13 @@ const ProductDetailsCard = ({ setOpen, data }) => {
               </div>
 
               <div className="w-full 800px:w-[50%] pt-5 pl-[5px] pr-[5px]">
-                <h1 className={`${styles.productTitle} text-[20px]`}>
+                <h1 className={`${styles.productTitle} text-[20px] dark:text-white`}>
                   {data.name}
                 </h1>
-                <p>{data.description}</p>
+                <p className="dark:text-white">{data.description}</p>
 
                 <div className="flex pt-3">
-                  <h4 className={`${styles.productDiscountPrice}`}>
+                  <h4 className={`${styles.productDiscountPrice} `}>
                     {data.discountPrice}DH
                   </h4>
                   <h3 className={`${styles.price}`}>

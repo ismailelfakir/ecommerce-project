@@ -12,8 +12,6 @@ const cloudinary = require("cloudinary");
 
 router.get(
   "/admin-all-categories",
-  isAuthenticated,
-  isAdmin("Admin"),
   catchAsyncErrors(async (req, res, next) => {
     try {
       const categories = await Categories.find().sort({

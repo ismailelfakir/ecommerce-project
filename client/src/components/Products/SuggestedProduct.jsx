@@ -16,9 +16,9 @@ const [products,setProducts] = useState(null);
   return (
     <div>
       {data ? (
-        <div className={`p-4 ${styles.section}`}>
+        <div className={`p-4 ${styles.section} dark:bg-gray-900`}>
           <h2
-            className={`${styles.heading} text-[25px] font-[500] border-b mb-5`}
+            className={`${styles.heading} text-[25px] font-[500] border-b mb-5 dark:text-white`}
           >
             Related Product
           </h2>

@@ -19,10 +19,10 @@ const DropDown = ({ categoriesData, setDropDown }) => {
             onClick={() => submitHandle(i)}
           >
             <img
-              src={i.image_Url}
+              src={i.avatar?.url}
               style={{
-                width: "25px",
-                height: "25px",
+                width: "40px",
+                height: "40px",
                 objectFit: "contain",
                 marginLeft: "10px",
                 userSelect: "none",

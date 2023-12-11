@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
-import { categoriesData, productData } from "../../static/data";
 import {
   AiOutlineHeart,
   AiOutlineSearch,
@@ -18,6 +17,8 @@ import Cart from "../Cart/Cart";
 import Wishlist from "../Wishlist/Wishlist";
 import { RxCross1 } from "react-icons/rx";
 import { backend_url } from "../../server";
+import axios from "axios"; // Make sure to install axios if not already installed
+
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -32,6 +33,21 @@ const Header = ({ activeHeading }) => {
   const [openCart, setOpenCart] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
+  const [categoriesData, setCategoriesData] = useState([]); // State to store categories data
+
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${backend_url}categories/admin-all-categories`);
+        setCategoriesData(response.data.categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -105,7 +121,7 @@ const Header = ({ activeHeading }) => {
           </div>
 
           <div className="flex items-center ${} text-gray-50 border bg-slate-400 bg-opacity-30 p-1 rounded-lg hover:bg-opacity-50 ">
-            <Link to={`${isSeller ? "/dashboard" : "/seller-create"}`}
+            <Link to={`${isSeller ? "/dashboard" : "/seller-sign-up-new"}`}
             >
               <h1 className="font-bold text-[20px] flex items-center ml-3">
                 {isSeller ? "Go Dashboard" : "Become Seller"}{" "}

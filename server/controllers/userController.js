@@ -214,9 +214,9 @@ router.post(
 // sign up with google
 router.post("/signup-google", async (req, res, next) => {
   try {
+    console.log("Signup Google : ", req.body.email)
     const user = await User.findOne({ email: req.body.email });
     if (user) {
-      sendToken(user, 201, res);
       return next(new ErrorHandler("User already exists", 400));
     } else {
       const generatedPassword =

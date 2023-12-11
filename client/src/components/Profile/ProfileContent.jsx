@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { getAllOrdersOfUser } from "../../redux/actions/order";
 import { AiOutlineClose } from "react-icons/ai"; // Importing the close icon
-
+import UserInbox from "../../pages/UserInbox"
 
 
 const ProfileContent = ({ active }) => {
@@ -180,6 +180,12 @@ const ProfileContent = ({ active }) => {
       {active === 3 && (
         <div>
           <AllRefundOrders />
+        </div>
+      )}
+
+      {active === 4 && (
+        <div>
+          <UserInbox show={true} />
         </div>
       )}
 

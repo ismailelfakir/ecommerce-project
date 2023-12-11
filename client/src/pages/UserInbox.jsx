@@ -12,7 +12,7 @@ import styles from "../styles/styles";
 const ENDPOINT = "http://localhost:4000";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
-const UserInbox = () => {
+const UserInbox = ({show}) => {
   const { user,loading } = useSelector((state) => state.user);
   const [conversations, setConversations] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -208,11 +208,12 @@ const UserInbox = () => {
   }, [messages]);
 
   return (
-    <div className="w-full">
+    <div className="w-full h-screen dark:bg-gray-800">
       {!open && (
         <>
-          <Header />
-          <h1 className="text-center text-[30px] py-3 font-Poppins">
+          {!show && <Header />}
+          
+          <h1 className="text-center text-[30px] py-3 font-Poppins dark:text-white">
             All Messages
           </h1>
           {/* All messages list */}
@@ -314,8 +315,8 @@ const MessageList = ({
         )}
       </div>
       <div className="pl-3">
-        <h1 className="text-[18px]">{user?.fname}</h1>
-        <p className="text-[16px] text-[#000c]">
+        <h1 className="text-[18px] dark:text-white">{user?.fname}</h1>
+        <p className="text-[16px] text-[#000c] dark:text-white">
           {!loading && data?.lastMessageId !== user?._id
             ? "You: "
             : user?.fname + ": "}
@@ -341,7 +342,7 @@ const SellerInbox = ({
   return (
     <div className="w-[full] min-h-full flex flex-col justify-between p-5">
       {/* message header */}
-      <div className="w-full flex p-3 items-center justify-between bg-slate-200">
+      <div className="w-full flex p-3 items-center justify-between bg-slate-200 dark:bg-gray-600">
         <div className="flex">
           <img
             src={`${userData?.avatar?.url}`}
@@ -349,13 +350,13 @@ const SellerInbox = ({
             className="w-[60px] h-[60px] rounded-full"
           />
           <div className="pl-3">
-            <h1 className="text-[18px] font-[600]">{userData?.fname}</h1>
+            <h1 className="text-[18px] font-[600] dark:text-white">{userData?.fname}</h1>
             <h1>{activeStatus ? "Active Now" : ""}</h1>
           </div>
         </div>
         <AiOutlineArrowRight
           size={20}
-          className="cursor-pointer"
+          className="cursor-pointer dark:text-white"
           onClick={() => setOpen(false)}
         />
       </div>
@@ -393,7 +394,7 @@ const SellerInbox = ({
                     <p>{item.text}</p>
                   </div>
 
-                  <p className="text-[12px] text-[#000000d3] pt-1">
+                  <p className="text-[12px] text-[#000000d3] pt-1 dark:text-white">
                     {format(item.createdAt)}
                   </p>
                 </div>

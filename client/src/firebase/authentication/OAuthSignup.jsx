@@ -2,7 +2,7 @@ import { GoogleAuthProvider, FacebookAuthProvider, getAuth, signInWithPopup } fr
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import  app  from '../firebaseConfig'; 
+import app from '../firebaseConfig';
 import { server } from '../../server';
 
 export default function OAuth() {
@@ -14,22 +14,30 @@ export default function OAuth() {
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
 
-      // Extract user details from the result
+
+
       const { displayName, email, photoURL } = result.user;
-      const [firstName, lastName] = displayName.split(' ');
+      const [firstName, lastName] = displayName.split(" ");
 
       // Send a POST request using Axios
-      localStorage.setItem('userDetails', JSON.stringify({
-        fname: firstName,
-        lname: lastName,
-        email: email,
-        photo: photoURL,
-      }));
-      toast.success("User signed in with google successfully");
-      window.location.reload();
+      await axios.post(
+        `${server}/user/signup-google`,
+        {
+          fname: firstName,
+          lname: lastName,
+          email: email,
+          photo: photoURL,
+        },
+        {
+          withCredentials: true, // Include credentials in the request
+        }
+      );
+      toast.success("User signed in successfully");
+      navigate("/login");
     } catch (error) {
       console.error('Could not sign in with Google:', error);
-      toast.error("Error signing in with Google");
+      const errorMessage = error.response?.data?.message || "Error signing in with Google";
+      toast.error(errorMessage);
     }
   };
 
@@ -65,7 +73,7 @@ export default function OAuth() {
       <button
         onClick={handleGoogleClick}
         className="px-4 py-2 w-full border flex justify-center gap-3 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-100 dark:hover:shadow-md"
-        >
+      >
         <img className="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />
         <span>Sign up with Google</span>
       </button>
@@ -90,6 +98,6 @@ export default function OAuth() {
         Sign up with Facebook
       </button>
     </div>
-    
+
   );
 }
