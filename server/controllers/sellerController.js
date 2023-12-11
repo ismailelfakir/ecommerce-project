@@ -607,8 +607,7 @@ router.post("/create-seller-step", upload.single("file"), async (req, res, next)
       }
     });
   }
-
-  if (sellerEmail && req.file) {
+  if (req.file) {
     const filename = req.file.filename;
     const filePath = `img/${filename}`;
     fs.unlink(filePath, (err) => {
@@ -617,6 +616,9 @@ router.post("/create-seller-step", upload.single("file"), async (req, res, next)
         res.status(500).json({ message: "error deleting file" });
       }
     });
+  }
+
+  if (sellerEmail) {
     return next(new ErrorHandler("Seller already exists", 400));
   }
 

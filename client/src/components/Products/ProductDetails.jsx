@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import Ratings from "./Ratings";
 import axios from "axios";
 
+
 const ProductDetails = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
@@ -75,45 +76,45 @@ const ProductDetails = ({ data }) => {
   };
 
   const totalReviewsLength =
-  products &&
-  products.reduce((acc, product) => acc + product.reviews.length, 0);
+    products &&
+    products.reduce((acc, product) => acc + product.reviews.length, 0);
 
-const totalRatings =
-  products &&
-  products.reduce(
-    (acc, product) =>
-      acc + product.reviews.reduce((sum, review) => sum + review.rating, 0),
-    0
-  );
+  const totalRatings =
+    products &&
+    products.reduce(
+      (acc, product) =>
+        acc + product.reviews.reduce((sum, review) => sum + review.rating, 0),
+      0
+    );
 
-const avg =  totalRatings / totalReviewsLength || 0;
+  const avg = totalRatings / totalReviewsLength || 0;
 
-const averageRating = avg.toFixed(2);
+  const averageRating = avg.toFixed(2);
 
-const handleMessageSubmit = async () => {
-  if (isAuthenticated) {
-    const groupTitle = data._id + user._id;
-    const userId = user._id;
-    const sellerId = data.seller._id;
-    await axios
-      .post(`${server}/conversation/create-new-conversation`, {
-        groupTitle,
-        userId,
-        sellerId,
-      })
-      .then((res) => {
-        navigate(`/inbox?${res.data.conversation._id}`);
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
-  } else {
-    toast.error("Please login to create a conversation");
-  }
-};
+  const handleMessageSubmit = async () => {
+    if (isAuthenticated) {
+      const groupTitle = data._id + user._id;
+      const userId = user._id;
+      const sellerId = data.seller._id;
+      await axios
+        .post(`${server}/conversation/create-new-conversation`, {
+          groupTitle,
+          userId,
+          sellerId,
+        })
+        .then((res) => {
+          navigate(`/inbox?${res.data.conversation._id}`);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
+    } else {
+      toast.error("Please login to create a conversation");
+    }
+  };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-gray-900">
       {data ? (
         <div className={`${styles.section} w-[90%] 800px:w-[80%]`}>
           <div className="w-full py-5">
@@ -124,9 +125,8 @@ const handleMessageSubmit = async () => {
                   {data &&
                     data.images.map((i, index) => (
                       <div
-                        className={`${
-                          select === 0 ? "border" : "null"
-                        } cursor-pointer`}
+                        className={`${select === 0 ? "border" : "null"
+                          } cursor-pointer`}
                       >
                         <img
                           src={`${i?.url}`}
@@ -137,17 +137,16 @@ const handleMessageSubmit = async () => {
                       </div>
                     ))}
                   <div
-                    className={`${
-                      select === 1 ? "border" : "null"
-                    } cursor-pointer`}
+                    className={`${select === 1 ? "border" : "null"
+                      } cursor-pointer`}
                   ></div>
                 </div>
               </div>
               <div className="w-full 800px:w-[50%] pt-5">
                 <h1 className={`${styles.productTitle}`}>{data.name}</h1>
-                <p>{data.description}</p>
+                <p className="dark:text-white">{data.description}</p>
                 <div className="flex pt-3">
-                  <h4 className={`${styles.productDiscountPrice}`}>
+                  <h4 className={`${styles.productDiscountPrice} dark:text-white`}>
                     {data.discountPrice} DH
                   </h4>
                   <h3 className={`${styles.price}`}>
@@ -173,7 +172,7 @@ const handleMessageSubmit = async () => {
                       +
                     </button>
                   </div>
-                  <div>
+                  {/*<div>
                     {click ? (
                       <AiFillHeart
                         size={30}
@@ -182,6 +181,7 @@ const handleMessageSubmit = async () => {
                         color={click ? "red" : "#333"}
                         title="Remove from wishlist"
                       />
+
                     ) : (
                       <AiOutlineHeart
                         size={30}
@@ -191,8 +191,9 @@ const handleMessageSubmit = async () => {
                         title="Add to wishlist"
                       />
                     )}
-                  </div>
+                    </div>*/}
                 </div>
+                <div className="flex ">
                 <div
                   className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
                   onClick={() => addToCartHandler(data._id)}
@@ -201,22 +202,36 @@ const handleMessageSubmit = async () => {
                     Add to cart <AiOutlineShoppingCart className="ml-1" />
                   </span>
                 </div>
+                <div
+                  className={`${styles.button} !mt-6 !rounded !h-11 flex items-center ml-5 w-[180px] bg-[#406735]`}
+                  onClick={() => click ? removeFromWishlistHandler(data) : addToWishlistHandler(data)}
+                >
+                  <span className="text-white flex items-center">
+                    {click ? 'Remove from Wishlist ' : 'Add to Wishlist '}      <AiOutlineHeart
+                        size={20}
+                        className="cursor-pointer ml-1"
+                        onClick={() => addToWishlistHandler(data)}
+                        color={"white"}
+                      />
+                  </span>
+                </div>
+                </div>
                 <div className="flex items-center pt-8">
                   <Link to={`/seller/preview/${data?.seller._id}`}>
                     <img
                       src={`${data.seller.avatar.url}`}
                       alt=""
-                      className="w-[50px] h-[50px] rounded-full mr-2"
+                      className="w-[60px] h-[60px] rounded-full border-[2px] border-blue-500"
                     />
                   </Link>
-                  <div className="pr-8">
+                  <div className="pr-8 ml-2">
                     <Link to={`/seller/preview/${data?.seller._id}`}>
                       <h3 className={`${styles.shop_name} pb-1 pt-1`}>
-                        {data.seller.fname}
+                        {data.seller.fname} {data.seller.lname}
                       </h3>
                     </Link>
                     <h5 className="pb-3 text-[15px]">
-                      ({data.seller.ratings}/5) Ratings
+                      <Ratings rating={data?.ratings} />
                     </h5>
                   </div>
                   <div
@@ -234,8 +249,8 @@ const handleMessageSubmit = async () => {
           <ProductDetailsInfo
             data={data}
             products={products}
-            // totalReviewsLength={totalReviewsLength}
-            // averageRating={averageRating}
+          // totalReviewsLength={totalReviewsLength}
+          // averageRating={averageRating}
           />
           <br />
           <br />
@@ -250,16 +265,16 @@ const ProductDetailsInfo = ({
   products,
   // totalReviewsLength,
   // averageRating,
- }) => {
+}) => {
   const [active, setActive] = useState(1);
 
   return (
-    <div className="bg-[#f5f6fb] px-3 800px:px-10 py-2 rounded">
+    <div className="bg-[#f5f6fb] px-3 800px:px-10 py-2 rounded dark:bg-gray-900">
       <div className="w-full flex justify-between border-b pt-10 pb-2">
         <div className="relative">
           <h5
             className={
-              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px] dark:text-white"
             }
             onClick={() => setActive(1)}
           >
@@ -272,7 +287,7 @@ const ProductDetailsInfo = ({
         <div className="relative">
           <h5
             className={
-              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px] dark:text-white"
             }
             onClick={() => setActive(2)}
           >
@@ -285,7 +300,7 @@ const ProductDetailsInfo = ({
         <div className="relative">
           <h5
             className={
-              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+              "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px] dark:text-white"
             }
             onClick={() => setActive(3)}
           >
@@ -298,37 +313,37 @@ const ProductDetailsInfo = ({
       </div>
       {active === 1 ? (
         <>
-          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
+          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line dark:text-white">
             {data.description}
           </p>
         </>
       ) : null}
 
       {active === 2 ? (
-        <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
+        <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll dark:text-white">
           {data &&
-              data.reviews.map((item, index) => (
-                <div className="w-full flex my-2">
-                  <img
-                    src={`${item.user.avatar?.url}`}
-                    alt=""
-                    className="w-[50px] h-[50px] rounded-full"
-                  />
-                  <div className="pl-2 ">
-                    <div className="w-full flex items-center">
-                      <h1 className="font-[500] mr-3">{item.user.fname}</h1>
-                      <Ratings rating={data?.ratings} />
-                    </div>
-                    <p>{item.comment}</p>
+            data.reviews.map((item, index) => (
+              <div className="w-full flex my-2">
+                <img
+                  src={`${item.user.avatar?.url}`}
+                  alt=""
+                  className="w-[50px] h-[50px] rounded-full"
+                />
+                <div className="pl-2 ">
+                  <div className="w-full flex items-center">
+                    <h1 className="font-[500] mr-3">{item.user.fname}</h1>
+                    <Ratings rating={data?.ratings} />
                   </div>
+                  <p>{item.comment}</p>
                 </div>
-              ))}
+              </div>
+            ))}
 
-            <div className="w-full flex justify-center">
-              {data && data.reviews.length === 0 && (
-                <h5>No Reviews have for this product!</h5>
-              )}
-            </div>
+          <div className="w-full flex justify-center dark:text-white">
+            {data && data.reviews.length === 0 && (
+              <h5>No Reviews have for this product!</h5>
+            )}
+          </div>
           <p>No previews now!</p>
         </div>
       ) : null}
@@ -336,18 +351,16 @@ const ProductDetailsInfo = ({
       {active === 3 && (
         <div className="w-full block 800px:flex p-5">
           <div className="w-full 800px:w-[50%]">
-            <Link to={`/seller/preview/${data.seller.id}`}>
+            <Link to={`/seller/preview/${data.seller._id}`}>
               <div className="flex items-center">
                 <img
-                  src={`${data.seller.avatar}`}
-                  className="w-[50px] h-[50px] rounded-full"
+                  src={`${data.seller.avatar.url}`}
+                  className="w-[40px] h-[40px] rounded-full border-[2px] border-blue-500"
                   alt=""
                 />
                 <div className="pl-3">
-                  <h3 className={`${styles.shop_name}`}>{data.seller.fname}</h3>
-                  <h5 className="pb-2 text-[15px]">
-                    ({data.seller.ratings}/5) Ratings
-                  </h5>
+                  <h3 className={`${styles.shop_name}`}>{data.seller.fname} {data.seller.lname}</h3>
+                  <Ratings rating={data.ratings} />
                 </div>
               </div>
             </Link>
@@ -355,21 +368,21 @@ const ProductDetailsInfo = ({
           </div>
           <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
             <div className="text-left">
-              <h5 className="font-[600]">
+              <h5 className="font-[600] dark:text-white">
                 Joined on:
                 {" "}
                 <span className="font-[500]">
                   {data.seller?.createdAt?.slice(0, 10)}
                 </span>
               </h5>
-              <h5 className="font-[600] pt-3">
+              <h5 className="font-[600] pt-3 dark:text-white">
                 Total Products:
                 {" "}
-                <span className="font-[500]">
+                <span className="font-[500] dark:text-white">
                   {products && products.length}
                 </span>
               </h5>
-              <h5 className="font-[600] pt-3">
+              <h5 className="font-[600] pt-3 dark:text-white">
                 Total Reviews:
                 {/* {" "} */}
                 <span className="font-[500]">

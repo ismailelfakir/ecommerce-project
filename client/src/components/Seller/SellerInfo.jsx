@@ -49,9 +49,9 @@ const SellerInfo = ({ isOwner }) => {
     isLoading  ? (
       <Loader />
     ) : (
-      <div>
+      <div className="dark:bg-gray-800">
       <div className="w-full py-5">
-        <div className="w-full flex item-center justify-center">
+        <div className="w-full flex item-center justify-center ">
           <img
             src={`${data?.avatar?.url}`}
             alt=""

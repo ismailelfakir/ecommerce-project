@@ -62,9 +62,9 @@ const DashboardHero = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/dashboard/order/${params.id}`}>
-              <Button>
-                <AiOutlineArrowRight size={20} />
+            <Link to={`/order/${params.id}`}>
+              <Button >
+                <AiOutlineArrowRight size={20} color={"white"}/>
               </Button>
             </Link>
           </>
